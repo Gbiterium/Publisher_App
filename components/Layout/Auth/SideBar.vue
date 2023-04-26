@@ -265,7 +265,6 @@ export default Vue.extend({
       const RouteObj = Routes.find((item) =>
         item.keywords.every((keyword) => spiltUrlToArray.includes(keyword))
       )
-      console.log(spiltUrlToArray, RouteObj)
       this.routes = RouteObj?.routes as []
     },
   },

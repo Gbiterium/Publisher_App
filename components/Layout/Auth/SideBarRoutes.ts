@@ -284,7 +284,7 @@ export const Routes: Array<RouteType> = [
     routes: [
       {
         pathName: 'publisher-analytics',
-        name: 'Dashboard',
+        name: 'Analytics',
         icon: 'material-symbols:leaderboard-outline',
         noID: true,
       },

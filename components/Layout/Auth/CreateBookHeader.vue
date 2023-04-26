@@ -3,7 +3,7 @@
         class="navbar px-3 px-lg-5 d-flex justify-content-between py-2 pr-5 pr-lg-0"
       >
         <div class="d-flex justify-content-center align-items-center">
-          <nuxt-link to="/">
+          <nuxt-link to="/publisher/bookshelf">
             <div class="d-flex align-items-center justify-content-center fs-14 text-light-blue">
             <span class="iconify mr-2" data-icon="bi:arrow-left"></span>
             <span>Back to Book Shelf</span>

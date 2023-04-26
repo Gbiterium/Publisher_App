@@ -9,6 +9,7 @@
         <b-spinner variant="primary" label="Spinning"></b-spinner>
       </div>
       <b-table
+      striped
         ref="selectableTable"
         :fixed="fixed"
         hover

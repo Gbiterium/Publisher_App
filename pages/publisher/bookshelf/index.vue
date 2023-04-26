@@ -8,7 +8,7 @@
         <div v-if="available" class="mt-3">
         <UtilsBaseCardTab>
         <template
-            v-for="(tab, index) in [`All (${hey.length})`, 'Published', 'Draft', 'Under Review']"
+            v-for="(tab, index) in [`All (${resources.length})`, 'Published', 'Draft', 'Under Review']"
           >
           <UtilsCardTab :key="index" :title="tab">
         <div class="card-body">
