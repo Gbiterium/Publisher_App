@@ -15,10 +15,10 @@
 
       <div v-else class="col-2 text-right" @click="toggleField()">
         <p>
-          <span
+          <!-- <span
             class="iconify text-primary pointer fs-18"
             data-icon="eva:edit-2-outline"
-          ></span>
+          ></span> -->
         </p>
       </div>
     </template>

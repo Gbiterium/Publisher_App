@@ -738,7 +738,7 @@ export default {
 .table_container {
   border-radius: 10px;
   background-color: white;
-  padding: 0px 10px 5px 20px;
+  /* padding: 0px 10px 5px 20px; */
 }
 .singular:hover {
   cursor: pointer;
