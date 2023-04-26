@@ -184,4 +184,9 @@
     right: 10px;
     top: 10px;
   }
+  @media screen and (max-width: 767px) {
+    .search-input input {
+      width: 150px;
+    }
+  }
   </style>

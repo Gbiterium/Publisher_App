@@ -10,7 +10,7 @@
                 <button class="btn btn-primary mt-4">View Book</button>
                 <button class="btn btn-outline-primary mt-2">Edit Book</button>
               </div>
-              <div class="col-md-9">
+              <div class="col-md-9 details">
                 <div class="fs-20">{{ $route.query.name }}</div>
                 <div>{{ $route.query.author }}</div>
                 <div class="mt-4">
@@ -88,5 +88,16 @@
   }
   button {
     width: 220px;
+  }
+  @media screen and (max-width: 767px) {
+    .thumbnail img {
+      width: 100%;
+    }
+    button {
+    width: 100%;
+  }
+  .details {
+    margin-top: 20px;
+  }
   }
   </style>
