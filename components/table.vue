@@ -302,7 +302,11 @@
         <template #cell(book)="data">
               <div class="d-flex align-items-center book">
                 <img :src="require(`@/assets/img/${data.value.image}`)">
-                <span>{{ data.value.name }}</span>
+                <div class="ml-1">
+                <div>{{ data.value.name }}</div>
+                <div class="text-grey mt-1">Author: {{ data.value.author }}</div>
+                <div class="text-grey mt-1">Categories: {{ data.value.categories }}</div>
+              </div>
               </div>
             </template>
         <template #cell(created_at)="data">
