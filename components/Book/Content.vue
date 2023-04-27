@@ -125,7 +125,7 @@
             </div>
             <div class="row my-5">
                 <div class="col-md-10 d-flex justify-content-end">
-                    <button class="btn btn-outline-primary px-3 py-2 mr-3">Previous</button>
+                    <button class="btn btn-outline-primary px-3 py-2 mr-3" @click.prevent="$emit('goBack')">Previous</button>
                     <button class="btn btn-primary px-3 py-2">Next</button>
                     </div>
                 </div>

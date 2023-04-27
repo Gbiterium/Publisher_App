@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row report-card">
-      <div class="col-md-3">
+      <div class="col-lg-3 col-md-6">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
@@ -20,7 +20,7 @@
             </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-lg-3 col-md-6">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-lg-3 col-md-6">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
@@ -58,7 +58,7 @@
             </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-lg-3 col-md-6">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">

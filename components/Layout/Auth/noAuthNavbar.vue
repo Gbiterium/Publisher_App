@@ -7,7 +7,7 @@
       >
         <div>
           <nuxt-link to="/">
-            <img src="~/assets/img/logo-white.png" class="logo"
+            <img src="~/assets/img/logo.png" class="logo"
           /></nuxt-link>
         </div>
         <div class="d-flex align-items-center flex-wrap">
@@ -16,69 +16,64 @@
             class="nav-items d-none d-lg-flex order-last order-lg-first"
           >
             <div class="nav-item">
-              <nuxt-link to="/" class="px-4"> Home</nuxt-link>
+              <a href="https://www.slate.ng" class="slate-blue fs-14 text-decoration-none" target="_blank">Go Back to Slate</a>
             </div>
-
-            <div class="nav-item">
-              <nuxt-link to="/features/LMS" class="px-4"> Features</nuxt-link>
-            </div>
-
-            <!-- <div class="nav-item">
-            <nuxt-link to="/" class="px-4"> Shop</nuxt-link>
-          </div> -->
           </nav>
-          <nuxt-link to="/auth/login" class="px-3 py-2 rounded-pill bg-primary">
-            Login</nuxt-link
+          <div
+            class="
+              user-account-options
+              d-flex
+              align-items-center
+              ml-lg-4 ml-3
+              pr-lg-0
+            "
           >
-          <nuxt-link to="/auth/signup" class="px-4"> SignUp</nuxt-link>
-        </div>
-      </div>
-      <div class="d-lg-none relativecontainer">
-        <div
-          class="pointer d-lg-none ml-3 absolutecontainer"
-          @click="openMobile()"
-        >
-          <span
-            class="iconify"
-            data-inline="false"
-            data-icon="eva:menu-fill"
-            style="font-size: 30px; line-height: 0; color: #fff"
-          ></span>
-        </div>
-      </div>
-      <div v-if="isMobile" class="d-lg-none d-block">
-        <nav class="">
-          <div class="nav-item py-3 lightborder-bottom mx-4">
-            <nuxt-link to="/" class=""> Home</nuxt-link>
-          </div>
-          <div class="nav-item py-3 lightborder-bottom mx-4">
-            <nuxt-link to="/features/LMS" class=""> Features</nuxt-link>
-          </div>
-
-          <!-- <div class="py-3 lightborder-bottom mx-4">
-            <a v-b-toggle.collapse-1 variant="primary" href="#"
-              >Features
-              <span class="iconify" data-icon="ph:caret-down-bold"></span>
-            </a>
-
-            <b-collapse id="collapse-1" class="mt-2">
-              <b-card class="p-0 m-0 submenu d-flex flex-column">
-                <div class="py-1">
-                  <b-icon icon="arrow-right-short" class="text-white"></b-icon>
-                  <nuxt-link class="text-white" to="#">LMS</nuxt-link>
+            <div class>
+              <img
+                class="account-image"
+                :src="fallbackAvatar"
+              />
+            </div>
+            <div class="ml-2">
+              <div class="account-name text-left slate-blue">
+                Hello, Slate
+              </div>
+              <div class="d-none d-md-block dropdown account-dropdown">
+                <a
+                  href="#"
+                  class="dropdown-toggle smalltxt slate-blue"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  >Accounts</a
+                >
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <nuxt-link class="dropdown-item" to="/auth/profile/"
+                    >My profile</nuxt-link
+                  >
+                  <nuxt-link class="dropdown-item" to="/onboarding/"
+                    >Add School</nuxt-link
+                  >
+                  <nuxt-link class="dropdown-item" to="/auth/link/student"
+                    >Student Settings</nuxt-link
+                  >
+                  <nuxt-link class="dropdown-item" to="/auth/link/parent"
+                    >Parent Settings</nuxt-link
+                  >
+                  <nuxt-link class="dropdown-item" to="/auth/link/school"
+                    >School Settings</nuxt-link
+                  >
+                  <b-btn class="bg-danger ml-2 btn mt-1" @click="logout()"
+                    >Log out
+                  </b-btn>
                 </div>
-                <div class="py-1">
-                  <b-icon icon="arrow-right-short" class="text-white"></b-icon>
-                  <nuxt-link class="text-white" to="#">SMS</nuxt-link>
-                </div>
-              </b-card>
-            </b-collapse>
-          </div> -->
-
-          <!-- <div class="nav-item py-3 mx-4">
-          <nuxt-link to="/" class=""> Shop</nuxt-link>
-        </div> -->
-        </nav>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -89,6 +84,8 @@ export default {
   data() {
     return {
       isMobile: false,
+      fallbackAvatar:
+        'https://546458-1766807-raikfcquaxqncofqfm.stackpathdns.com/pub/media/wordpress/d5f1425700d7460bb2aa1e1e8e1b7e49.jpg',
     }
   },
 
@@ -106,7 +103,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  background: #171e40;
+  background: #fff;
   height: var(--navbar-height);
   width: 100%;
   display: flex;

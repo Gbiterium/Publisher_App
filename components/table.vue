@@ -317,202 +317,30 @@
               </div>
               </div>
             </template>
-        <template #cell(created_at)="data">
-          <div>{{ data.value.slice(0, 11) }}</div>
-        </template>
-
-        <template #cell(substitute_teacher)="data">
-          <template v-for="(teacher, index) in data.value">
-            <div :key="index">
-              {{ teacher.teacher_name }}<span v-if="data.value.length > 1">,</span>
-            </div>
-          </template>
-        </template>
+            <template #cell(actions)>
+              <div>
+                <div class="text-blue pointer" @click="$router.push('/publisher/bookshelf/create-book')">Edit Book Details</div>
+                <div class="text-blue pointer mt-2">View Details</div>
+                <div class="text-blue pointer mt-2">Unpublish</div>
+              </div>
+            </template>
+            <template #cell(status)="data">
+              <div>
+                <div v-if="data.value === 'Published'" class="text-blue">{{ data.value }}</div>
+                <div v-if="data.value === 'Draft'" class="text-grey">Draft</div>
+                <div v-if="data.value === 'Under Review'" class="">Under Review</div>
+              </div>
+            </template>
+            <template #cell(rating)="data">
+                <star-rating :rating="data.value" :show-rating="false" :max-rating="5" :read-only="true" :star-size="18"></star-rating>
+              <!-- </div> -->
+            </template>
         <template #table-busy>
           <div class="text-center text-primary my-2">
             <b-spinner class="align-middle"></b-spinner>
             <strong>Loading...</strong>
           </div>
         </template>
-        <template #cell(relationship)="row">
-          <div class="text-capitalize">
-            {{ row.value }}
-          </div> </template
-        >
-        <template #cell(check)="row">
-          <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
-          <span @click="toggleSingleRow(row)">
-            <div>
-              <b-form-checkbox v-model="row.rowSelected" @change="row.toggleDetails">
-              </b-form-checkbox>
-            </div>
-          </span>
-        </template>
-
-        <template #cell(email)="data">
-          <div>
-            {{ data.value | wrapEmail }}
-          </div>
-        </template>
-        <template #cell(three_dots)="data">
-          <slot name="three_dots" :data="data">
-            <div>
-              <b-dropdown
-                size="lg"
-                variant="link"
-                menu-class="w-25 customdots"
-                class="cutom2"
-                toggle-class="text-decoration-none"
-                no-caret
-              >
-                <template #button-content>
-                  <span class="iconify" data-icon="bi:three-dots-vertical"></span>
-                </template>
-                <b-dropdown-item href="#" @click="edit(data)">Edit</b-dropdown-item>
-                <b-dropdown-item href="#" @click="remove(data)">
-                  <span class="text-danger"> Delete </span>
-                </b-dropdown-item>
-              </b-dropdown>
-            </div>
-          </slot>
-        </template>
-        <template #cell(triple_dots)="data">
-          <div>
-            <slot name="triple_dots" :data="data">
-              <b-dropdown
-                size="lg"
-                variant="link"
-                menu-class=""
-                class="cutom2"
-                toggle-class="text-decoration-none"
-                no-caret
-              >
-                <template #button-content>
-                  <span class="iconify" data-icon="bi:three-dots-vertical"></span>
-                </template>
-                <template v-for="(item, index) in data.value">
-                  <b-dropdown-item
-                    :key="index"
-                    href="#"
-                    class=""
-                    :variant="item.variant ? item.variant : ''"
-                    @click="$emit(item.event, data.item)"
-                    >{{ item.name }}</b-dropdown-item
-                  >
-                </template>
-              </b-dropdown>
-            </slot>
-          </div>
-          <!-- <div @click="handleDots(data)">
-            <span class="iconify" data-icon="bi:three-dots-vertical"></span>
-          </div> -->
-          <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
-        </template>
-        <template #cell(id)>
-          <div></div>
-        </template>
-        <template #head(id)>
-          <div></div>
-        </template>
-        <template #cell(theme)="data">
-          <div
-            class="rounded-circle"
-            style="height: 25px; width: 25px"
-            :style="{ backgroundColor: data.value }"
-          ></div>
-        </template>
-        <template #cell()="data">
-          <div class="border-primary singular" @click="redirect(data)">
-            {{ data.value }}
-          </div>
-        </template>
-        <template #cell(gender)="data">
-          <slot name="gender" :data="data">
-            <div class="border-primary singular text-capitalize">
-              {{ data.value }}
-            </div>
-          </slot>
-        </template>
-        <template #cell(role)="data">
-          <div class="border-primary singular text-capitalize">
-            {{ data.value }}
-          </div>
-        </template>
-        <template #head(extra_icons)>
-          <div></div>
-        </template>
-        <template #cell(extra_icons)="data">
-          <slot name="extra_icons" :data="data">
-            <div class="d-flex justify-content-end">
-              <div class="pr-2">
-                <span class="mx-2" @click="iconDelete(data)">
-                  <span class="iconify text-danger" data-icon="mi:delete"></span>
-                </span>
-                <span class="mx-2">
-                  <span class="iconify" data-icon="ant-design:edit-twotone"></span>
-                </span>
-                <a id="a1" download="file1.png" @click="iconDownload(data)">
-                  <span class="iconify" data-icon="feather:download"></span>
-                </a>
-              </div>
-            </div>
-          </slot>
-        </template>
-        <template #head(image)="">
-          <div></div>
-        </template>
-
-        <template #cell(primary_contact)="data">
-          <div class="m-0">
-            <span v-if="data.value == true" class="text-primary"> Emergency</span>
-          </div>
-        </template>
-        <template #cell(connected)="data">
-          <div class="m-0" :style="{ position: 'relative', right: '1rem' }">
-            <div
-              v-if="data.value == true"
-              class="border w-100 text-center border-primary rounded p-1 text-primary"
-            >
-              Connected
-            </div>
-            <div v-else class="border w-100 rounded border-primary p-2">
-              {{ $route.params.id }}-{{ data.item.activation_code }}
-            </div>
-          </div>
-        </template>
-        <template #cell(mimetype)="data">
-              <div class="" style="max-width: 1rem">
-                <div v-if="data.value.includes('pdf')" class="pdf"
-                  ><span class="iconify" data-icon="bi:file-pdf"></span></div
-                >
-                <div v-else-if="data.value.includes('presentation')" class="ppt"
-                  ><span class="iconify" data-icon="file-icons:microsoft-powerpoint"></span></div
-                >
-                <div v-else-if="data.value.includes('msword') || data.value.includes('.document')" class="msword"
-                  ><span class="iconify" data-icon="file-icons:microsoft-word"></span></div
-                >
-                <div v-else-if="data.value.includes('mp4')"
-                  ><span class="iconify" data-icon="teenyicons:mp4-solid"></span></div
-                >
-                <div v-else-if="data.value.includes('image')"
-                  ><span class="iconify" data-icon="ic:baseline-image"></span></div
-                ><div v-else-if="data.value.includes('.sheet')" class="excel"
-                  ><span class="iconify" data-icon="file-icons:microsoft-excel"></span></div
-                >
-                </div>
-                
-              </template>
-              <template #cell(size)="data">
-              <div style="max-width: 16rem">
-                  {{ data.value ? data.value : '0kb' }}
-              </div>
-            </template>
-              <template #cell(last_modified)="data">
-              <div class="fs-12">
-                  {{ data.value }}
-                </div>
-                
-              </template>
       </b-table>
     </div>
 
@@ -770,7 +598,7 @@ export default {
   width: 7rem !important;
 }
 .my-table-class td div {
-  padding-left: 0.75rem !important;
+  /* padding-left: 0.75rem !important; */
   text-transform: none;
 }
 .text-pri-blue {

@@ -973,6 +973,29 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@blowstack/ckeditor-nuxt@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.npmjs.org/@blowstack/ckeditor-nuxt/-/ckeditor-nuxt-0.6.0.tgz#3a8f49928db83f58cf99ae2d1eb7031894d569a1"
+  integrity sha512-IbCm6GQ0NWwZlhSL5BI2sV3cG6O0hRk17sAAMbLSB2cTJ6r+3ZAeB6AYuanQSppMIFNI/Nvssj6TLuCpinNPUA==
+  dependencies:
+    "@blowstack/ckeditor5-full-free-build" "^27.0.1"
+    "@ckeditor/ckeditor5-vue2" "^1.0.5"
+
+"@blowstack/ckeditor5-full-free-build@^27.0.1":
+  version "27.0.1"
+  resolved "https://registry.npmjs.org/@blowstack/ckeditor5-full-free-build/-/ckeditor5-full-free-build-27.0.1.tgz#d087cebb66abdf14cda987d0e55b7a4b6a0ed49c"
+  integrity sha512-JuzZhsFATSiH1NBtv5R/ym//uRuFHBo8DMcREzldyDF6vrxaAni8jimHHr9i9k7y3wXE4WgiRrjcZcENPNh/+g==
+
+"@ckeditor/ckeditor5-vue2@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-vue2/-/ckeditor5-vue2-1.0.5.tgz#719e7ab65f0c5d9aca91a41a7ec7cb904cbabb4c"
+  integrity sha512-snsNB/2oWfKw0drGJAmMGpTatmt//L1rQsOwkBw+1uKUuOJPKN3xwyUZVWT906VguIMXm4E9OHzquZ3bdkijiA==
+
+"@ckeditor/ckeditor5-vue2@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/@ckeditor/ckeditor5-vue2/-/ckeditor5-vue2-3.0.1.tgz#302e5773b31f1455973806d5c6002dd1b3db70ee"
+  integrity sha512-vS9ffP3rOFgM8oeG9XVFD+UtcYAhkgFDfBHjswJuCgUM0Iw8uqLlCiDPbs4PeJsend8GcmmtNeFdcQaSPkOtpw==
+
 "@csstools/cascade-layer-name-parser@^1.0.2":
   version "1.0.2"
   resolved "https://registry.npmjs.org/@csstools/cascade-layer-name-parser/-/cascade-layer-name-parser-1.0.2.tgz#35253f57c6c83d684fe396672486c644e6a84127"
@@ -3484,6 +3507,11 @@ cjs-module-lexer@^1.0.0:
   version "1.2.2"
   resolved "https://registry.npmjs.org/cjs-module-lexer/-/cjs-module-lexer-1.2.2.tgz#9f84ba3244a512f3a54e5277e8eef4c489864e40"
   integrity sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==
+
+ckeditor5-custom-build@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/ckeditor5-custom-build/-/ckeditor5-custom-build-0.0.6.tgz#b5eb3748381101417a9fb1328db6a3fcb28bee7d"
+  integrity sha512-CEFTaipvr8bv+xHexbziIImYRy2w3dx/hcvnc7iAVzUe2ZmOzUyZQ+ecYWaJJLCcehWXqZVgaWAaxcXl1+EO2A==
 
 class-utils@^0.3.5:
   version "0.3.6"

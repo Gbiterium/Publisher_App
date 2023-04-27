@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="card mt-4">
-        <div class="card-body">
+        <div class="card-body earning-card">
             <div class="top-card  d-flex align-items-center justify-content-between">
                 <div>
                     <div class="fs-14">PAGES READ</div>
@@ -79,9 +79,11 @@
                     <div class="fs-40 text-blue">450,350.50</div>
                     </div>
                     <div>
-                        <div class="hey"></div>
                     </div>
             </div>
+                        <div class="hey d-flex justify-content-center align-items-center">
+                        <span class="iconify text-white fs-20" data-icon="material-symbols:insights"></span>
+                        </div>
             </div>
     </div>
     <div class="mt-4">
@@ -256,10 +258,16 @@ hr {
     transform: rotate(-90deg);
     border: 1px solid #EAEAF1;
 }
+.earning-card {
+    position: relative;
+}
 .hey {
     width: 70px;
-    height: 100%;
-    background: #000;
+    height: 109px;
+    background: #1070B7;
+    position: absolute;
+    right: 0;
+    top: 0; 
 }
 .filter-input {
     position: relative;

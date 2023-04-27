@@ -86,7 +86,7 @@
               <div class="row mt-3">
               <div class="col-md-10">
                 <ValidationProviderWrapper name="Short Description" :rules="['required']">
-                  <textarea class="form-control" rows="4"></textarea>
+                  <textarea class="form-control" rows="4" v-model="description"></textarea>
                 </ValidationProviderWrapper>
               </div>
               </div>
@@ -188,9 +188,10 @@
               </div>
               <div class="row mt-3">
               <div class="col-md-5">
-              <small>From</small>
+              <small>Publication Date</small>
+              <div class="date">
               <v-date-picker
-                            v-model="start_date"
+                            v-model="publication_date"
                             mode="date"
                           >
                             <template #default="{ togglePopover }">
@@ -198,11 +199,13 @@
                                 <input
                                   class="form-control"
                                   :placeholder="dateFormat"
-                                  :value="start_date | date"
+                                  :value="publication_date | date"
                                 />
                               </span>
                             </template>
                           </v-date-picker>
+                          </div>
+                          <b-icon-calendar4 class="fs-16 calendar-icon" />
             </div>
             <div class="col-md-5">
               <ValidationProviderWrapper name="Number of Pages" :rules="['required']">
@@ -218,12 +221,12 @@
             <span class="fs-14 text-grey">Publishing Rights</span>
             </div>
             <div class="mt-2 fs-14">
-              <input type="checkbox">
+              <input type="checkbox" v-model="check">
               <label class="ml-2">I own the copyright and I hold the necessary publishing rights.<span class="text-blue"> Learn more</span></label>
             </div>
             <div class="row">
               <div class="col-md-10 d-flex justify-content-end my-3">
-                <button type="button" class="btn btn-primary py-2 px-3">next</button>
+                <button type="button" class="btn btn-primary py-2 px-3" @click.prevent="$emit('handleNext')">next</button>
               </div>
             </div>
               </form>
@@ -235,7 +238,28 @@
   
   <script>
   export default {
-      layout: 'book'
+      layout: 'book',
+      data() {
+        return {
+          description: '',
+          language: '',
+          book_title: '',
+          sub_title: '',
+          author_name: '',
+          contributor: '',
+          full_name: '',
+          categories: '',
+          keywords: '',
+          grade_level: '',
+          subject: '',
+          curriculum: '',
+          format: '',
+          isbn: '',
+          publication_date: '',
+          date: new Date(),
+          check: false
+        }
+      }
   }
   </script>
   
@@ -246,5 +270,13 @@
   }
   .card {
     box-shadow: 0px 2px 25px rgba(23, 30, 64, 0.05);
+  }
+  .date {
+    position: relative
+  }
+  .calendar-icon {
+    position: absolute;
+    right: 25px;
+    top: 33px;
   }
   </style>

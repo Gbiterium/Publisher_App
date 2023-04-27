@@ -31,7 +31,7 @@ html {
   color: #d89b03;
 }
 .slate-blue{
-  color: #171E40;
+  color: #171E40 !important;
 }
 
 /* Variables */

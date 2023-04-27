@@ -10,11 +10,14 @@
     "test": "jest"
   },
   "dependencies": {
+    "@blowstack/ckeditor-nuxt": "^0.6.0",
+    "@ckeditor/ckeditor5-vue2": "^3.0.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",
     "@types/lodash": "^4.14.177",
     "bootstrap": "^4.6.2",
     "bootstrap-vue": "^2.22.0",
+    "ckeditor5-custom-build": "^0.0.6",
     "core-js": "^3.25.3",
     "highcharts": "^10.1.0",
     "highcharts-vue": "^1.4.0",

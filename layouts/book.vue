@@ -37,8 +37,12 @@
                 </div>
             </div>
             <div class="col-md-10">
-      <BookDetails v-if="showDetails" />
-      <BookContent v-else />
+              <Transition v-if="showDetails" name="slide-fade">
+      <BookDetails @handleNext="handleNext" />
+    </Transition>
+    <Transition v-else name="slide-fade">
+      <BookContent @goBack="goBack" />
+      </Transition>
       </div>
       </div>
     </div>
@@ -61,6 +65,16 @@ export default {
     showDetailsForm() {
       this.showDetails = true
       this.showContent = false
+    },
+    handleNext() {
+      this.showDetails = false
+      this.showContent = true
+      window.scrollTo(0, 0)
+    },
+    goBack() {
+      this.showDetails = true
+      this.showContent = false
+      window.scrollTo(0, 0)
     }
   }
 }

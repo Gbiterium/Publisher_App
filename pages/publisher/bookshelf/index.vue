@@ -38,60 +38,10 @@
               @page-changed="getResources"
               @row-clicked="onRowSelected($event)"
             >
-              <template #three_dots="{ data: { item } }">
-                <b-dropdown
-                  variant="link"
-                  menu-class=""
-                  class="custom-dropdown"
-                  toggle-class="text-decoration-none"
-                  no-caret
-                >
-                  <template #button-content>
-                    <span
-                      class="iconify"
-                      data-icon="bi:three-dots-vertical"
-                    ></span>
-                  </template>
-                  <b-dropdown-item
-                    href="#"
-                    @click="showViewer(item, accordionIndex)"
-                  >
-                    <span class="text-dark">View File</span>
-                  </b-dropdown-item>
-                    <b-dropdown-item
-                    href="#"
-                    @click="removeFile(item)"
-                    >
-                    <span class="text-danger">Delete</span></b-dropdown-item
-                    >
-                </b-dropdown>
-              </template>
               <template #book="{ data: { item } }">
                 <div class="d-flex align-items-center">
                   <img :src="`@/assets/img/${item.book.image}`">
                   <span>{{ item.book.name }}</span>
-                </div>
-              </template>
-              <template #name="{ data: {item} }">
-      <div style="max-width: 5rem">
-        <span class="">{{ item.name }}</span>
-      </div>
-    </template>
-  
-              <template #last_modified="{ data: {item} }">
-                <div class="fs-12" style="max-width: 16rem">
-                  <span
-                    class="fs-12"
-                    >{{ item.date_created }}</span
-                  >
-                </div>
-              </template>
-              <template #size="{ data: {item} }">
-                <div class="fs-12" style="max-width: 16rem">
-                  <span
-                    class="fs-12"
-                    >{{ item.size ? item.size : '0kb' }}</span
-                  >
                 </div>
               </template>
             </Table>
@@ -121,7 +71,7 @@
     data () {
       return {
         available: true,
-        hey: [1, 2, 3, 4],
+        hey: false,
         fields: [
           { key: 'book', label: 'Books', sortable: false },
           { key: 'views', label: 'Views', sortable: false },

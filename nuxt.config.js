@@ -44,7 +44,8 @@ export default {
     '~/plugins/iconify',
     '~/plugins/vue-select',
     { src: '~/plugins/calender', mode: 'client' },
-    { src: '~/plugins/highchart.js', mode: 'client' }
+    { src: '~/plugins/highchart.js', mode: 'client' },
+    { src: '~/plugins/vue-star-rating.js', mode: 'client'},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
