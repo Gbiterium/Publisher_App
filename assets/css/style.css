@@ -30,6 +30,9 @@ html {
 .warnText {
   color: #d89b03;
 }
+.slate-blue{
+  color: #171E40;
+}
 
 /* Variables */
 body {
@@ -4511,23 +4514,30 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-.type-select .vs__dropdown-menu {
-  font-size: 14px;
+.custom-select1 .vs__dropdown-menu {
+  font-size: 12px;
   text-transform: capitalize;
 }
-.type-select .vs--single .vs__selected {
-  font-size: 14px;
+.custom-select1 .vs--single .vs__selected {
+  font-size: 12px;
 }
-.type-select .vs__search {
-  font-size: 14px;
+.custom-select1 .vs__search {
+  font-size: 12px;
 }
-.type-select .vs__search:focus {
-  font-size: 14px;
+.custom-select1 .vs__search:focus {
+  font-size: 12px;
 }
-.type-select .vs__selected-options {
-  padding: 1.5px 5px !important;
+.custom-select1 .vs__selected-options {
+  padding: 2px 5px !important;
 }
-.type-select .vs__selected {
-  font-size: 14px;
+.custom-select1 .vs__selected {
+  font-size: 12px;
   text-transform: capitalize;
+}
+.custom-select1 .vs__selected-options {
+  width: 130px;
+}
+.custom-select1 .vs__dropdown-menu {
+  font-size: 12px;
+  min-width: 20px;
 }

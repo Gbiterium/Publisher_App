@@ -43,7 +43,8 @@ export default {
     '~/plugins/vee-validate',
     '~/plugins/iconify',
     '~/plugins/vue-select',
-    { src: '~/plugins/calender', mode: 'client' }
+    { src: '~/plugins/calender', mode: 'client' },
+    { src: '~/plugins/highchart.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

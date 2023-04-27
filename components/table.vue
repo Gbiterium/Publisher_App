@@ -309,6 +309,14 @@
               </div>
               </div>
             </template>
+            <template #cell(title)="data">
+              <div class="d-flex align-items-center book">
+                <img :src="require(`@/assets/img/${data.value.image}`)">
+                <div>
+                <div>{{ data.value.name }}</div>
+              </div>
+              </div>
+            </template>
         <template #cell(created_at)="data">
           <div>{{ data.value.slice(0, 11) }}</div>
         </template>

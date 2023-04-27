@@ -5327,6 +5327,16 @@ he@1.2.0, he@^1.2.0:
   resolved "https://registry.npmjs.org/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
+highcharts-vue@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/highcharts-vue/-/highcharts-vue-1.4.0.tgz#4bdaaddc6b9a3eea0df70d29a22ae713d28e4a0c"
+  integrity sha512-fTPqJmU/wR/nUEtofbC/iJqcgULGcP3C0Hd4YYCKH2FiiteNs7UidjSM4eYj5Y4ldpOVhwPtNj/m6XwC3ajp6g==
+
+highcharts@^10.1.0:
+  version "10.3.3"
+  resolved "https://registry.npmjs.org/highcharts/-/highcharts-10.3.3.tgz#b8acca24f2d4b1f2f726540734166e59e07b35c4"
+  integrity sha512-r7wgUPQI9tr3jFDn3XT36qsNwEIZYcfgz4mkKEA6E4nn5p86y+u1EZjazIG4TRkl5/gmGRtkBUiZW81g029RIw==
+
 hmac-drbg@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
