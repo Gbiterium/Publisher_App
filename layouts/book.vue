@@ -26,7 +26,7 @@
                 <div>
                     <b-form-checkbox
       id="checkbox-2"
-      v-model="status"
+      v-model="status2"
       name="checkbox-1"
       value="accepted"
       class="custom-checkbox"
@@ -54,8 +54,15 @@ export default {
   data () {
     return {
       showDetails: true,
-      showContent: false
+      showContent: false,
+      status: 'not_accepted',
+      status2: 'not_accepted',
     }
+  },
+  mounted () {
+    if (this.$cookies.get('book-details') !== undefined) {
+        this.status = 'accepted'
+      }
   },
   methods: {
     showContentForm() {

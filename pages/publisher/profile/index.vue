@@ -38,9 +38,7 @@
                         class="object-fit-cover rounded-circle"
                         width="72"
                         height="72"
-                        :src="
-                          user.avatar.length > 0 ? user.avatar : dummyAvatar
-                        "
+                        src="@/assets/img/folder.png"
                       />
                       <button
                         class="
@@ -51,14 +49,13 @@
                           bottom-0
                           right-0
                         "
-                        @click="onClickFileUpload"
+                        @click.prevent="onClickFileUpload"
                       >
                         <input
                           ref="fileInput"
                           class="invisible"
                           type="file"
-                          name="imagesArray"
-                          @change="onChange"
+                          @change.prevent="onChange()"
                         />
 
                         <svg
@@ -88,81 +85,262 @@
                 </div>
 
                 <PageProfileARow
-                  :obj-key="['first_name', 'middle_name', 'last_name']"
-                  :label="'Name'"
-                  @save="UpdateProfile($event)"
+                  :obj-key="['individual', 'corporation']"
+                  :label="'Type of Business'"
                 >
                   <div class="d-flex no-gutters" style="column-gap: 8px">
-                    <PageProfileCustomInputForNameRow
-                      v-model="user.first_name"
-                      :label="'First Name'"
+                    <div class="col-12 d-flex align-items-center">
+                      <div v-if="toInput">
+      <input
+        type="radio"
+        v-model="user.check"
+        value="Individual"
+      /> <span class="ml-2">Individual</span>
+      <input
+        type="radio"
+        v-model="user.check"
+        value="Corporation"
+        class="ml-5"
+      /> <span class="ml-2">Corporation</span>
+      </div>
+      <span v-else>{{ user.check }}</span>
+      </div>
+    <!-- </div> -->
+                  </div>
+                </PageProfileARow>
+                <div v-if="user.check === 'Individual'">
+                <PageProfileARow
+                  :obj-key="'date_of_birth'"
+                  :label="'Date of Birth'"
+                >
+                <div class="d-flex no-gutters" style="column-gap: 8px">
+                  <div v-if="toInput" class="date col-xl-6">
+              <v-date-picker
+                            v-model="user.date_of_birth"
+                            mode="date"
+                          >
+                            <template #default="{ togglePopover }">
+                              <span @click="togglePopover()">
+                                <input
+                                  class="form-control"
+                                  placeholder="Date of Birth"
+                                  :value="user.date_of_birth | date"
+                                />
+                              </span>
+                            </template>
+                          </v-date-picker>
+                          <b-icon-calendar4 class="fs-12 calendar-icon" />
+                          </div>
+                          <span v-else>{{ user.date_of_birth }}</span>
+                          </div>
+                </PageProfileARow>
+                <PageProfileARow
+                  :obj-key="['name']"
+                  :label="'Legal Name'"
+                >
+                    <PageProfileAnInput
+                      v-model="user.name"
+                      :label="'Name'"
+                      :to-input="toInput"
                     />
-                    <PageProfileCustomInputForNameRow
-                      v-model="user.middle_name"
-                      :label="'Middle Name'"
+                </PageProfileARow>
+                </div>
+                <div v-else>
+                  <PageProfileARow
+                  :obj-key="'date_of_incoporation'"
+                  :label="'Date of Incorporation'"
+                >
+                <div class="d-flex no-gutters" style="column-gap: 8px">
+                <div class="date col-xl-6" v-if="toInput">
+              <v-date-picker
+                            v-model="user.date_of_incoporation"
+                            mode="date"
+                          >
+                            <template #default="{ togglePopover }">
+                              <span @click="togglePopover()">
+                                <input
+                                  class="form-control"
+                                  placeholder="Date of Incoporation"
+                                  :value="user.date_of_incoporation | date"
+                                />
+                              </span>
+                            </template>
+                          </v-date-picker>
+                          <b-icon-calendar4 class="fs-12 calendar-icon" />
+                          </div>
+                          <span v-else>{{ user.date_of_incoporation }}</span>
+                          </div>
+                </PageProfileARow>
+                <PageProfileARow
+                  :obj-key="['name']"
+                  :label="'Company Name'"
+                >
+                    <PageProfileAnInput
+                      v-model="user.company_name"
+                      :label="'Company Name'"
+                      :to-input="toInput"
                     />
-                    <PageProfileCustomInputForNameRow
-                      v-model="user.last_name"
-                      :label="'Last Name'"
-                    />
+                </PageProfileARow>
+                </div>
+                <PageProfileARow
+                  :obj-key="'country'"
+                  :label="'Country'"
+                >
+                <div class="d-flex no-gutters" style="column-gap: 8px">
+                <div v-if="toInput" class="col-xl-6">
+                <v-select
+                    v-model="user.country"
+                    class="style-chooser"
+                    placeholder="Country"
+                    :options="countries"
+                    label="name"
+                    :reduce="(option) => option.name"
+                  >
+                  </v-select>
+                  </div>
+                  <span v-else>{{ user.country }}</span>
                   </div>
                 </PageProfileARow>
 
                 <PageProfileARow
-                  :obj-key="'email'"
-                  :label="'Email Address'"
-                  @save="UpdateProfile($event)"
+                  :obj-key="'state'"
+                  :label="'State'"
                 >
-                  <PageProfileAnInput
-                    v-model="user.email"
-                    :label="'Email Address'"
-                  />
+                <div class="d-flex no-gutters" style="column-gap: 8px">
+                <div v-if="toInput" class="col-xl-6">
+                <v-select
+                    v-model="user.state"
+                    class="style-chooser"
+                    placeholder="State"
+                    label="name"
+                    :options="states"
+                    :reduce="(option) => option.name"
+                  >
+                  </v-select>
+                  </div>
+                  <span v-else>{{ user.state }}</span>
+                  </div>
                 </PageProfileARow>
 
                 <PageProfileARow
-                  :obj-key="'date_of_birth'"
-                  :label="'Birthday'"
-                  @save="UpdateProfile($event)"
+                  :obj-key="'city'"
+                  :label="'City'"
                 >
                   <PageProfileAnInput
-                    v-model="user.date_of_birth"
-                    :label="'Birthday'"
+                    v-model="user.city"
+                    :label="'City'"
+                    :to-input="toInput"
                   />
                 </PageProfileARow>
-
+                <div v-if="user.check === 'Individual'">
+                <PageProfileARow
+                  :obj-key="'address1'"
+                  :label="'Address Line 1'"
+                >
+                  <PageProfileAnInput
+                    v-model="user.address1"
+                    class="text-capitalize"
+                    :label="'Address Line 1'"
+                    :to-input="toInput"
+                  />
+                </PageProfileARow>
+                <PageProfileARow
+                  :obj-key="'address2'"
+                  :label="'Address Line 2'"
+                >
+                  <PageProfileAnInput
+                    v-model="user.address2"
+                    class="text-capitalize"
+                    :label="'Address Line 2'"
+                    :to-input="toInput"
+                  />
+                </PageProfileARow>
+                </div>
+                <div v-else>
+                <PageProfileARow
+                  :obj-key="'address1'"
+                  :label="'House Address'"
+                >
+                  <PageProfileAnInput
+                    v-model="user.address1"
+                    class="text-capitalize"
+                    :label="'House Address'"
+                    :to-input="toInput"
+                  />
+                </PageProfileARow>
+                </div>
                 <PageProfileARow
                   :obj-key="'phone_number'"
-                  :label="'Phone number'"
-                  @save="UpdateProfile($event)"
+                  :label="'Phone'"
                 >
                   <PageProfileAnInput
                     v-model="user.phone_number"
-                    :label="'Phone Number'"
-                  />
-                </PageProfileARow>
-
-                <PageProfileARow
-                  :obj-key="'gender'"
-                  read-only
-                  :label="'Gender'"
-                  @save="UpdateProfile($event)"
-                >
-                  <PageProfileAnInput
-                    v-model="user.gender"
-                    read-only
+                    :to-input="toInput"
                     class="text-capitalize"
-                    :label="'Gender'"
+                    :label="'Phone'"
                   />
                 </PageProfileARow>
                 <div class="d-flex justify-content-end mt-5">
-                <button class="btn btn-primary py-2 px-3">Edit Profile Info</button>
+                <button v-if="!toInput" class="btn btn-primary py-2 px-3" @click="UpdateProfile()">Edit Profile Info</button>
+                <button v-else class="btn btn-primary py-2 px-3" @click="saveProfile()">Save Profile Info</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div v-else>
-          Payment Info
+          <div class="card card-bordered">
+            <div class="card-body">
+              <div class="text-dark fs-20 line-height-100p mb-4">
+                Bank Details
+              </div>
+              <div class="fs-14 line-height-100p border-top">
+                <PageProfileARow
+                  :obj-key="'bank'"
+                  :label="'Bank'"
+                >
+                <div class="d-flex no-gutters" style="column-gap: 8px">
+                <div v-if="toInput" class="col-xl-6">
+                <v-select
+                    v-model="payment.bank"
+                    class="style-chooser"
+                    placeholder="Select Bank"
+                    :options="banks"
+                    label="name"
+                    :reduce="(option) => option.name"
+                  >
+                  </v-select>
+                  </div>
+                  <span v-else>{{ payment.bank }}</span>
+                  </div>
+                </PageProfileARow>
+              </div>
+            <PageProfileARow
+              :obj-key="['account_number']"
+              :label="'Account Number'"
+            >
+                <PageProfileAnInput
+                  v-model="payment.account_number"
+                  :label="'Account Number'"
+                  :to-input="toInput"
+                />
+            </PageProfileARow>
+            <PageProfileARow
+                  :obj-key="['account_name']"
+                  :label="'Account Holder Name'"
+                >
+                    <PageProfileAnInput
+                      v-model="payment.account_name"
+                      :label="'Account Holder Name'"
+                      :to-input="toInput"
+                    />
+                </PageProfileARow>
+                <div class="d-flex justify-content-end mt-5">
+                <button v-if="!toInput" class="btn btn-primary py-2 px-3" @click="UpdateProfile()">Edit Payment Info</button>
+                <button v-else class="btn btn-primary py-2 px-3" @click="saveProfile()">Save Payment Info</button>
+                </div>
+                </div>
+              </div>
         </div>
       </div>
     </UtilsCardTab>
@@ -172,11 +350,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue'
+import countries from '@/assets/countries.json'
+import banks from '@/assets/banks.json'
+import { DateTime } from 'luxon'
 export default Vue.extend({
   layout: 'notLoggedin',
-  // async asyncData({ $axios, store }) {
+  // async asyncData({ $axios, store, $cookies, $route }) {
   //   const userObject = await $axios.$get('/util/v2/profile/')
   //   store.commit('auth/SET_USER', userObject)
   //   const user = {
@@ -206,54 +387,172 @@ export default Vue.extend({
       imagesArray: '',
       user: {
         phone_number: '',
-        gender: '',
-        email: '',
+        address2: '',
+        address1: '',
         date_of_birth: '',
-        first_name: '',
-        last_name: '',
-        middle_name: '',
+        name: '',
+        country: '',
+        city: '',
         avatar: '',
+        date_of_incoporation: '',
+        company_name: '',
+        state: '',
+        check: 'Individual',
       },
-      showProfile: true
+      payment: {
+        bank: '',
+        account_name: '',
+        account_number: '',
+      },
+      date: new Date(),
+      showProfile: true,
+      toInput: true,
+      countries: countries,
+      banks: banks,
+      states: []
+    }
+  },
+  watch: {
+    'user.country': {
+      handler(val) {
+        const country = this.countries.find((el) => el.name === val )
+        this.states = country.states
+        this.user.state = ''
+      }
+    }
+  },
+  async mounted () {
+    if (this.$route.query.token) {
+      this.$cookies.set('slate-token', this.$route.query.token)
+      await this.getPublisherToken()
+    }
+    await this.getPublisher()
+    const publisher = this.$cookies.get('publisher')
+    if (publisher !== {}) {
+      this.toInput = false
     }
   },
   methods: {
-    async UpdateProfile(event: string | Array<String>) {
+    async UpdateProfile() {
+      this.toInput = true
+      this.$children.forEach((child) => {
+        child.toInput = !child.toInput
+      })
       // console.log(event)
-      const user: any = this.user
-      let object: { [key: string]: any } = {}
+      // const user = this.user
+      // let object = {}
 
-      if (typeof event === 'string') {
-        object = { [event]: user[event] }
-      } else {
-        event.forEach((key: any) => {
-          object[key] = user[key]
-        })
-      }
+      // if (typeof event === 'string') {
+      //   object = { [event]: user[event] }
+      // } else if (Array.isArray(event))  {
+      //   event.forEach((key) => {
+      //     object[key] = user[key]
+      //   })
+      // } else {
+      //   object = user
+      // }
+      // this.read = true
 
-      await this.$axios.$put('/util/v2/profile/update/', object)
-      await this.$nuxt.refresh()
+
+      // await this.$axios.$put('/util/v2/profile/update/', object)
+      // await this.$nuxt.refresh()
       // this.$store.commit('auth/SET_USER', user)
     },
+    toggleField() {
+      // this.edit = !this.edit
+      this.$children.forEach((child) => {
+        child.toInput = !child.toInput
+      })
+    },
+    async getPublisherToken() {
+      try {
+        const response = await this.$axios.post('/app/publisher/login/', {
+          slate_token: this.$route.query.token
+        }).then((res) => 
+        this.$cookies.set('publisher-token', res.data.data.token)
+        )
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async saveProfile() {
+      this.toInput = false
+      this.$cookies.set('publisher', {
+        "id": "61d7a021-96bc-4c30-be4e-cb94f21060f3",
+        "publisher_type": "Individual",
+        "name": "dhdh",
+        "date_of_birth": "2002-10-20",
+        "date_of_incorporation": null,
+        "country": "weee",
+        "state": "ddd",
+        "city": "dddd",
+        "address_line_one": "ggggg",
+        "address_line_two": "hhhhh",
+        "phone": "09067758474",
+        "publisher_photo": ""
+    })
+      try {
+        const response = await this.$axios.post('/app/publisher/create/', {
+          publisher_type: this.user.check,
+          name: this.user.company_name || this.user.name,
+          date_of_birth: this.formatDate(this.user.date_of_birth),
+          date_of_incoporation: this.formatDate(this.user.date_of_incoporation),
+          country: this.user.country,
+          state: this.user.state,
+          city: this.user.city,
+          address_line_one: this.user.address1,
+          address_line_two: this.user.address2,
+          slate_token: this.$route.query.token || this.$cookies.get('slate-token'),
+          phone: this.user.phone_number,
+        })
+        console.log(response)
+      } catch (error) {
+        console.log(error)
 
-    onChange(event: any) {
-      this.imagesArray = event.target.files[0]
-      this.updateAvatar()
+      }
+    },
+    async getPublisher() {
+      const token = this.$cookies.get('slate-token')
+      try {
+        const response = await this.$axios.get(`/app/publisher/slate_token/${token}/fetch_details/`)
+        const data = response.data[0]
+        this.user.check = data.publisher_type
+        this.user.name = data.name
+        this.user.date_of_birth = data.date_of_birth
+        // this.user.country = data.country
+        this.user.phone = data.phone
+        // this.user.state = data.state
+        this.user.city = data.city
+        this.user.address1 = data.address_line_one
+        this.user.address2 = data.address_line_two
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    formatDate(date) {
+          const oldDate = date.toISOString()
+          const newDate = DateTime.fromISO(oldDate).toISODate()
+        return newDate
+    },
+    onChange() {
+      const input = this.$refs.fileInput
+      const file = input.files[0]
+      const reader = new FileReader()
+        reader.addEventListener('load', () => {
+          this.schoolCrest = reader.result
+        })
+        reader.readAsDataURL(file)
+
     },
     onClickFileUpload() {
       if (this.$refs.fileInput) {
-        const uploadField = this.$refs.fileInput as any
-        uploadField.click()
+        const uploadField = this.$refs.fileInput
+
+        return uploadField.click()
       }
     },
 
-    async updateAvatar() {
-      const formData = new FormData()
-      formData.append('avatar', this.imagesArray)
-      await this.$axios.$put('/util/v2/avatar/update/', formData)
-      await this.$nuxt.refresh()
-    },
-    handleOnSelectTab(e: string) {
+    handleOnSelectTab(e) {
       if (e === "My Profile") {
         // mine
         this.showProfile = true
@@ -267,4 +566,15 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.date {
+  position: relative
+}
+.calendar-icon {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #8F9AA3;
+}
+</style>

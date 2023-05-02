@@ -2,10 +2,10 @@
   <div class="container">
     <div class="card">
           <div class="card-head">
-              <h3 class="px-xl-5 pt-4 pb-2 fs-24">Book Content</h3>
+              <h3 class="px-md-5 pt-4 pb-2 fs-24">Book Content</h3>
           <hr />
           </div>
-        <div class="card-body pt-xl-3 pb-xl-5 px-xl-5">
+        <div class="card-body pt-md-3 pb-md-5 px-md-5">
             <div class="row">
                 <div class="col-md-10">
                     <div>Manuscript</div>
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <div class="trash-abs">
-                            <b-icon-trash class="fs-14 text-blue trash pointer" @click="removeFile" />
+                            <b-icon-trash class="fs-14 text-blue trash pointer" @click="removeManuscript" />
                         </div>
                     </div>
                     </div>
@@ -126,7 +126,7 @@
             <div class="row my-5">
                 <div class="col-md-10 d-flex justify-content-end">
                     <button class="btn btn-outline-primary px-3 py-2 mr-3" @click.prevent="$emit('goBack')">Previous</button>
-                    <button class="btn btn-primary px-3 py-2">Next</button>
+                    <button class="btn btn-primary px-3 py-2" @click.prevent="handleSubmit">Next</button>
                     </div>
                 </div>
             </div>
@@ -140,7 +140,8 @@ export default {
         return {
             file: '',
             manuscript: '',
-            book_cover: ''
+            book_cover: '',
+            bookCover: ''
         }
     },
 methods: {
@@ -169,15 +170,34 @@ methods: {
     },
     handleCoverUpload() {
       const input = this.$refs.coverInput
-      const file = input.files[0] 
+      const file = input.files[0]
+      this.bookCover = file 
       const reader = new FileReader()
         reader.addEventListener('load', () => {
           this.book_cover = reader.result
         })
         reader.readAsDataURL(file)
     },
+    async handleSubmit() {
+        const bookDetails = this.$cookies.get('book-details')
+        const formData = new FormData()
+        for (const [key, value] of Object.entries(bookDetails)) {
+  formData.append(key, value)
+}
+        formData.append('book_cover', this.bookCover)
+        formData.append('manuscript', this.manuscript)
+        formData.append('snippet', this.file)
+        try {
+            const response = await this.$axios.post('/app/publisher/add_book/', formData)
+        } catch (error) {
+            console.log(error)
+        }
+    },
     removeFile() {
         this.file = null
+    },
+    removeManuscript () {
+        this.manuscript = null
     },
     formatSize(value) {
         if(value.toString().length <= 5) {

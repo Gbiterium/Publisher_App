@@ -27,11 +27,15 @@ export default {
     readOnly: {
       type: Boolean,
       default: false
+    },
+    toInput: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      toInput: false
+      // toInput: true
     }
   },
   computed: {
@@ -43,6 +47,9 @@ export default {
         this.$emit('input', value)
       }
     }
+  },
+  mounted() {
+    console.log(this.toInput)
   }
 }
 </script>

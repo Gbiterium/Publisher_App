@@ -28,9 +28,6 @@ export default {
       {
         src: '/js/iconify.min.js',
       },
-      {
-        src: "https://accounts.google.com/gsi/client",
-      },
     ]
   },
 
@@ -42,11 +39,17 @@ export default {
   plugins: [
     '~/plugins/vee-validate',
     '~/plugins/iconify',
+    '~/plugins/axios',
+    '~/plugins/dateFormat',
     '~/plugins/vue-select',
     { src: '~/plugins/calender', mode: 'client' },
     { src: '~/plugins/highchart.js', mode: 'client' },
     { src: '~/plugins/vue-star-rating.js', mode: 'client'},
   ],
+
+  router: {
+    middleware: 'route-guard'
+  },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -65,6 +68,7 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    'cookie-universal-nuxt'
   ],
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
@@ -74,7 +78,10 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: process.env.BASE_URL,
+  },
+  env: {
+    BASE_URL: process.env.BASE_URL,
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

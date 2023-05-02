@@ -1,9 +1,14 @@
 <template>
     <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
       <div class="fs-24 font-weight-bold mb-4">
         Book Shelf
       </div>
-      <!-- <BackwardNavigation /> -->
+      <button class="btn btn-primary py-2 px-3 mb-3" @click="$router.push('./bookshelf/create-book')">
+        <div class="d-flex align-items-center">
+        <span class="iconify mr-1" data-icon="fluent:add-16-filled"></span>
+         Create Book</div></button>
+      </div>
       <div class="card">
         <div v-if="available" class="mt-3">
         <UtilsBaseCardTab>

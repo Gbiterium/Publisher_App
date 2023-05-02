@@ -8,20 +8,6 @@
     <div class="col-md-7 col-10">
       <slot></slot>
     </div>
-    <template v-if="!readOnly">
-      <div v-if="edit" class="col-2 text-right" @click="toSave()">
-        <p><span class="text-primary">Save</span></p>
-      </div>
-
-      <div v-else class="col-2 text-right" @click="toggleField()">
-        <p>
-          <!-- <span
-            class="iconify text-primary pointer fs-18"
-            data-icon="eva:edit-2-outline"
-          ></span> -->
-        </p>
-      </div>
-    </template>
   </div>
 </template>
 
@@ -46,20 +32,6 @@ export default {
       edit: false
     }
   },
-  methods: {
-    toSave() {
-      // console.log(this.objKey)
-
-      this.$emit('save', this.objKey)
-      this.toggleField()
-    },
-    toggleField() {
-      this.edit = !this.edit
-      this.$children.forEach((child) => {
-        child.toInput = !child.toInput
-      })
-    }
-  }
 }
 </script>
 

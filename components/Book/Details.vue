@@ -3,10 +3,10 @@
       <!-- <BackwardNavigation /> -->
       <div class="card">
           <div class="card-head">
-              <h3 class="px-xl-5 pt-4 pb-2 fs-24">Book Details</h3>
+              <h3 class="px-md-5 pt-4 pb-2 fs-24">Book Details</h3>
           <hr />
           </div>
-        <div class="card-body py-xl-3 px-xl-5">
+        <div class="card-body py-md-3 px-md-5">
           <ValidationObserver ref="form">
               <form>
                   <div class="row">
@@ -142,6 +142,7 @@
                     placeholder="Select Subject"
                     label="name"
                     :options="subject_list"
+                    :reduce="(option) => option.id"
                     multiple
                   >
                   </v-select>
@@ -157,6 +158,7 @@
                     placeholder="Select Curriculum"
                     label="name"
                     :options="curriculum_list"
+                    :reduce="(option) => option.id"
                     multiple
                   >
                   </v-select>
@@ -188,7 +190,7 @@
               </div>
               <div class="row mt-3">
               <div class="col-md-5">
-              <small>Publication Date</small>
+              <small class="text-grey fs-12">Publication Date</small>
               <div class="date">
               <v-date-picker
                             v-model="publication_date"
@@ -198,7 +200,7 @@
                               <span @click="togglePopover()">
                                 <input
                                   class="form-control"
-                                  :placeholder="dateFormat"
+                                  placeholder="Publication Date"
                                   :value="publication_date | date"
                                 />
                               </span>
@@ -226,7 +228,7 @@
             </div>
             <div class="row">
               <div class="col-md-10 d-flex justify-content-end my-3">
-                <button type="button" class="btn btn-primary py-2 px-3" @click.prevent="$emit('handleNext')">next</button>
+                <button type="button" class="btn btn-primary py-2 px-3" @click.prevent="handleSubmit">next</button>
               </div>
             </div>
               </form>
@@ -237,6 +239,7 @@
   </template>
   
   <script>
+  import { DateTime } from 'luxon'
   export default {
       layout: 'book',
       data() {
@@ -256,8 +259,82 @@
           format: '',
           isbn: '',
           publication_date: '',
+          pages: '',
           date: new Date(),
-          check: false
+          check: false,
+          curriculum_list: [],
+          subject_list : [],
+          categories_list: ['fiction', 'historical'],
+          keywords_list: ['Tales', 'Africa'],
+          grade_level_list: ['Primary 1', 'Primary 2'],
+          format_list: ['Textbook', 'PDF'],
+          book_language: ['English', 'Yoruba', 'Spanish']
+        }
+      },
+      async mounted () {
+        await this.getCurriculum()
+        await this.getSubjects()
+        if (this.$cookies.get('book-details') !== undefined) {
+          const data = this.$cookies.get('book-details')
+          this.author_name = data.author_name
+          this.sub_title = data.sub_title
+          this.language = data.primary_book_language
+          this.description = data.short_description
+          this.categories = data.categories
+          this.grade_level = data.levels
+          this.keywords = data.keywords
+          this.subject = data.subjects
+          this.curriculum = data.curriculums
+          this.format = data.format
+          this.isbn = data.isbn
+          this.publication_date = data.publication_date
+          this.book_title = data.book_title
+          this.pages = data.number_of_pages
+        }
+      },
+      methods: {
+        async getCurriculum() {
+          try {
+            const response =  await this.$axios.get('/app/list_curriculum')
+            this.curriculum_list = response.data
+          } catch (error) {
+            console.log(error)
+          }
+        },
+        async getSubjects() {
+          try {
+            const response = await this.$axios.get('/app/list_subjects')
+            this.subject_list = response.data
+          } catch (error) {
+            console.log(error)
+          }
+        },
+        formatDate(date) {
+          const oldDate = date.toISOString()
+          const newDate = DateTime.fromISO(oldDate).toISODate()
+        return newDate
+    },
+        async handleSubmit() {
+          const data = {
+        author_name: this.author_name,
+    contributors: [[{'contributor': 'narrator'}, {'name': 'mohammed'}]],
+    short_description: this.short_description,
+    categories: this.categories,
+    keywords: this.keywords,
+    levels: this.grade_level,
+    subjects: this.subject,
+    curriculums: this.curriculum,
+    format: this.format,
+    isbn: this.isbn,
+    publication_date: this.formatDate(this.publication_date),
+    number_of_pages: this.pages,
+    sub_title: this.sub_title,
+    book_title: this.book_title,
+    primary_book_language: this.language,
+    short_description: this.description
+            }
+            this.$cookies.set('book-details', data)
+            this.$emit('handleNext')
         }
       }
   }
@@ -278,5 +355,6 @@
     position: absolute;
     right: 25px;
     top: 33px;
+    color: #8F9AA3;
   }
   </style>

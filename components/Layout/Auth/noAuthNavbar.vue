@@ -42,7 +42,7 @@
                 <a
                   href="#"
                   class="dropdown-toggle smalltxt slate-blue"
-                  data-toggle="dropdown"
+                  data-bs-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
                   >Accounts</a
@@ -112,7 +112,11 @@ export default {
   align-items: center;
   z-index: 999;
 }
-
+@media screen and (max-width: 767px) {
+  .site-nav .navbar {
+    height: 60px;
+  }
+}
 @media screen and (max-width: 991px) {
   .navbar {
     display: block;
@@ -160,4 +164,5 @@ export default {
 a {
   color: white;
 }
+
 </style>
