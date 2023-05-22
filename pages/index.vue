@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button v-if="token !== undefined" class="btn btn-primary" @click="$router.push('./publisher/analytics')">continue</button>
+    <button v-if="$cookies.get('publisher-token') !== undefined" class="btn btn-primary" @click="$router.push('./publisher/analytics')">continue</button>
     <button v-else class="btn btn-primary" @click="loginHandler">login</button>
   </div>
 </template>
@@ -19,9 +19,9 @@ export default Vue.extend({
       token: ''
     }
   },
-  mounted () {
-    this.token = this.$cookies.get('publisher-token')
-  },
+  // mounted () {
+  //  this.token = this.$cookies.get('publisher-token')
+  // },
   methods: {
     ...mapActions('publisher', ['GET_TOKEN']),
     async loginHandler() {
