@@ -7,7 +7,7 @@
       >
         <div>
           <nuxt-link to="/">
-            <img src="~/assets/img/logo.png" class="logo"
+            <img src="~/assets/img/publisher2 .png" class="logo" width="83" height="40"
           /></nuxt-link>
         </div>
         <div class="d-flex align-items-center flex-wrap">
@@ -16,7 +16,8 @@
             class="nav-items d-none d-lg-flex order-last order-lg-first"
           >
             <div class="nav-item">
-              <a href="https://www.slate.ng" class="slate-blue fs-14 text-decoration-none" target="_blank">Go Back to Slate</a>
+              <!-- <a href="https://www.slate.ng" class="slate-blue fs-14 text-decoration-none" target="_blank">Go Back to Slate</a> -->
+              {{  publisher_name }}
             </div>
           </nav>
           <div
@@ -31,18 +32,18 @@
             <div class>
               <img
                 class="account-image"
-                :src="fallbackAvatar"
+                :src="avatar"
               />
             </div>
             <div class="ml-2">
               <div class="account-name text-left slate-blue">
-                Hello, Slate
+                Nuella Udefi
               </div>
               <div class="d-none d-md-block dropdown account-dropdown">
                 <a
                   href="#"
                   class="dropdown-toggle smalltxt slate-blue"
-                  data-bs-toggle="dropdown"
+                  data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
                   >Accounts</a
@@ -51,20 +52,8 @@
                   class="dropdown-menu dropdown-menu-right"
                   aria-labelledby="dropdownMenuButton"
                 >
-                  <nuxt-link class="dropdown-item" to="/auth/profile/"
-                    >My profile</nuxt-link
-                  >
-                  <nuxt-link class="dropdown-item" to="/onboarding/"
-                    >Add School</nuxt-link
-                  >
-                  <nuxt-link class="dropdown-item" to="/auth/link/student"
-                    >Student Settings</nuxt-link
-                  >
-                  <nuxt-link class="dropdown-item" to="/auth/link/parent"
-                    >Parent Settings</nuxt-link
-                  >
-                  <nuxt-link class="dropdown-item" to="/auth/link/school"
-                    >School Settings</nuxt-link
+                  <div class="dropdown-item pointer" @click="$router.push('/publisher/profile')"
+                    >Publisher Profile</div
                   >
                   <b-btn class="bg-danger ml-2 btn mt-1" @click="logout()"
                     >Log out
@@ -80,12 +69,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
       isMobile: false,
-      fallbackAvatar:
-        'https://546458-1766807-raikfcquaxqncofqfm.stackpathdns.com/pub/media/wordpress/d5f1425700d7460bb2aa1e1e8e1b7e49.jpg',
+      avatar: "https://slate-assets.s3.amazonaws.com/media/slate/profiles/Logo.png",
+      publisher_name: ''
+    }
+  },
+  computed: {
+    ...mapGetters('publisher', ['getPublisher'])
+  },
+   mounted() {
+    if (this.getPublisher.length > 0) {
+    this.publisher_name = this.getPublisher[0].name
     }
   },
 
@@ -93,6 +91,11 @@ export default {
     openMobile() {
       this.isMobile = !this.isMobile
     },
+    logout() {
+      // this.$cookies.remove('slate-token')
+      this.$cookies.remove('publisher-token')
+      this.$router.push('/')
+    }
   },
 }
 </script>

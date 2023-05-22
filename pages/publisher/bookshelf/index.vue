@@ -10,19 +10,22 @@
          Create Book</div></button>
       </div>
       <div class="card">
-        <div v-if="available" class="mt-3">
-        <UtilsBaseCardTab>
+        <div v-if="getBooks" class="mt-3">
+        <UtilsBaseCardTab @tab-selected="handleOnSelectTab($event)">
         <template
-            v-for="(tab, index) in [`All (${resources.length})`, 'Published', 'Draft', 'Under Review']"
+            v-for="(tab, index) in [`All (${getBooks.length})`, `Published (${published.length})`, `Draft (${draft.length})`, `Under Review (${under_review.length})`]"
           >
           <UtilsCardTab :key="index" :title="tab">
         <div class="card-body">
           <div class="d-flex align-items-center">
           <div class="search-input mr-3">
           <input
+          v-model="name"
               type="search"
               class="form-control"
               placeholder="Search Book"
+              @input="slowBook()"
+            @keyup.enter="getBookList()"
             />
             <b-icon-search class="search-icon fs-14"></b-icon-search>
             </div>
@@ -31,9 +34,10 @@
               <span class="iconify filter" data-icon="fluent:filter-16-filled"></span>
             </div>
             </div>
+            <!-- <pre>{{ getBooks }}</pre> -->
             <Table
               :fields="fields"
-              :items="resources"
+              :items="books"
               :filter="filter"
               :record-count="recordCount"
               :is-busy="isBusy"
@@ -45,10 +49,17 @@
             >
               <template #book="{ data: { item } }">
                 <div class="d-flex align-items-center">
-                  <img :src="`@/assets/img/${item.book.image}`">
+                  <img :src="item.book_cover">
                   <span>{{ item.book.name }}</span>
                 </div>
               </template>
+              <template #actions="{ data: { item } }">
+              <div>
+                <div class="text-blue pointer" @click="editBook(item)">Edit Book Details</div>
+                <div class="text-blue pointer mt-2">View Details</div>
+                <div v-if="item.status !== 'DRAFT'" class="text-blue pointer mt-2">Unpublish</div>
+              </div>
+            </template>
             </Table>
         </div>
       </UtilsCardTab>
@@ -71,34 +82,103 @@
   </template>
   
   <script>
+  import { mapActions, mapGetters } from  'vuex'
+  import { DateTime } from 'luxon'
+  import { debounce } from 'lodash'
   export default {
     layout: 'authWithoutTopbar',
     data () {
       return {
-        available: true,
-        hey: false,
         fields: [
           { key: 'book', label: 'Books', sortable: false },
           { key: 'views', label: 'Views', sortable: false },
-          { key: 'rating', label: 'Rating', sortable: false },
-          { key: 'date_created', label: 'Date Submitted', sortable: false },
+          { key: 'average_rating', label: 'Rating', sortable: false },
+          { key: 'publication_date', label: 'Date Submitted', sortable: false, formatter: (value) => {
+            const isoDateStr = value.replace(' ', 'T')
+            console.log(isoDateStr)
+            const dt = DateTime.fromISO(isoDateStr)
+            return dt.toISODate()
+          }, },
           { key: 'status', label: 'Status', sortable: false },
           { key: 'actions', label: 'Actions', sortable: false },
         ],
-        resources: [
-          {id: 1, book: {image: 'thumbnail.jpeg', author:'Mr Alex', name:'The Tales of Eve', categories: 'Fiction, Historical, Rural'},
-          views: '1360', rating: 4, date_created: 'Jun 12, 2023', status: 'Published'
+        // published: [],
+        // under_review: [],
+        // draft: [],
+        books: [],
+        isBusy: false,
+        name: '',
+        selected: {},
+      //   resources: [
+      //     {id: 1, image: 'thumbnail.jpeg', author:'Mr Alex', name:'The Tales of Eve', categories: ['Fiction, Historical, Rural'],
+      //     views: '1360', rating: 4, date_created: 'Jun 12, 2023', status: 'Published'
+      // }
+      //   ]
       }
-        ]
+    },
+    async created () {
+      this.isBusy = true
+      await this.getBookList()
+      this.books = this.getBooks
+      // this.published = this.getBooks.filter((el) => el.status === 'Published')
+      // this.draft = this.getBooks.filter((el) => el.status === 'DRAFT')
+      // this.under_review = this.getBooks.filter((el) => el.status === 'AWAITING_APPROVAL')
+      this.isBusy = false
+    },
+    computed: {
+      ...mapGetters('publisher', ['getBooks']),
+      published() {
+        const published = this.getBooks.filter((el) => el.status === 'Published')
+        return published
+      },
+      draft() {
+        const draft = this.getBooks.filter((el) => el.status === 'DRAFT')
+        return draft
+      },
+      under_review () {
+        const under_review = this.getBooks.filter((el) => el.status === 'AWAITING_APPROVAL')
+        return under_review
       }
     },
     methods: {
+      ...mapActions('publisher', ['GET_BOOKS']),
       onRowSelected(e) {
-        console.log(e)
         this.$router.push({
           path: `/publisher/bookshelf/${e.id}`,
-          query: { image: `${e.book.image}`, author: `${e.book.author}`, name: `${e.book.name}` },
+          // query: { image: `${e.book.image}`, author: `${e.book.author}`, name: `${e.book.name}` },
         })
+      },
+      editBook(item) {
+        console.log('item', item)
+        this.$router.push({
+          path: '/publisher/bookshelf/create-book',
+          query: { book_id: `${item.id}` },
+        })
+      },
+      async getBookList() {
+        try {
+        await this.GET_BOOKS({name: this.name})
+        } catch (error) {
+          console.log(error)
+        }
+      },
+      slowBook: debounce(function () {
+      this.getBookList()
+    }, 500),
+      handleOnSelectTab(e) {
+        if (e === `All (${this.getBooks.length})`) {
+          // this.getBookList()
+          this.books = this.getBooks
+        }
+        if (e === `Published (${this.published.length})`) {
+          this.books = this.published
+        }
+        if (e === `Draft (${this.draft.length})`) {
+          this.books = this.draft
+        }
+        if (e === `Under Review (${this.under_review.length})`) {
+          this.books = this.under_review
+        }
       }
     }
   }
@@ -111,6 +191,9 @@
   button {
     text-transform: none;
   }
+  /* .container {
+  animation: slide-fade .75s ease-out 0s;
+} */
   .search-input input {
     width: 300px;
     padding-left: calc(15px + 15px + 0.2rem);

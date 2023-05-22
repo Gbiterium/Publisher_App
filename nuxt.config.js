@@ -28,6 +28,12 @@ export default {
       {
         src: '/js/iconify.min.js',
       },
+      {
+        src: '/js/jquery-3.5.1.slim.min.js',
+      },
+      {
+        src: '/js/bootstrap.bundle.min.js',
+      }
     ]
   },
 
@@ -37,11 +43,13 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/iziToast', mode: 'client' },
     '~/plugins/vee-validate',
     '~/plugins/iconify',
     '~/plugins/axios',
     '~/plugins/dateFormat',
     '~/plugins/vue-select',
+    '~/plugins/persistedState.client.js',
     { src: '~/plugins/calender', mode: 'client' },
     { src: '~/plugins/highchart.js', mode: 'client' },
     { src: '~/plugins/vue-star-rating.js', mode: 'client'},
@@ -82,6 +90,9 @@ export default {
   },
   env: {
     BASE_URL: process.env.BASE_URL,
+  },
+  publicRuntimeConfig: {
+    BASE_URL: process.env.BASE_URL
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

@@ -63,7 +63,7 @@
                     v-model="contributor"
                     class="style-chooser"
                     placeholder="Contributor"
-                    :options="contributor"
+                    :options="contributors"
                   >
                   </v-select>
                 </ValidationProviderWrapper>
@@ -240,6 +240,7 @@
   
   <script>
   import { DateTime } from 'luxon'
+  import { mapActions, mapGetters } from 'vuex'
   export default {
       layout: 'book',
       data() {
@@ -268,31 +269,53 @@
           keywords_list: ['Tales', 'Africa'],
           grade_level_list: ['Primary 1', 'Primary 2'],
           format_list: ['Textbook', 'PDF'],
-          book_language: ['English', 'Yoruba', 'Spanish']
+          book_language: ['English', 'Yoruba', 'Spanish'],
+          contributors: ['Narrator', 'Editor']
         }
       },
-      async mounted () {
-        await this.getCurriculum()
-        await this.getSubjects()
-        if (this.$cookies.get('book-details') !== undefined) {
-          const data = this.$cookies.get('book-details')
-          this.author_name = data.author_name
+      computed: {
+        ...mapGetters('publisher', ['getBook'])
+      },
+      watch: {
+        subject: {
+          async handler () {
+          await this.getSubjects()
+          },
+          immediate: true
+        },
+        curriculum: {
+          async handler () {
+          await this.getCurriculum()
+          },
+          immediate: true
+        },
+      },
+      async created () {
+        if (this.$route.query.book_id) {
+        await this.getBookDetails()
+        }
+        // await this.getCurriculum()
+        // await this.getSubjects()
+        if (this.getBook && this.$route.query.book_id) {
+          const data = this.getBook
+          this.author_name = data.author
           this.sub_title = data.sub_title
-          this.language = data.primary_book_language
-          this.description = data.short_description
-          this.categories = data.categories
-          this.grade_level = data.levels
+          this.language = data.primary_language
+          this.description = data.about
+          this.categories = data.category
+          this.grade_level = data.level
           this.keywords = data.keywords
           this.subject = data.subjects
-          this.curriculum = data.curriculums
+          this.curriculum = data.curriculum
           this.format = data.format
           this.isbn = data.isbn
-          this.publication_date = data.publication_date
-          this.book_title = data.book_title
+          this.publication_date = data.published
+          this.book_title = data.name
           this.pages = data.number_of_pages
         }
       },
       methods: {
+        ...mapActions('publisher', ['GET_BOOK']),
         async getCurriculum() {
           try {
             const response =  await this.$axios.get('/app/list_curriculum')
@@ -314,10 +337,19 @@
           const newDate = DateTime.fromISO(oldDate).toISODate()
         return newDate
     },
+    async checkFormValidity() {
+      const result = await this.$refs.form.validate()
+      return result
+    },
         async handleSubmit() {
+          const result = await this.checkFormValidity()
+      if (!result) {
+        // eslint-disable-next-line no-useless-return
+        return
+      }
           const data = {
         author_name: this.author_name,
-    contributors: [[{'contributor': 'narrator'}, {'name': 'mohammed'}]],
+    contributors: ['mohammed'],
     short_description: this.short_description,
     categories: this.categories,
     keywords: this.keywords,
@@ -326,15 +358,30 @@
     curriculums: this.curriculum,
     format: this.format,
     isbn: this.isbn,
-    publication_date: this.formatDate(this.publication_date),
+    publication_date: this.publication_date ? this.formatDate(this.publication_date) : '',
     number_of_pages: this.pages,
     sub_title: this.sub_title,
     book_title: this.book_title,
     primary_book_language: this.language,
     short_description: this.description
             }
+            if (this.check === true) {
             this.$cookies.set('book-details', data)
             this.$emit('handleNext')
+            } else {
+              this.$toast({
+              type: 'error',
+              text: 'please tick the publishing rights',
+            })
+            }
+        },
+        async getBookDetails() {
+          try {
+          const response = await this.GET_BOOK(this.$route.query.book_id)
+          console.log(response)
+          } catch (error) {
+            console.log(error)
+          }
         }
       }
   }

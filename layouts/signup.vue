@@ -7,79 +7,10 @@
             <img src="~/assets/img/logo-white.png" alt="">
           </div>
         </div>
-        <div class="row my-5">
-          <div class="col">
-            <h1>Online Learning with no bounds.</h1>
-          </div>
-        </div>
-        <div class="row my-4">
-          <div class="col">
-            <h3 class="font-weight-bold font-family_brown line-height-170p">
-              Slate Account Benefits
-            </h3>
-            <!-- <p> -->
-            <ul class="list-unstyled line-height-170p">
-              <li
-                v-for="(benefit, index) in slate_account_benefit"
-                :key="index"
-              >
-                <b-icon icon="check-circle-fill" variant="success" />
-                {{ benefit }}
-              </li>
-            </ul>
-            <!-- </p> -->
-          </div>
-        </div>
-
-        <div class="row my-4">
-          <div class="col">
-            <h3 class="font-weight-bold font-family_brown line-height-170p">
-              Amazing Features
-            </h3>
-            <!-- <p> -->
-            <ul class="list-unstyled line-height-170p">
-              <li v-for="(amazing, index) in amazing_feature" :key="index">
-                <b-icon variant="success" icon="check-circle-fill" />
-                {{ amazing }}
-              </li>
-            </ul>
-            <!-- </p> -->
-          </div>
-        </div>
       </div>
       <div class="col-md-8">
-        <div class="mx-auto my-3 mx-2 top">
-          <!-- <div class="d-flex justify-content-between flex-wrap"> -->
-          <a href="" @click.prevent="$router.push('/')">
-            <span> <b-icon icon="arrow-left" />Home</span>
-          </a>
-          <!-- </div> -->
-        </div>
-        <div class="d-flex flex-column justify-content-around vh-100">
+        <div class="d-flex justify-content-center align-items-center vh-100">
           <nuxt />
-        </div>
-        <div class="auth-footer mx-auto px-md-5 px-3 bottom width75">
-          <div class="d-flex justify-content-between flex-wrap w-100">
-            <div class="d-flex flex-wrap">
-              <!-- <span class="click mr-2">
-                <nuxt-link to="/support" class="summ auth-footer">
-                  Support
-                </nuxt-link> </span
-              > -->
-
-              <span class="click mx-2">
-                <nuxt-link to="/privacy-policy" class="auth-footer">
-                  Privacy Policy
-                </nuxt-link> </span><span class="click ml-2">
-                <nuxt-link to="/terms" class="auth-footer">
-                  Terms and Conditions
-                </nuxt-link>
-              </span>
-            </div>
-            <div class="auth-footer">
-              © {{ new Date().getFullYear() }} Slate.ng, All Rights Reserved
-            </div>
-          </div>
         </div>
       </div>
     </div>

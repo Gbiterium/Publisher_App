@@ -48,56 +48,6 @@
       <template #emptyfiltered="scope">
         <h4>{{ scope.emptyFilteredText }}</h4>
       </template>
-        <template #table-colgroup="scope">
-          <template v-for="field in scope.fields">
-            <col
-              v-if="field.key === 'email'"
-              :key="field.key"
-              :style="{ width: '15rem' }"
-            />
-            <col
-              v-else-if="field.key === 'house_color'"
-              :key="field.key"
-              :style="{ width: '8rem' }"
-            />
-            <col
-              v-else-if="field.key === 'DOB'"
-              :key="field.key"
-              :style="{ width: '7rem' }"
-            />
-            <col
-              v-else-if="field.key === 'status'"
-              :key="field.key"
-              :style="{ width: '7rem' }"
-            />
-            <col
-              v-else-if="field.key === 'connected'"
-              :key="field.key"
-              :style="{ width: '10rem' }"
-            />
-            <col
-              v-else-if="field.key === 'grade_books'"
-              :key="field.key"
-              :style="{ width: '5rem' }"
-            />
-            <col
-              v-else-if="field.key === 'excercises'"
-              :key="field.key"
-              :style="{ width: '6rem' }"
-            />
-            <col
-              v-else-if="field.key === 'lesson_count'"
-              :key="field.key"
-              :style="{ width: '3rem' }"
-            />
-            <col
-              v-else-if="field.key === 'grade'"
-              :key="field.key"
-              :style="{ width: '6rem' }"
-            />
-            <col v-else :key="field.key" :style="{ width: '' }" />
-          </template>
-        </template>
         <template #cell(date_available)="data">
           <slot name="date_available" :data="data">
             {{ data.value ? data.value : "      " }}
@@ -175,172 +125,51 @@
             {{ data.value }}
           </slot>
         </template>
-        <template #cell(relative_url)="data">
-          <slot name="relative_url" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-        <template #cell(file_url)="data">
-          <slot name="file_url" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-        <template #cell(subjects)="data">
-          <slot name="subjects" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
         <template #cell(author)="data">
           <slot name="author" :data="data">
             {{ data.value }}
           </slot>
         </template>
-        <template #head(check)="row">
-          <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
-          <div class="shift-left">
-            <b-form-checkbox
-              ref="tableCheckBox"
-              v-model="row.detailsShowing"
-              @change="selectAllRows"
-              @click="selectAllRows"
-            >
-            </b-form-checkbox>
-          </div>
-        </template>
-
-        <template #cell(house_color)="data">
-          <div
-            v-if="data.value"
-            class="text-center"
-            :style="{
-              borderColor: data.value,
-              color: data.value,
-              border: '1px solid',
-              padding: '0.25rem 0.5rem',
-              borderRadius: '0.3rem',
-            }"
-          >
-            {{ data.item.house | wrapHouse }}
-          </div>
-        </template>
-        <template #cell(invoice_state)="data">
-          <slot name="invoice_state" :data="data"> </slot>
-        </template>
-        <template #cell(linked)="data">
-          <slot name="linked" :data="data"> </slot>
-        </template>
-
-        <!-- <template #cell(status)="data">
-          <slot name="status" :data="data">
-            <div
-              v-if="data.value === true"
-              class="text-center text-success"
-              :style="{
-                border: '1px solid',
-                padding: '0.25rem 0.5rem',
-                borderRadius: '0.3rem',
-              }"
-            >
-              Linked
-            </div>
-            <div
-              v-else
-              class="text-center"
-              :style="{
-                border: '1px solid',
-                padding: '0.25rem 0.4rem',
-                borderRadius: '0.3rem',
-              }"
-            >
-              Not linked
-            </div>
-          </slot> </template
-        > -->
-        <template #cell(stats)="data">
-          <div
-            class="text-capitalize"
-            :class="
-              data.value === 'marked'
-                ? 'text-success'
-                : data.value === 'started'
-                ? 'text-warning'
-                : data.value === 'submitted'
-                ? 'text-info'
-                : 'text-warning'
-            "
-          >
-            {{
-              data.value === "marked"
-                ? "Graded"
-                : data.value === "Not Graded"
-                ? "Not Submitted"
-                : data.value
-            }}
-          </div>
-        </template>
-        <template #cell(statusExercise)="data">
-          <slot name="statusExercise" :data="data">{{ data.value }}</slot>
-        </template>
-        <template #cell(deleteExercise)="data">
-          <slot name="deleteExercise" :data="data">{{ data.value }}</slot>
-        </template>
-        <template #cell(quiz_type)="data">
-          <slot name="quiz_type" :data="data">{{ data.value }}</slot>
-        </template>
-         <template #cell(name)="data">
-          <slot name="name" :data="data">{{ data.value }}</slot>
-        </template>
-        <template #cell(start)="data">
-          <slot name="start" :data="data">{{ data.value }}</slot>
-        </template>
-        <template #cell(three_dots_student)="data">
-          <slot name="three_dots_student" :data="data">{{ data.value }}</slot>
-        </template>
-        <template #cell(attempt)="data">
-          <slot name="attempt" :data="data">{{ data.value }}</slot>
-        </template>
         <template #cell(book)="data">
               <div class="d-flex align-items-center book">
-                <img :src="require(`@/assets/img/${data.value.image}`)">
-                <div class="ml-1">
-                <div>{{ data.value.name }}</div>
-                <div class="text-grey mt-1">Author: {{ data.value.author }}</div>
-                <div class="text-grey mt-1">Categories: {{ data.value.categories }}</div>
+                <img :src="`${$config.BASE_URL}${data.item.book_cover}`">
+                <div class="ml-2">
+                <div>{{ data.item.name }}</div>
+                <div class="text-grey mt-1">Author: {{ data.item.author }}</div>
+                <div class="text-grey mt-1 text-capitalize">Categories: {{ data.item.categories.join(", ") }}</div>
               </div>
               </div>
             </template>
-            <template #cell(title)="data">
-              <div class="d-flex align-items-center book">
-                <img :src="require(`@/assets/img/${data.value.image}`)">
-                <div>
-                <div>{{ data.value.name }}</div>
-              </div>
-              </div>
+            <template #cell(actions)="data">
+              <slot name="actions" :data="data">
+          {{ data.value }}
+        </slot>
             </template>
-            <template #cell(actions)>
+            <template #cell(views)="data">
               <div>
-                <div class="text-blue pointer" @click="$router.push('/publisher/bookshelf/create-book')">Edit Book Details</div>
-                <div class="text-blue pointer mt-2">View Details</div>
-                <div class="text-blue pointer mt-2">Unpublish</div>
+                <div class="">{{ data.value ? data.value : '0'}}</div>
               </div>
             </template>
             <template #cell(status)="data">
               <div>
                 <div v-if="data.value === 'Published'" class="text-blue">{{ data.value }}</div>
-                <div v-if="data.value === 'Draft'" class="text-grey">Draft</div>
-                <div v-if="data.value === 'Under Review'" class="">Under Review</div>
+                <div v-if="data.value === 'DRAFT'" class="text-grey">Draft</div>
+                <div v-if="data.value === 'AWAITING_APPROVAL'" style="color: #FFAB07">Under Review</div>
               </div>
             </template>
-            <template #cell(rating)="data">
+            <template #cell(average_rating)="data">
                 <star-rating :rating="data.value" :show-rating="false" :max-rating="5" :read-only="true" :star-size="18"></star-rating>
               <!-- </div> -->
             </template>
-        <template #table-busy>
-          <div class="text-center text-primary my-2">
-            <b-spinner class="align-middle"></b-spinner>
-            <strong>Loading...</strong>
-          </div>
-        </template>
+            <template #table-busy>
+        <div class="p-4">
+          <b-skeleton-table
+            :rows="4"
+            :columns="5"
+            :table-props="{ bordered: true, striped: true }"
+          ></b-skeleton-table>
+        </div>
+      </template>
       </b-table>
     </div>
 

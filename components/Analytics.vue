@@ -1,8 +1,8 @@
 <template>
     <div class="container">
     <div class="mb-4">
-        <div class="fs-24 font-weight-bold">Estimated Monthly Earning</div>
-        <span class="fs-14">View the total amount of money earned for this month, you can adjust how data is displaced using the filters belows.</span>
+        <div class="fs-24 font-weight-bold"><slot name="title"></slot></div>
+        <span class="fs-14"><slot name="subtitle"></slot></span>
     </div>
     <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex">
@@ -71,8 +71,8 @@
         <div class="card-body earning-card">
             <div class="top-card  d-flex align-items-center justify-content-between">
                 <div>
-                    <div class="fs-14">PAGES READ</div>
-                    <div class="fs-40 text-blue">12,698</div>
+                    <div class="fs-14 text-uppercase"><slot name="smallcard-title"></slot></div>
+                    <div class="fs-40 text-blue"><slot name="value"></slot></div>
                 </div>
                 <div>
                         <div class="fs-14">ESTIMATED EARNING</div>
@@ -218,9 +218,9 @@
         showCurrent: true,
         }
       },
-      async mounted() {
-        await this.getBookshelfStat()
-      },
+    //   async mounted() {
+    //     await this.getBookshelfStat()
+    //   },
       methods: {
         filterByLastMonth () {
             this.showCurrent = false
@@ -229,14 +229,6 @@
         filterByCurrentMonth () {
             this.showCurrent = true
             this.showLast = false
-        },
-        async getBookshelfStat() {
-            try {
-                const response = await this.$axios.get('/app/publisher/bookshelf_stats')
-                console.log(response)
-            } catch (error) {
-                console.log(error)
-            }
         }
       }
   }

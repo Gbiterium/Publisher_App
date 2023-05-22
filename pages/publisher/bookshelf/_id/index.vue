@@ -5,14 +5,14 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="thumbnail">
-                <img :src="require(`@/assets/img/${$route.query.image}`)">
+                <img :src="`${$config.BASE_URL}${book.cover}`">
                 </div>
                 <button class="btn btn-primary mt-4">View Book</button>
-                <button class="btn btn-outline-primary mt-2">Edit Book</button>
+                <button class="btn btn-outline-primary mt-2" @click.prevent="editBook">Edit Book</button>
               </div>
               <div class="col-md-9 details">
-                <div class="fs-20">{{ $route.query.name }}</div>
-                <div>{{ $route.query.author }}</div>
+                <div class="fs-20">{{ book.name }}</div>
+                <div>{{ book.author }}</div>
                 <div class="mt-4">
                 <UtilsBaseCardTab @tab-selected="handleOnSelectTab($event)">
         <template
@@ -26,6 +26,44 @@
             </div>
             <div class="mt-4">
               <h4 class="fs-18">More Information</h4>
+              <table class="mt-3">
+  <tr>
+    <td>Primary Language</td>
+    <td>{{ book.primary_language }}</td>
+  </tr>
+  <tr>
+    <td>Curriculum</td>
+    <td>{{ curriculums ? curriculums.join(", ") : ''  }}</td>
+  </tr>
+  <tr>
+    <td>Subject</td>
+    <td>{{ subjects ? subjects.join(", "): '' }}</td>
+  </tr>
+  <tr>
+    <td>Grade Level</td>
+    <td>{{ book.level ? book.level.join(", ") : ''}}</td>
+  </tr>
+  <tr>
+    <td>Category</td>
+    <td>{{ book.category ? book.category.join(", ") : ''}}</td>
+  </tr>
+  <tr>
+    <td>Format</td>
+    <td>{{ book.format }}</td>
+  </tr>
+  <tr>
+    <td>Size</td>
+    <td>{{ book.size }}</td>
+  </tr>
+  <tr>
+    <td>Pages</td>
+    <td>{{ book.number_of_pages }}</td>
+  </tr>
+  <tr>
+    <td>Published</td>
+    <td>{{ formatDate(book.published) }}</td>
+  </tr>
+</table>
             </div>
             </div>
             <div v-if="showRating">
@@ -46,16 +84,35 @@
   </template>
   
   <script>
+  import { DateTime } from 'luxon'
   export default {
     layout: 'authWithoutTopbar',
     data () {
       return {
         showDetails: true,
         showRating: false,
-        showStat: false, 
+        showStat: false,
+        book: [],
+        subjects: [],
+        curriculums: []
+      }
+    },
+    async fetch () {
+      try {
+        const { data } = await this.$axios.get(`/app/publisher/book/${this.$route.params.id}/`)
+        this.book = data
+        this.subjects = data.subjects.map((el) => el.name)
+        this.curriculums = data.curriculum.map((el) => el.name)
+      } catch (error) {
+        console.log(error)
       }
     },
     methods: {
+      editBook() {
+        this.$router.push({path: '/publisher/bookshelf/create-book', query: {
+          book_id: this.$route.params.id
+        }})
+      },
       handleOnSelectTab(e) {
       if (e === "Details") {
         // mine
@@ -76,6 +133,11 @@
         this.showStat = true
       }
     },
+    formatDate(date) {
+      const newdate = DateTime.fromISO(date);
+const formattedDate = newdate.toFormat('dd LLL yyyy')
+return formattedDate
+    }
     }
   }
   </script>
@@ -83,12 +145,25 @@
   <style scoped>
   .thumbnail img {
     height: 338px;
-    width: 220px;
+    width: 100%;
     object-fit: cover;
   }
   button {
-    width: 220px;
+    width: 100%;
   }
+  table {
+    font-size: 14px;
+    width: 100%;
+  }
+  td, th {
+  /* border: 1px solid #dddddd; */
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(odd) {
+  background-color: #F8F8F8;
+}
   @media screen and (max-width: 767px) {
     .thumbnail img {
       width: 100%;

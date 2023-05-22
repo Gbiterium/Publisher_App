@@ -1,16 +1,15 @@
 <template>
-  <div>
+  <div class="create-book">
     <Transition name="slide-fade">
       <div class="site-nav">
-        <LayoutAuthCreateBookHeader />
+        <LayoutAuthCreateBookHeader :book-title = "book_title" />
       </div>
     </Transition>
-
     <div class="site-container">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-2 side-bar">
                 <h4 class="fs-14 font-weight-bold">Create your book</h4>
-                <div>
+                <div class="pointer">
                     <b-form-checkbox
       id="checkbox-1"
       v-model="status"
@@ -36,9 +35,9 @@
     </b-form-checkbox>
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10 main-content">
               <Transition v-if="showDetails" name="slide-fade">
-      <BookDetails @handleNext="handleNext" />
+      <BookDetails @handleNext="handleNext" @book-title="getBookTitle" />
     </Transition>
     <Transition v-else name="slide-fade">
       <BookContent @goBack="goBack" />
@@ -57,12 +56,13 @@ export default {
       showContent: false,
       status: 'not_accepted',
       status2: 'not_accepted',
+      book_title: ''
     }
   },
   mounted () {
-    if (this.$cookies.get('book-details') !== undefined) {
-        this.status = 'accepted'
-      }
+    // if (this.$cookies.get('book-details') !== undefined) {
+    //     this.status = 'accepted'
+    //   }
   },
   methods: {
     showContentForm() {
@@ -82,6 +82,9 @@ export default {
       this.showDetails = true
       this.showContent = false
       window.scrollTo(0, 0)
+    },
+    getBookTitle(item) {
+      this.book_title = item
     }
   }
 }
@@ -90,6 +93,9 @@ export default {
 <style scoped>
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
+}
+.main-content {
+  animation: slide-fade .5s ease-out 0s;
 }
 .selected-color {
   color: #1070B7;
@@ -110,5 +116,16 @@ export default {
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
+}
+.side-bar {
+  position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			width: 200px;
+      margin: 110px 100px;
+}
+.main-content {
+  margin-left: 200px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row report-card">
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-3 col-md-6 mb-3">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
@@ -20,7 +20,7 @@
             </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-3 col-md-6 mb-3">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-3 col-md-6 mb-3">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
@@ -58,7 +58,7 @@
             </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-3 col-md-6 mb-3">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
@@ -71,7 +71,7 @@
               </div>
               </div>
               <hr class="mt-4" />
-              <nuxt-link to="./analytics/estimated-earning">
+              <nuxt-link to="./analytics/added-shelf">
               <div class="text-blue fs-14 pointer">View Monthly Report</div>
               </nuxt-link>
             </div>
@@ -165,6 +165,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   layout: "authWithoutTopbar",
   data() {
@@ -252,7 +253,11 @@ export default {
       showWeekly: false,
     }
   },
+  async created() {
+    await this.GET_TOKEN()
+  },
   methods: {
+    ...mapActions('publisher', ['GET_TOKEN']),
     filterByDay() {
         this.showDaily = true
         this.showWeekly = false

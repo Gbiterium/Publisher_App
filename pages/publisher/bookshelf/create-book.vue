@@ -5,7 +5,7 @@
 
 <script>
 export default {
-    layout: 'book'
+    layout: 'book',
 }
 </script>
 

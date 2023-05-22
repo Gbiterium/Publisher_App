@@ -72,6 +72,10 @@ export default {
       type: String,
       default: 'Header',
     },
+    noFooter: {
+      type: Boolean,
+      default: false
+    },
     id: {
       type: String,
       default: 'modal',
