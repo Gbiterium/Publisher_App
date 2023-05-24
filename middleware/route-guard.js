@@ -1,14 +1,14 @@
 
 export default function ({ $cookies, redirect, route, app, $toast }) {
-  // if (route.query.token) {
-  //   $cookies.set('slate-token', route.query.token, {
-  //     expires: new Date(Date.now() + 86400000), // 24 hours
-  //   })
-  // } else if (!$cookies.get('slate-token')) {
-  // // $toast({
-  // //   type: 'error',
-  // //   text: 'You must be logged in to access this page',
-  // // })
-  //     redirect('https://slate-staging-bnt8w.ondigitalocean.app/auth/login?publisher=true')
-    // }
+  if (route.query.token) {
+    $cookies.set('slate-token', route.query.token, {
+      expires: new Date(Date.now() + 86400000), // 24 hours
+    })
+  } else if (!$cookies.get('slate-token')) {
+  // $toast({
+  //   type: 'error',
+  //   text: 'You must be logged in to access this page',
+  // })
+      redirect('https://slate-staging-bnt8w.ondigitalocean.app/auth/login?publisher=true')
+    }
   }

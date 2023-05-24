@@ -17,10 +17,12 @@
         {{ added }}
       </template>
       <template #chart>
+        <b-overlay :show="show" rounded="sm">
         <highcharts :options="chartOptions"></highcharts>
         <div class="no-data" v-if="noData">
           No Analytics for the selected period
         </div>
+    </b-overlay>
       </template>
       <template #table>
         <Table :fields="fields" :items="books">
