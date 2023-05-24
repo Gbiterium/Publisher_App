@@ -65,7 +65,7 @@
             <div class="">
               <div class="fs-14 mb-3">Today’s Books Added to Shelf</div>
               <div>
-                <div class="fs-36 font-weight-bold">148</div>
+                <div class="fs-36 font-weight-bold">{{ addedToShelf ? addedToShelf.books.length : 0 }}</div>
                 <span class="fs-14 text-grey">Added to Shelf</span>
               </div>
               </div>
@@ -166,6 +166,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { DateTime } from 'luxon'
 export default {
   layout: "authWithoutTopbar",
   data() {
@@ -251,10 +252,14 @@ export default {
       },
       showDaily: true,
       showWeekly: false,
+      addedToShelf: '',
     }
   },
   async created() {
+    if (!this.$cookies.get('publisher-token')) {
     await this.GET_TOKEN()
+    }
+    await this.getBookShelf()
   },
   methods: {
     ...mapActions('publisher', ['GET_TOKEN']),
@@ -265,7 +270,23 @@ export default {
     filterByWeek() {
         this.showWeekly = true
         this.showDaily = false
-    }
+    },
+    async getBookShelf() {
+            try{
+              const currentDate = DateTime.now();
+      const start_date = currentDate.startOf("month").toISODate();
+      const end_date = currentDate.endOf("month").toISODate();
+                const { data } = await this.$axios.get('/app/publisher/books/shelf_additions/', {
+                    params: {
+                        start_date: start_date,
+                        end_date: end_date
+                    }
+                })
+                this.addedToShelf = data.data.find((el) => el.date === currentDate.toISODate())
+            } catch (error) {
+                console.log(error)
+            }
+        }
   }
 };
 </script>

@@ -66,9 +66,121 @@
 </table>
             </div>
             </div>
-            <div v-if="showRating">
-              Rating
-            </div>
+            <div v-if="showRating" class="rating mt-2">
+                      <h4 class="fs-18">Student Rating and Reviews</h4>
+                      <div class="d-flex align-items-center">
+                        <div class="mt-5 mr-4">
+                          <span class="font-weight-600 rating-value">{{
+                            averageRating ? averageRating.toFixed(1) : "0.0"
+                          }}</span>
+                          <star-rating
+                            :show-rating="false"
+                            :max-rating="5"
+                            :star-size="12"
+                            :padding="5"
+                            :read-only="true"
+                            v-model="averageRating"
+                            active-color="#FF9C09"
+                            :increment="0.5"
+                          ></star-rating>
+                        </div>
+                        <div class="flex-grow-1 mt-3">
+                          <div class="d-flex align-items-center">
+                            <div class="text-grey mr-2 fs-14">5</div>
+                            <b-progress
+                              :value="
+                                reviews.filter((el) => el.rating === 5).length
+                              "
+                              :max="reviews.length"
+                              height="8px"
+                              variant="warning"
+                              class="flex-grow-1 slide-in"
+                            ></b-progress>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <div class="text-grey mr-2 fs-14">4</div>
+                            <b-progress
+                              :value="
+                                reviews.filter((el) => el.rating === 4).length
+                              "
+                              :max="reviews.length"
+                              height="8px"
+                              variant="warning"
+                              class="flex-grow-1"
+                            ></b-progress>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <div class="text-grey mr-2 fs-14">3</div>
+                            <b-progress
+                              :value="
+                                reviews.filter((el) => el.rating === 3).length
+                              "
+                              :max="reviews.length"
+                              height="8px"
+                              variant="warning"
+                              class="flex-grow-1"
+                            ></b-progress>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <div class="text-grey mr-2 fs-14">2</div>
+                            <b-progress
+                              :value="
+                                reviews.filter((el) => el.rating === 2).length
+                              "
+                              :max="reviews.length"
+                              height="8px"
+                              variant="warning"
+                              class="flex-grow-1"
+                            ></b-progress>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <div class="text-grey mr-2 fs-14">1</div>
+                            <b-progress
+                              :value="
+                                reviews.filter((el) => el.rating === 1).length
+                              "
+                              :max="reviews.length"
+                              height="8px"
+                              variant="warning"
+                              class="flex-grow-1"
+                            ></b-progress>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-4 review-details">
+                        <div v-if="reviews.length > 0" class="fs-14">
+                          <div v-for="el in reviews" :key="el.id">
+                            <div class="mb-4">
+                              <div class="d-flex align-items-center mobile-top">
+                                <!-- <div class="mobile-top"> -->
+                                <span class="mr-2">{{ el.title }}</span>
+                                <star-rating
+                                  class="mb-2"
+                                  :show-rating="false"
+                                  :rating="el.rating"
+                                  :star-size="14"
+                                  :padding="5"
+                                  :read-only="true"
+                                  active-color="#FF9C09"
+                                ></star-rating>
+                                </div>
+                              <!-- </div> -->
+                              <div>
+                                <span class="text-grey">by</span>
+                                {{ user.first_name }} {{ user.last_name }} -
+                                <span class="text-grey">{{
+                                  formatDate(el.date_created)
+                                }}</span>
+                              </div>
+                              <p class="text-grey capitalize mt-1">
+                                {{ el.review_text }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div v-else class="text-grey">No reviews yet</div>
+                      </div>
+                    </div>
             <div v-if="showStat">
             Book Statistics
             </div>
@@ -94,7 +206,10 @@
         showStat: false,
         book: [],
         subjects: [],
-        curriculums: []
+        curriculums: [],
+        reviews: [],
+      averageRating: 0,
+      user: {}
       }
     },
     async fetch () {
@@ -103,6 +218,10 @@
         this.book = data
         this.subjects = data.subjects.map((el) => el.name)
         this.curriculums = data.curriculum.map((el) => el.name)
+        await this.getReview()
+        if (this.$cookies.get("user-details")) {
+        this.user = this.$cookies.get("user-details");
+      }
       } catch (error) {
         console.log(error)
       }
@@ -113,6 +232,19 @@
           book_id: this.$route.params.id
         }})
       },
+      async getReview() {
+      try {
+        const { data } = await this.$axios.get(
+          `/app/book/${this.$route.params.id}/reviews/`
+        );
+        this.reviews = data.data;
+        this.averageRating =
+          this.reviews.reduce((sum, rating) => sum + rating.rating, 0) /
+          this.reviews.length;
+      } catch (error) {
+        console.log(error);
+      }
+    },
       handleOnSelectTab(e) {
       if (e === "Details") {
         // mine
@@ -163,6 +295,13 @@ return formattedDate
 
 tr:nth-child(odd) {
   background-color: #F8F8F8;
+}
+.rating-value {
+  font-size: 64px;
+  line-height: 0 !important;
+}
+.review-details {
+  position: relative;
 }
   @media screen and (max-width: 767px) {
     .thumbnail img {

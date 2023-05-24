@@ -318,16 +318,16 @@
         ...mapActions('publisher', ['GET_BOOK']),
         async getCurriculum() {
           try {
-            const response =  await this.$axios.get('/app/list_curriculum')
-            this.curriculum_list = response.data
+            const { data } =  await this.$axios.get('/app/list_curriculum')
+            this.curriculum_list = data.results
           } catch (error) {
             console.log(error)
           }
         },
         async getSubjects() {
           try {
-            const response = await this.$axios.get('/app/list_subjects')
-            this.subject_list = response.data
+            const { data } = await this.$axios.get('/app/list_subjects')
+            this.subject_list = data.results
           } catch (error) {
             console.log(error)
           }

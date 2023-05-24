@@ -149,7 +149,6 @@
         })
       },
       editBook(item) {
-        console.log('item', item)
         this.$router.push({
           path: '/publisher/bookshelf/create-book',
           query: { book_id: `${item.id}` },

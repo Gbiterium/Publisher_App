@@ -85,41 +85,6 @@
             {{ data.value ? data.value : "      " }}
           </slot>
         </template>
-        <template #cell(is_active)="data">
-          <slot name="is_active" :data="data">
-            {{ data.value ? data.value : "      " }}
-          </slot>
-        </template>
-        <template #cell(date_due)="data">
-          <slot name="date_due" :data="data">
-            {{ data.value ? data.value : "   " }}
-          </slot>
-        </template>
-        <template #cell(grades)="data">
-          <slot name="grades" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-        <template #cell(grade)="data">
-          <slot name="grade" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-        <template #cell(school_class)="data">
-          <slot name="school_class" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-        <template #cell(DOB)="data">
-          <slot name="DOB" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-        <template #cell(admission_number)="data">
-          <slot name="admission_number" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
         <template #cell(format)="data">
           <slot name="format" :data="data">
             {{ data.value }}

@@ -1,50 +1,149 @@
 <template>
   <div>
-    <Analytics>
-        <template #title>
-            <div>Added to Shelf</div>
-        </template>
-        <template #subtitle>
-            <div>View the total amount of books added to shelf for this month, you can adjust how data is displaced using the filters belows.</div>
-        </template>
-        <template #smallcard-title>
-            <div>Books Added to Shelf</div>
-        </template>
-        <template #value>
-            {{ added }}
-        </template>
+    <Analytics @filter-date="handleDateFilter" @start:date="handleStartDate" @end:date="handleEndDate">
+      <template #title>
+        <div>Added to Shelf</div>
+      </template>
+      <template #subtitle>
+        <div>
+          View the total amount of books added to shelf for this month, you can
+          adjust how data is displaced using the filters belows.
+        </div>
+      </template>
+      <template #smallcard-title>
+        <div>Books Added to Shelf</div>
+      </template>
+      <template #value>
+        {{ added }}
+      </template>
+      <template #chart>
+        <highcharts :options="chartOptions"></highcharts>
+        <div class="no-data" v-if="noData">
+          No Analytics for the selected period
+        </div>
+      </template>
+      <template #table>
+        <Table :fields="fields" :items="books">
+          <!-- :filter="filter"
+        :record-count="recordCount"
+        :is-busy="isBusy"
+        :pages="pages"
+        :per-page="perPage"
+        @sort="onSortChanged"
+        @page-changed="getResources"
+        @row-clicked="onRowSelected($event)" -->
+
+          <template #book="{ data: { item } }">
+            <div class="d-flex align-items-center">
+              <img :src="`@/assets/img/${item.book.image}`" />
+              <span>{{ item.book.name }}</span>
+            </div>
+          </template>
+          <template #name="{ data: { item } }">
+            <div style="max-width: 5rem">
+              <span class="">{{ item.name }}</span>
+            </div>
+          </template>
+        </Table>
+      </template>
     </Analytics>
   </div>
 </template>
 
 <script>
+import { DateTime } from "luxon";
+import chartOptions from "~/components/Base/BarChart/chartOptions";
 export default {
-    layout: 'authWithoutTopbar',
-    data () {
-        return {
-            added: ''
-        }
+  layout: "authWithoutTopbar",
+  data() {
+    return {
+      added: "",
+      start_date: "",
+      end_date: "",
+      chartOptions: chartOptions,
+      noData: false,
+      books: [],
+      fields: [
+        { key: "book_name", label: "Book Title", sortable: false },
+        { key: "page_read", label: "Category", sortable: false },
+        { key: "purchase", label: "Books Purchased", sortable: false },
+        { key: "estimated", label: "Estimated Earnings", sortable: false },
+      ],
+    };
+  },
+  async mounted() {
+    await this.getBookshelfStat();
+  },
+  methods: {
+    async getBookshelfStat() {
+      try {
+        const { data } = await this.$axios.get(
+          "/app/publisher/bookshelf_stats"
+        );
+        this.added = data.data.reduce(
+          (a, el) => a + el.number_of_book_shelf_adds,
+          0
+        );
+      } catch (error) {
+        console.log(error);
+      }
     },
-    async mounted() {
-        await this.getBookshelfStat()
+    formatDate(date) {
+      const parsedDate = DateTime.fromISO(date);
+      const formattedDate = parsedDate.toFormat("LLL dd");
+      return formattedDate;
     },
-    methods: {
-        async getBookshelfStat() {
-            try {
-                const { data } = await this.$axios.get('/app/publisher/bookshelf_stats')
-                this.added = data.data.reduce(
-  (a, el) => a + el.number_of_book_shelf_adds,
-  0
-)
-console.log(total)
-            } catch (error) {
-                console.log(error)
-            }
+    // async handleStartDate(e) {
+    //     this.start_date = e
+    //     await this.getBookShelf();
+    // },
+    // async handleEndDate(e) {
+    //     this.end_date = e
+    //     await this.getBookShelf();
+    // },
+    async handleDateFilter(start_date, end_date) {
+      this.start_date = start_date;
+      this.end_date = end_date;
+      await this.getBookShelf();
+    },
+    async getBookShelf() {
+      try {
+        const { data } = await this.$axios.get(
+          "/app/publisher/books/shelf_additions/",
+          {
+            params: {
+              start_date: this.start_date,
+              end_date: this.end_date,
+            },
+          }
+        );
+        const number_of_books = data.data.map((el) => el.books.length);
+        const date = data.data.map((el) => this.formatDate(el.date));
+        const books = data.data.map((el) => el.books);
+        this.books = [].concat(...books)
+        this.chartOptions.xAxis.categories = date;
+        this.chartOptions.series[0].data = number_of_books;
+        if (number_of_books.length > 0) {
+          this.noData = false;
+        } else {
+          this.noData = true;
         }
-    }
-}
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
 </script>
 
-<style>
-
+<style scoped>
+.no-data {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
 </style>

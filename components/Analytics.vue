@@ -1,283 +1,230 @@
 <template>
-    <div class="container">
+  <div class="container">
     <div class="mb-4">
-        <div class="fs-24 font-weight-bold"><slot name="title"></slot></div>
-        <span class="fs-14"><slot name="subtitle"></slot></span>
+      <div class="fs-24 font-weight-bold"><slot name="title"></slot></div>
+      <span class="fs-14"><slot name="subtitle"></slot></span>
     </div>
     <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex">
-            <button class="btn last-month" :class="[showLast ? 'btn-primary' : 'btn-outline-primary']" @click.prevent="filterByLastMonth">Last Month</button>
-            <button class="btn current-month" :class="[showCurrent ? 'btn-primary' : 'btn-outline-primary']" @click.prevent="filterByCurrentMonth">This Month</button>
-        </div>
-        <div class="custom-select1">
-            <v-select
-            v-model="author"
-                    class="style-chooser"
-                    placeholder="Author"
-                    label="name"
-                    :options="author"
-                  >
-                  </v-select>
-        </div>
-        <div class="custom-select1">
-            <v-select
-                    class="style-chooser"
-                    placeholder="Books"
-                    label="name"
-                    :options="author"
-                  >
-                  </v-select>
-        </div>
-        <div class="custom-select1">
-            <v-select
-                    class="style-chooser"
-                    placeholder="Categories"
-                    label="name"
-                    :options="author"
-                  >
-                  </v-select>
-        </div>
-        <div class="custom-select1">
-            <v-select
-                    class="style-chooser"
-                    placeholder="Format"
-                    label="name"
-                    :options="author"
-                  >
-                  </v-select>
-        </div>
-        <div class="filter-input">
-            <v-date-picker
-                            v-model="filter_date"
-                            mode="date"
-                          >
-                            <template #default="{ togglePopover }">
-                              <span @click="togglePopover()">
-                                <input
-                                  class="form-control"
-                                  :placeholder="dateFormat"
-                                  :value="filter_date | date"
-                                />
-                              </span>
-                            </template>
-                          </v-date-picker>
-            <b-icon-calendar4 class="fs-12 calender" />
-        </div>
-        <div>
-            <button class="btn btn-light">Reset All</button>
-        </div>
+      <div class="d-flex">
+        <button
+          class="btn last-month"
+          :class="[showLast ? 'btn-primary' : 'btn-outline-primary']"
+          @click.prevent="filterByLastMonth"
+        >
+          Last Month
+        </button>
+        <button
+          class="btn current-month"
+          :class="[showCurrent ? 'btn-primary' : 'btn-outline-primary']"
+          @click.prevent="filterByCurrentMonth"
+        >
+          This Month
+        </button>
+      </div>
+      <div class="custom-select1">
+        <v-select
+          v-model="author"
+          class="style-chooser"
+          placeholder="Author"
+          label="name"
+          :options="author"
+        >
+        </v-select>
+      </div>
+      <div class="custom-select1">
+        <v-select
+          class="style-chooser"
+          placeholder="Books"
+          label="name"
+          :options="author"
+        >
+        </v-select>
+      </div>
+      <div class="custom-select1">
+        <v-select
+          class="style-chooser"
+          placeholder="Categories"
+          label="name"
+          :options="author"
+        >
+        </v-select>
+      </div>
+      <div class="custom-select1">
+        <v-select
+          class="style-chooser"
+          placeholder="Format"
+          label="name"
+          :options="author"
+        >
+        </v-select>
+      </div>
+      <div class="filter-input">
+        <v-date-picker v-model="start_date" mode="date">
+          <template #default="{ togglePopover }">
+            <span @click="togglePopover()">
+              <input class="form-control" :value="start_date | date" />
+            </span>
+          </template>
+        </v-date-picker>
+        <b-icon-calendar4 class="fs-10 text-grey calender" />
+      </div>
+      <div class="filter-input">
+        <v-date-picker v-model="end_date" mode="date">
+          <template #default="{ togglePopover }">
+            <span @click="togglePopover()">
+              <input class="form-control" :value="end_date | date" />
+            </span>
+          </template>
+        </v-date-picker>
+        <b-icon-calendar4 class="fs-10 text-grey calender" />
+      </div>
+      <div>
+        <button class="btn btn-light">Reset All</button>
+      </div>
     </div>
     <div class="card mt-4">
-        <div class="card-body earning-card">
-            <div class="top-card  d-flex align-items-center justify-content-between">
-                <div>
-                    <div class="fs-14 text-uppercase"><slot name="smallcard-title"></slot></div>
-                    <div class="fs-40 text-blue"><slot name="value"></slot></div>
-                </div>
-                <div>
-                        <div class="fs-14">ESTIMATED EARNING</div>
-                    <div class="fs-40 text-blue">450,350.50</div>
-                    </div>
-                    <div>
-                    </div>
+      <div class="card-body earning-card">
+        <div class="top-card d-flex align-items-center justify-content-between">
+          <div>
+            <div class="fs-14 text-uppercase">
+              <slot name="smallcard-title"></slot>
             </div>
-                        <div class="hey d-flex justify-content-center align-items-center">
-                        <span class="iconify text-white fs-20" data-icon="material-symbols:insights"></span>
-                        </div>
-            </div>
-    </div>
-    <div class="mt-4">
-        <highcharts :options="chartOptions"></highcharts>
-    </div>
-    <div class="mt-4">
-        <Table
-              :fields="fields"
-              :items="resources"
-              :filter="filter"
-              :record-count="recordCount"
-              :is-busy="isBusy"
-              :pages="pages"
-              :per-page="perPage"
-              @sort="onSortChanged"
-              @page-changed="getResources"
-              @row-clicked="onRowSelected($event)"
-            >
-              <template #book="{ data: { item } }">
-                <div class="d-flex align-items-center">
-                  <img :src="`@/assets/img/${item.book.image}`">
-                  <span>{{ item.book.name }}</span>
-                </div>
-              </template>
-              <template #name="{ data: {item} }">
-      <div style="max-width: 5rem">
-        <span class="">{{ item.name }}</span>
+            <div class="fs-40 text-blue"><slot name="value"></slot></div>
+          </div>
+          <div>
+            <div class="fs-14">ESTIMATED EARNING</div>
+            <div class="fs-40 text-blue">450,350.50</div>
+          </div>
+          <div></div>
+        </div>
+        <div class="hey d-flex justify-content-center align-items-center">
+          <span
+            class="iconify text-white fs-20"
+            data-icon="material-symbols:insights"
+          ></span>
+        </div>
       </div>
-    </template>
-            </Table>
     </div>
+    <div class="mt-4 chart-wrapper">
+        <slot name="chart"></slot>
     </div>
-  </template>
-  
-  <script>
-  export default {
-      layout: 'authWithoutTopbar',
-      data () {
-        return {
-            chartOptions: {
-                
-    chart: {
-        type: 'area',
-        zoomType: 'x',
-        panning: true,
-        panKey: 'shift',
-        scrollablePlotArea: {
-            minWidth: 600
-        }
-    },
+    <div class="mt-4">
+        <slot name="table"></slot>
+    </div>
+  </div>
+</template>
 
-    title: {
-        text: null,
+<script>
+import { DateTime } from "luxon";
+export default {
+  layout: "authWithoutTopbar",
+  data() {
+    return {
+      filter_date: "",
+      date: new Date(),
+      showLast: false,
+      showCurrent: true,
+      start_date: "",
+      end_date: "",
+    };
+  },
+  watch: {
+    start_date(val) {
+        this.$emit('start:date', val)
     },
-
-    credits: {
-        enabled: false
+    end_date(val) {
+        this.$emit('end:date', val)
+    }
+  },
+  mounted() {
+    this.filterByCurrentMonth();
+  },
+  methods: {
+    filterByLastMonth() {
+      this.showCurrent = false;
+      this.showLast = true;
+      const currentDate = DateTime.now();
+      this.start_date = currentDate
+        .minus({ months: 1 })
+        .startOf("month")
+        .toISODate();
+      this.end_date = currentDate
+        .minus({ months: 1 })
+        .endOf("month")
+        .toISODate();
+      this.$emit("filter-date", this.start_date, this.end_date);
     },
-
-
-    tooltip: {
-        headerFormat: 'Distance: {point.x:.1f} km<br>',
-        pointFormat: '{point.y} m a. s. l.',
-        shared: true
+    filterByCurrentMonth() {
+      this.showCurrent = true;
+      this.showLast = false;
+      const currentDate = DateTime.now();
+      this.start_date = currentDate.startOf("month").toISODate();
+      this.end_date = currentDate.endOf("month").toISODate();
+      this.$emit("filter-date", this.start_date, this.end_date);
     },
+    // formatDate(date) {
+    //     const oldDate = date.toISOString()
+    //     const newDate = DateTime.fromISO(oldDate).toISODate()
+    //   return newDate
+    // }
+  },
+};
+</script>
 
-    legend: {
-        enabled: false
-    },
-    xAxis: {
-        // minRange: 5,
-        title: {
-            text: null
-        },
-    },
-
-    yAxis: {
-        startOnTick: true,
-        endOnTick: false,
-        title: {
-            text: null
-        },
-    },
-
-    series: [{
-        data: [
-        [12.2, 195],
-    [12.3, 197],
-    [12.4, 197],
-    [12.5, 197],
-    [12.6, 198],
-    [12.7, 201],
-    [12.8, 202],
-    [12.9, 203],
-    [13.0, 205],
-    [13.1, 205],
-    [13.2, 204],
-    [13.3, 210],
-    [13.4, 213],
-    [13.5, 212],
-    [13.6, 213],
-    [13.7, 213],
-    [13.8, 213],
-        ],
-        lineColor: '#1070B7',
-        lineWidth: 1,
-        color:'#DDEFFE',
-        fillOpacity: 0.5,
-        // name: 'Elevation',
-        marker: {
-            enabled: true,
-            fillColor: '#1070B7',
-        },
-        threshold: null
-    }]
-            },
-            fields: [
-          { key: 'title', label: 'Book Title', sortable: false },
-          { key: 'page_read', label: 'Pages Read', sortable: false },
-          { key: 'purchase', label: 'Book Purchase', sortable: false },
-          { key: 'shelf', label: 'Added to Shelf', sortable: false },
-          { key: 'estimated', label: 'Estimated Earnings', sortable: false },
-        ],
-        resources: [
-          {id: 1, title: {image: 'thumbnail.jpeg', name:'The Tales of Eve'},
-          page_read: '1360', purchase: '1700', shelf: '900', estimated: 'NGN 201,500.00'
-      }
-        ],
-        filter_date: '',
-        date: new Date(),
-        showLast: false,
-        showCurrent: true,
-        }
-      },
-    //   async mounted() {
-    //     await this.getBookshelfStat()
-    //   },
-      methods: {
-        filterByLastMonth () {
-            this.showCurrent = false
-            this.showLast = true
-        },
-        filterByCurrentMonth () {
-            this.showCurrent = true
-            this.showLast = false
-        }
-      }
-  }
-  </script>
-  
-  <style scoped>
-  button {
-    font-size: 12px;
-  }
-  .last-month {
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
+<style scoped>
+button {
+  font-size: 12px;
+}
+.chart-wrapper {
+    position: relative;
+}
+.form-control {
+  font-size: 12px !important;
+  width: 110px;
+}
+.last-month {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 .current-month {
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
-.filter-input {
+/* .filter-input {
     width: 203px;
-}
+} */
 .card {
-    height: 109px;
-    border: 0.4px solid #EAEAF1;
-box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.05);
+  height: 109px;
+  border: 0.4px solid #eaeaf1;
+  box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.05);
+}
+.custom-select1 {
+  width: 140px;
 }
 .top-card {
-    font-weight: 300;
+  font-weight: 300;
 }
 hr {
-    transform: rotate(-90deg);
-    border: 1px solid #EAEAF1;
+  transform: rotate(-90deg);
+  border: 1px solid #eaeaf1;
 }
 .earning-card {
-    position: relative;
+  position: relative;
 }
 .hey {
-    width: 70px;
-    height: 109px;
-    background: #1070B7;
-    position: absolute;
-    right: 0;
-    top: 0; 
+  width: 70px;
+  height: 109px;
+  background: #1070b7;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .filter-input {
-    position: relative;
+  position: relative;
 }
 .calender {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
-  </style>
+</style>
