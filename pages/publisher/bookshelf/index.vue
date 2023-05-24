@@ -61,6 +61,15 @@
               </div>
             </template>
             </Table>
+            <div v-if="!isBusy" class="w-100 pr-3 d-flex justify-content-end mt-3">
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="totalRows"
+                :per-page="perPage"
+                align="right"
+                class="my-0"
+              ></b-pagination>
+            </div>
         </div>
       </UtilsCardTab>
       </template>
@@ -109,11 +118,11 @@
         isBusy: false,
         name: '',
         selected: {},
-      //   resources: [
-      //     {id: 1, image: 'thumbnail.jpeg', author:'Mr Alex', name:'The Tales of Eve', categories: ['Fiction, Historical, Rural'],
-      //     views: '1360', rating: 4, date_created: 'Jun 12, 2023', status: 'Published'
-      // }
-      //   ]
+        currentPage: 1,
+      pages: 1,
+      page: 1,
+      totalPages: null,
+      perPage: 100,
       }
     },
     async created () {
@@ -156,7 +165,9 @@
       },
       async getBookList() {
         try {
+        // await this.GET_BOOKS({name: this.name, page: i, page_size: this.perPage})
         await this.GET_BOOKS({name: this.name})
+        this.books = this.getBooks
         } catch (error) {
           console.log(error)
         }

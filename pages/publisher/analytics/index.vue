@@ -1,80 +1,69 @@
 <template>
   <div class="container">
     <div class="row report-card">
-      <div class="col-lg-3 col-md-6 mb-3">
+      <div class="col-md-4 mb-3">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
+              <div>
+                <div class="fs-14 mb-3">Today’s Estimated Earnings</div>
                 <div>
-              <div class="fs-14 mb-3">Today’s Estimated Earnings</div>
-              <div>
-                <div class="fs-36 font-weight-bold">62,980.50</div>
-                <span class="fs-14 text-grey">Nigeria Naira (NGN)</span>
+                  <div class="fs-36 font-weight-bold">
+                    {{ earnings ? earnings : 0 }}
+                  </div>
+                  <span class="fs-14 text-grey">Nigeria Naira (NGN)</span>
+                </div>
               </div>
             </div>
-            </div>
-              <hr class="mt-4 w-100" />
-              <nuxt-link to="./analytics/estimated-earning">
-              <div class="text-blue fs-14 pointer text-decoration-none">View Monthly Report</div>
-              </nuxt-link>
-            </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 mb-3">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex align-items-center mt-2">
-            <div>
-              <div class="fs-14 mb-3">Today’s Book Read</div>
-              <div>
-                <div class="fs-36 font-weight-bold">9,782</div>
-                <span class="fs-14 text-grey">Pages Read</span>
+            <hr class="mt-4 w-100" />
+            <nuxt-link to="./analytics/estimated-earning">
+              <div class="text-blue fs-14 pointer text-decoration-none">
+                View Monthly Report
               </div>
-            </div>
-            </div>
-              <hr class="mt-4" />
-              <nuxt-link to="./analytics/estimated-earning">
-              <div class="text-blue fs-14 pointer">View Monthly Report</div>
-              </nuxt-link>
+            </nuxt-link>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 mb-3">
+      <div class="col-md-4 mb-3">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
-            <div>
-              <div class="fs-14 mb-3">Today’s Book Purchase</div>
               <div>
-                <div class="fs-36 font-weight-bold">500</div>
-                <span class="fs-14 text-grey">Units Purchased</span>
-              </div>
+                <div class="fs-14 mb-3">Today’s Book Read</div>
+                <div>
+                  <div class="fs-36 font-weight-bold">
+                    {{ reads ? reads : 0 }}
+                  </div>
+                  <span class="fs-14 text-grey">Pages Read</span>
+                </div>
               </div>
             </div>
-              <hr class="mt-4" />
-              <nuxt-link to="./analytics/estimated-earning">
+            <hr class="mt-4" />
+            <nuxt-link to="./analytics/page-reads">
               <div class="text-blue fs-14 pointer">View Monthly Report</div>
-              </nuxt-link>
-            </div>
+            </nuxt-link>
+          </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 mb-3">
+      <div class="col-md-4 mb-3">
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center mt-2">
-            <div class="">
-              <div class="fs-14 mb-3">Today’s Books Added to Shelf</div>
-              <div>
-                <div class="fs-36 font-weight-bold">{{ addedToShelf ? addedToShelf.books.length : 0 }}</div>
-                <span class="fs-14 text-grey">Added to Shelf</span>
+              <div class="">
+                <div class="fs-14 mb-3">Today’s Books Added to Shelf</div>
+                <div>
+                  <div class="fs-36 font-weight-bold">
+                    {{ addedToShelf ? addedToShelf.books.length : 0 }}
+                  </div>
+                  <span class="fs-14 text-grey">Added to Shelf</span>
+                </div>
               </div>
-              </div>
-              </div>
-              <hr class="mt-4" />
-              <nuxt-link to="./analytics/added-shelf">
-              <div class="text-blue fs-14 pointer">View Monthly Report</div>
-              </nuxt-link>
             </div>
+            <hr class="mt-4" />
+            <nuxt-link to="./analytics/added-shelf">
+              <div class="text-blue fs-14 pointer">View Monthly Report</div>
+            </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
@@ -87,14 +76,46 @@
           <div class="fs-14 text-grey">Top 10 performing books</div>
         </div>
         <div class="d-flex">
-          <button class="btn daily-btn" :class="[showDaily ? 'btn-primary' : 'btn-outline-primary']" @click.prevent="filterByDay">Daily</button>
-          <button class="btn weekly-btn" :class="[showWeekly ? 'btn-primary' : 'btn-outline-primary']" @click.prevent="filterByWeek">Weekly</button>
+          <button
+            class="btn daily-btn"
+            :class="[showDaily ? 'btn-primary' : 'btn-outline-primary']"
+            @click.prevent="filterByDay"
+          >
+            Today
+          </button>
+          <button
+            class="btn weekly-btn"
+            :class="[showWeekly ? 'btn-primary' : 'btn-outline-primary']"
+            @click.prevent="filterByWeek"
+          >
+            WTD
+          </button>
         </div>
       </div>
       <hr />
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-3 top-book">
+        <div v-if="loading">
+          <div class="row">
+            <div v-for="n in 4" :key="n" class="col-md-3">
+              <div>
+                <b-skeleton width="100%" height="160px" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="row">
+          <div class="col-md-3 top-book" v-for="el in top_earning" :key="el.id">
+            <div class="d-flex align-items-center">
+              <img :src="`${$config.BASE_URL}${el.book_cover}`" />
+              <div class="earn-details">
+                <div class="font-weight-bold">NGN {{ el.total_earnings }}</div>
+                <div class="text-grey fs-12">Estimated Earnings</div>
+                <div class="font-weight-bold mt-4">{{ el.total_reads }}</div>
+                <div class="text-grey fs-12">Pages Read</div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-3 top-book">
             <div class="d-flex align-items-center">
               <img src="@/assets/img/world.png" />
               <div class="earn-details">
@@ -126,18 +147,7 @@
                 <div class="text-grey fs-12">Pages Read</div>
               </div>
             </div>
-          </div>
-          <div class="col-md-3 top-book">
-            <div class="d-flex align-items-center">
-              <img src="@/assets/img/world.png" />
-              <div class="earn-details">
-                <div class="font-weight-bold">NGN 5,550.00</div>
-                <div class="text-grey fs-12">Estimated Earnings</div>
-                <div class="font-weight-bold mt-4">450</div>
-                <div class="text-grey fs-12">Pages Read</div>
-              </div>
-            </div>
-          </div>
+          </div> -->
         </div>
         <div class="d-flex justify-content-end mt-4">
           <a
@@ -165,8 +175,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { DateTime } from 'luxon'
+import { mapActions } from "vuex";
+import { DateTime } from "luxon";
 export default {
   layout: "authWithoutTopbar",
   data() {
@@ -252,42 +262,99 @@ export default {
       },
       showDaily: true,
       showWeekly: false,
-      addedToShelf: '',
-    }
+      addedToShelf: "",
+      earnings: "",
+      reads: "",
+      start_date: "",
+      end_date: "",
+      top_earning: "",
+      loading: false,
+    };
   },
   async created() {
-    if (!this.$cookies.get('publisher-token')) {
-    await this.GET_TOKEN()
+    if (!this.$cookies.get("publisher-token")) {
+      await this.GET_TOKEN();
     }
-    await this.getBookShelf()
+    await this.getBookShelf();
+    await this.filterByDay();
   },
   methods: {
-    ...mapActions('publisher', ['GET_TOKEN']),
-    filterByDay() {
-        this.showDaily = true
-        this.showWeekly = false
+    ...mapActions("publisher", ["GET_TOKEN"]),
+    async filterByDay() {
+      this.showDaily = true;
+      this.showWeekly = false;
+      this.start_date = DateTime.now().toISODate();
+      this.end_date = DateTime.now().toISODate();
+      console.log(this.start_date, this.end_date)
+      await this.getEarning()
     },
-    filterByWeek() {
-        this.showWeekly = true
-        this.showDaily = false
+    async filterByWeek() {
+      this.showWeekly = true;
+      this.showDaily = false;
+      const currentDate = DateTime.now();
+      this.start_date = currentDate.startOf("week").toISODate();
+      this.end_date = currentDate.endOf("week").toISODate();
+      console.log(this.start_date, this.end_date)
+      await this.getEarning()
     },
     async getBookShelf() {
-            try{
-              const currentDate = DateTime.now();
-      const start_date = currentDate.startOf("month").toISODate();
-      const end_date = currentDate.endOf("month").toISODate();
-                const { data } = await this.$axios.get('/app/publisher/books/shelf_additions/', {
-                    params: {
-                        start_date: start_date,
-                        end_date: end_date
-                    }
-                })
-                this.addedToShelf = data.data.find((el) => el.date === currentDate.toISODate())
-            } catch (error) {
-                console.log(error)
-            }
+      try {
+        const currentDate = DateTime.now();
+        const start_date = currentDate.startOf("month").toISODate();
+        const end_date = currentDate.endOf("month").toISODate();
+        const { data } = await this.$axios.get(
+          "/app/publisher/books/shelf_additions/",
+          {
+            params: {
+              start_date: start_date,
+              end_date: end_date,
+            },
+          }
+        );
+        this.addedToShelf = data.data.find(
+          (el) => el.date === currentDate.toISODate()
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getEarning() {
+      try {
+        this.loading = true;
+        const currentDate = DateTime.now();
+        // this.start_date = currentDate.toISODate()
+        // // this.start_date = currentDate.startOf("month").toISODate();
+        // this.end_date = currentDate.endOf("month").toISODate();
+        const { data } = await this.$axios.get(
+          "/app/publisher/books/reads_earnings",
+          {
+            params: {
+              start_date: this.start_date,
+              end_date: this.end_date,
+            },
+          }
+        );
+        const todayData = data.data.find(
+          (el) => el.date === currentDate.toISODate()
+        );
+        if (todayData) {
+          this.earnings = todayData.books.reduce(
+            (a, el) => a + el.total_earnings,
+            0
+          );
+          this.reads = todayData.books.reduce((a, el) => a + el.total_reads, 0);
+          this.top_earning = todayData.books.sort(
+            (a, b) => b.total_earnings - a.total_earnings
+          );
+          // console.log(top_earning)
         }
-  }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
 };
 </script>
 
@@ -322,14 +389,14 @@ export default {
   right: 30px;
 }
 .daily-btn {
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 .weekly-btn {
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 .top-earning hr {
-    margin: 0 1.25rem;
+  margin: 0 1.25rem;
 }
 </style>

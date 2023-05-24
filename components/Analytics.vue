@@ -93,7 +93,7 @@
           </div>
           <div>
             <div class="fs-14">ESTIMATED EARNING</div>
-            <div class="fs-40 text-blue">450,350.50</div>
+            <div class="fs-40 text-blue"><slot name="earnings"></slot></div>
           </div>
           <div></div>
         </div>

@@ -14,8 +14,11 @@
         <div>Books Added to Shelf</div>
       </template>
       <template #value>
-        {{ added }}
+        {{ added ? added : 0 }}
       </template>
+      <template #earnings>
+            {{ total_earnings ? total_earnings : 0 }}
+        </template>
       <template #chart>
         <b-overlay :show="show" rounded="sm">
         <highcharts :options="chartOptions"></highcharts>

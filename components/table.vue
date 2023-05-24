@@ -105,6 +105,16 @@
               </div>
               </div>
             </template>
+            <template #cell(book_cover)="data">
+              <div class="d-flex align-items-center book">
+                <img :src="`${$config.BASE_URL}${data.item.book_cover}`">
+                <div class="ml-2">
+                <!-- <div>{{ data.item.name }}</div> -->
+                <div class="text-grey mt-1">Author: {{ data.item.author }}</div>
+                <!-- <div class="text-grey mt-1 text-capitalize">Categories: {{ data.item.categories.join(", ") }}</div> -->
+              </div>
+              </div>
+            </template>
             <template #cell(actions)="data">
               <slot name="actions" :data="data">
           {{ data.value }}

@@ -2,11 +2,11 @@
     <div>
       <Analytics @filter-date="handleDateFilter" @start:date="handleStartDate" @end:date="handleEndDate">
         <template #title>
-          <div>Estimated Monthly Earning</div>
+          <div>Esatimated Pages Read</div>
         </template>
         <template #subtitle>
           <div>
-            View the total amount of money earned for this month, you can adjust how data is displaced using the filters belows.
+            View the total amount of pages read for this month, you can adjust how data is displaced using the filters belows.
           </div>
         </template>
         <template #smallcard-title>
@@ -27,7 +27,7 @@
       </b-overlay>
         </template>
         <template #table>
-          <Table :fields="fields" :items="books">
+          <Table :fields="fields" :items="uniqueBooks">
             <!-- :filter="filter"
           :record-count="recordCount"
           :is-busy="isBusy"
@@ -57,6 +57,7 @@
   <script>
   import { DateTime } from "luxon";
   import chartOptions from "~/components/Base/BarChart/chartOptions";
+  import _ from "lodash";
   export default {
     layout: "authWithoutTopbar",
     data() {
@@ -68,12 +69,14 @@
         noData: false,
         books: [],
         fields: [
-          { key: "book_name", label: "Book Title", sortable: false },
-          { key: "page_read", label: "Category", sortable: false },
+          { key: "book_cover", label: "Book Title", sortable: false },
+          { key: "total_reads", label: "Pages Read", sortable: false },
           { key: "purchase", label: "Books Purchased", sortable: false },
-          { key: "estimated", label: "Estimated Earnings", sortable: false },
+          { key: "estimated", label: "Added to Shelf", sortable: false },
+          { key: "total_earnings", label: "Estimated Earnings", sortable: false },
         ],
         page_reads: '',
+        uniqueBooks: [],
         total_earnings: ''
       };
     },
@@ -123,13 +126,22 @@
               },
             }
           );
-          const earnings = data.data.map((el) => el.books.reduce(
-            (a, el) => a + el.total_earnings,
+          const page_reads = data.data.map((el) => el.books.reduce(
+            (a, el) => a + el.total_reads,
             0
           ));
           const date = data.data.map((el) => this.formatDate(el.date));
           const books = data.data.map((el) => el.books);
           this.books = [].concat(...books)
+          this.uniqueBooks = [];
+  const ids = new Set();
+
+  for (const book of this.books) {
+    if (!ids.has(book.book_cover)) {
+      ids.add(book.book_cover);
+      this.uniqueBooks.push(book);
+    }
+  }
           this.page_reads = this.books.reduce(
             (a, el) => a + el.total_reads,
             0
@@ -139,7 +151,7 @@
             0
           );
           this.chartOptions.xAxis.categories = date;
-          this.chartOptions.series[0].data = earnings;
+          this.chartOptions.series[0].data = page_reads;
           if (number_of_books.length > 0) {
             this.noData = false;
           } else {

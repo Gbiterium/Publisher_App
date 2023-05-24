@@ -1,18 +1,25 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="card">
           <div class="card-body py-xl-5 px-xl-5">
             <div class="row">
               <div class="col-md-3">
-                <div class="thumbnail">
+                <div v-if="loading">
+              <div class="grid-container mt-3">
+                <div class="mt-3">
+                  <b-skeleton width="100%" height="338px" />
+                </div>
+              </div>
+            </div>
+                <div v-else class="thumbnail">
                 <img :src="`${$config.BASE_URL}${book.cover}`">
                 </div>
                 <button class="btn btn-primary mt-4">View Book</button>
                 <button class="btn btn-outline-primary mt-2" @click.prevent="editBook">Edit Book</button>
               </div>
               <div class="col-md-9 details">
-                <div class="fs-20">{{ book.name }}</div>
-                <div>{{ book.author }}</div>
+                <div class="fs-20 book-name">{{ book.name }}</div>
+                <div class="author-name">{{ book.author }}</div>
                 <div class="mt-4">
                 <UtilsBaseCardTab @tab-selected="handleOnSelectTab($event)">
         <template
@@ -209,11 +216,13 @@
         curriculums: [],
         reviews: [],
       averageRating: 0,
-      user: {}
+      user: {},
+      loading: false
       }
     },
     async fetch () {
       try {
+        this.loading = true;
         const { data } = await this.$axios.get(`/app/publisher/book/${this.$route.params.id}/`)
         this.book = data
         this.subjects = data.subjects.map((el) => el.name)
@@ -224,6 +233,8 @@
       }
       } catch (error) {
         console.log(error)
+      } finally {
+        this.loading = false
       }
     },
     methods: {
@@ -292,6 +303,21 @@ return formattedDate
   text-align: left;
   padding: 8px;
 }
+.author-name {
+  font-weight: 300
+}
+.book-name {
+  font-weight: 400;
+}
+td:nth-child(1) {
+                width: 25%;
+                font-weight: 600;
+                color: #8f9aa3;
+            }
+            td:nth-child(2) {
+                width: 75%;
+                font-weight: 400
+            }
 
 tr:nth-child(odd) {
   background-color: #F8F8F8;
