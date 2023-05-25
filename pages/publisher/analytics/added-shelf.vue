@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Analytics @filter-date="handleDateFilter" @start:date="handleStartDate" @end:date="handleEndDate">
+    <Analytics @filter-date="handleDateFilter" @filter-items="handleFilter">
       <template #title>
         <div>Added to Shelf</div>
       </template>
@@ -14,13 +14,13 @@
         <div>Books Added to Shelf</div>
       </template>
       <template #value>
-        {{ added ? added : 0 }}
+        {{ books ? books.length.toLocaleString('en-US') : 0 }}
       </template>
       <template #earnings>
-            {{ total_earnings ? total_earnings : 0 }}
+            {{ total_earnings ? total_earnings.toLocaleString('en-US') : 0 }}
         </template>
       <template #chart>
-        <b-overlay :show="show" rounded="sm">
+        <b-overlay :show="loading" rounded="lg">
         <highcharts :options="chartOptions"></highcharts>
         <div class="no-data" v-if="noData">
           No Analytics for the selected period
@@ -74,6 +74,7 @@ export default {
         { key: "purchase", label: "Books Purchased", sortable: false },
         { key: "estimated", label: "Estimated Earnings", sortable: false },
       ],
+      loading: false
     };
   },
   async mounted() {
@@ -111,8 +112,14 @@ export default {
       this.end_date = end_date;
       await this.getBookShelf();
     },
+    async handleFilter(data) {
+      this.start_date = data.start_date
+      this.end_date = data.end_date
+      await this.getBookShelf()
+    },
     async getBookShelf() {
       try {
+        this.loading = true
         const { data } = await this.$axios.get(
           "/app/publisher/books/shelf_additions/",
           {
@@ -128,6 +135,7 @@ export default {
         this.books = [].concat(...books)
         this.chartOptions.xAxis.categories = date;
         this.chartOptions.series[0].data = number_of_books;
+    this.chartOptions.tooltip.pointFormat = "<b>Books Added to Shelf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{point.y}</b><hr>"
         if (number_of_books.length > 0) {
           this.noData = false;
         } else {
@@ -135,6 +143,8 @@ export default {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        this.loading = false
       }
     },
   },

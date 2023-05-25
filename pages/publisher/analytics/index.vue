@@ -9,7 +9,7 @@
                 <div class="fs-14 mb-3">Today’s Estimated Earnings</div>
                 <div>
                   <div class="fs-36 font-weight-bold">
-                    {{ earnings ? earnings : 0 }}
+                    {{ earnings ? earnings.toLocaleString('en-US') : 0 }}
                   </div>
                   <span class="fs-14 text-grey">Nigeria Naira (NGN)</span>
                 </div>
@@ -32,7 +32,7 @@
                 <div class="fs-14 mb-3">Today’s Book Read</div>
                 <div>
                   <div class="fs-36 font-weight-bold">
-                    {{ reads ? reads : 0 }}
+                    {{ reads ? reads.toLocaleString('en-US') : 0 }}
                   </div>
                   <span class="fs-14 text-grey">Pages Read</span>
                 </div>
@@ -105,56 +105,28 @@
         </div>
         <div v-else class="row">
           <div class="col-md-3 top-book" v-for="el in top_earning" :key="el.id">
-            <div class="d-flex align-items-center">
+            <div class="row">
+              <div class="col-md-6">
               <img :src="`${$config.BASE_URL}${el.book_cover}`" />
+              </div>
+              <div class="col-md-6">
               <div class="earn-details">
-                <div class="font-weight-bold">NGN {{ el.total_earnings }}</div>
+                <div class="font-weight-bold">NGN {{ el.total_earnings.toLocaleString('en-US') }}</div>
                 <div class="text-grey fs-12">Estimated Earnings</div>
-                <div class="font-weight-bold mt-4">{{ el.total_reads }}</div>
+                <div class="font-weight-bold mt-4">{{ el.total_reads.toLocaleString('en-US') }}</div>
                 <div class="text-grey fs-12">Pages Read</div>
+              </div>
               </div>
             </div>
           </div>
-          <!-- <div class="col-md-3 top-book">
-            <div class="d-flex align-items-center">
-              <img src="@/assets/img/world.png" />
-              <div class="earn-details">
-                <div class="font-weight-bold">NGN 5,550.00</div>
-                <div class="text-grey fs-12">Estimated Earnings</div>
-                <div class="font-weight-bold mt-4">450</div>
-                <div class="text-grey fs-12">Pages Read</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 top-book">
-            <div class="d-flex align-items-center">
-              <img src="@/assets/img/world.png" />
-              <div class="earn-details">
-                <div class="font-weight-bold">NGN 5,550.00</div>
-                <div class="text-grey fs-12">Estimated Earnings</div>
-                <div class="font-weight-bold mt-4">450</div>
-                <div class="text-grey fs-12">Pages Read</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 top-book">
-            <div class="d-flex align-items-center">
-              <img src="@/assets/img/world.png" />
-              <div class="earn-details">
-                <div class="font-weight-bold">NGN 5,550.00</div>
-                <div class="text-grey fs-12">Estimated Earnings</div>
-                <div class="font-weight-bold mt-4">450</div>
-                <div class="text-grey fs-12">Pages Read</div>
-              </div>
-            </div>
-          </div> -->
         </div>
         <div class="d-flex justify-content-end mt-4">
+          <nuxt-link to="./analytics/view-more">
           <a
             href="#"
             class="text-uppercase text-decoration-underline text-blue fs-12"
             >View More</a
-          >
+          ></nuxt-link>
         </div>
       </div>
     </div>
@@ -277,6 +249,7 @@ export default {
     }
     await this.getBookShelf();
     await this.filterByDay();
+    await this.getData()
   },
   methods: {
     ...mapActions("publisher", ["GET_TOKEN"]),
@@ -287,6 +260,14 @@ export default {
       this.end_date = DateTime.now().toISODate();
       console.log(this.start_date, this.end_date)
       await this.getEarning()
+    },
+    async getData() {
+      try {
+        const response = await this.$axios.get('/app/publisher/category_reads/')
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
     },
     async filterByWeek() {
       this.showWeekly = true;
@@ -367,7 +348,7 @@ export default {
   height: 234px;
 }
 .top-earning {
-  height: 346px;
+  min-height: 346px;
 }
 .pie-chart .card {
   height: 215px;
@@ -376,7 +357,7 @@ export default {
   font-size: 12px;
 }
 .top-earning img {
-  width: 104px;
+  width: 100%;
   height: 160px;
   object-fit: cover;
 }

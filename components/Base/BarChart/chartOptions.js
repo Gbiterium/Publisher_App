@@ -18,9 +18,7 @@ export default {
     },
 
     tooltip: {
-      headerFormat: "<b>{point.x:.1f}, 2023</b><br><br>",
-      pointFormat: "<b>Books Added to Shelf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{point.y}</b><hr>",
-    },
+      headerFormat: "<b>{point.x:.1f}, 2023</b><br><br>", },
 
     legend: {
       enabled: false,

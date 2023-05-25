@@ -62,7 +62,7 @@
         <v-date-picker v-model="start_date" mode="date">
           <template #default="{ togglePopover }">
             <span @click="togglePopover()">
-              <input class="form-control" :value="start_date | date" />
+              <input class="form-control" placeholder="YYYY-MM-DD" :value="start_date | date" />
             </span>
           </template>
         </v-date-picker>
@@ -72,14 +72,15 @@
         <v-date-picker v-model="end_date" mode="date">
           <template #default="{ togglePopover }">
             <span @click="togglePopover()">
-              <input class="form-control" :value="end_date | date" />
+              <input class="form-control" placeholder="YYYY-MM-DD" :value="end_date | date" />
             </span>
           </template>
         </v-date-picker>
         <b-icon-calendar4 class="fs-10 text-grey calender" />
       </div>
       <div>
-        <button class="btn btn-light">Reset All</button>
+        <button class="btn btn-light" @click="applyFilter">apply</button>
+        <button class="btn btn-light" @click="resetFilter">Reset</button>
       </div>
     </div>
     <div class="card mt-4">
@@ -106,10 +107,10 @@
       </div>
     </div>
     <div class="mt-4 chart-wrapper">
-        <slot name="chart"></slot>
+      <slot name="chart"></slot>
     </div>
     <div class="mt-4">
-        <slot name="table"></slot>
+      <slot name="table"></slot>
     </div>
   </div>
 </template>
@@ -127,14 +128,6 @@ export default {
       start_date: "",
       end_date: "",
     };
-  },
-  watch: {
-    start_date(val) {
-        this.$emit('start:date', val)
-    },
-    end_date(val) {
-        this.$emit('end:date', val)
-    }
   },
   mounted() {
     this.filterByCurrentMonth();
@@ -162,11 +155,22 @@ export default {
       this.end_date = currentDate.endOf("month").toISODate();
       this.$emit("filter-date", this.start_date, this.end_date);
     },
-    // formatDate(date) {
-    //     const oldDate = date.toISOString()
-    //     const newDate = DateTime.fromISO(oldDate).toISODate()
-    //   return newDate
-    // }
+    applyFilter() {
+      const data = {
+        start_date: this.formatDate(this.start_date),
+        end_date: this.formatDate(this.end_date)
+      }
+      this.$emit('filter-items', data)
+    },
+    resetFilter() {
+      this.start_date = ''
+      this.end_date = ''
+    },
+    formatDate(date) {
+      const oldDate = date.toISOString()
+        const newDate = DateTime.fromISO(oldDate).toISODate()
+      return newDate
+    }
   },
 };
 </script>
@@ -176,7 +180,7 @@ button {
   font-size: 12px;
 }
 .chart-wrapper {
-    position: relative;
+  position: relative;
 }
 .form-control {
   font-size: 12px !important;
@@ -200,6 +204,9 @@ button {
 }
 .custom-select1 {
   width: 140px;
+}
+input::placeholder {
+  font-size: 11px;
 }
 .top-card {
   font-weight: 300;

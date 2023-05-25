@@ -1,6 +1,6 @@
 <template>
     <div>
-      <Analytics @filter-date="handleDateFilter" @start:date="handleStartDate" @end:date="handleEndDate">
+      <Analytics @filter-date="handleDateFilter" @filter-items="handleFilter">
         <template #title>
           <div>Esatimated Pages Read</div>
         </template>
@@ -13,13 +13,13 @@
           <div>PAGES READ</div>
         </template>
         <template #value>
-          {{ page_reads ? page_reads : 0 }}
+          {{ page_reads ? page_reads.toLocaleString('en-US') : 0 }}
         </template>
         <template #earnings>
-            {{ total_earnings ? total_earnings : 0 }}
+            {{ total_earnings ? total_earnings.toLocaleString('en-US') : 0 }}
         </template>
         <template #chart>
-          <b-overlay :show="show" rounded="sm">
+          <b-overlay :show="loading" rounded="sm">
           <highcharts :options="chartOptions"></highcharts>
           <div class="no-data" v-if="noData">
             No Analytics for the selected period
@@ -77,7 +77,8 @@
         ],
         page_reads: '',
         uniqueBooks: [],
-        total_earnings: ''
+        total_earnings: '',
+        loading: false
       };
     },
     async mounted() {
@@ -115,8 +116,14 @@
         this.end_date = end_date;
         await this.getEarning();
       },
+      async handleFilter(data) {
+      this.start_date = data.start_date
+      this.end_date = data.end_date
+      await this.getEarning()
+    },
       async getEarning() {
         try {
+          this.loading = true
           const { data } = await this.$axios.get(
             "/app/publisher/books/reads_earnings",
             {
@@ -152,6 +159,7 @@
           );
           this.chartOptions.xAxis.categories = date;
           this.chartOptions.series[0].data = page_reads;
+          this.chartOptions.tooltip.pointFormat = "<b>Pages Read: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{point.y}</b><hr>"
           if (number_of_books.length > 0) {
             this.noData = false;
           } else {
@@ -159,6 +167,8 @@
           }
         } catch (error) {
           console.log(error);
+        } finally {
+          this.loading = false
         }
       },
     },
