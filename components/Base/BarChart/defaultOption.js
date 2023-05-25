@@ -1,57 +1,78 @@
 export default {
         chart: {
-            type: 'area',
-            zoomType: 'x',
-            panning: true,
-            panKey: 'shift',
-            scrollablePlotArea: {
-                minWidth: 600
-            }
+          type: "pie",
+        //   width: 100%,
+          height: 215,
+          shadow: {
+            color: "rgba(0, 0, 0, 0.1)",
+            offsetX: 1,
+            offsetY: 1,
+            opacity: "0.1",
+            width: 5,
+          },
+          borderColor: "#EAEAF1",
+          borderRadius: 4,
+          borderWidth: 0.4,
         },
-    
         title: {
-            text: null,
+            text: '',
+          align: "left",
+          y: 20,
+          x: 10,
+          style: {
+            fontWeight: "bold",
+            fontSize: "14px",
+            marginTop: "50px",
+          },
         },
-    
-        credits: {
-            enabled: false
-        },
-    
-    
-        tooltip: {
-            headerFormat: 'Distance: {point.x:.1f} km<br>',
-            pointFormat: '{point.y} m a. s. l.',
-            shared: true
-        },
-    
         legend: {
-            enabled: false
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "middle",
+          floating: true,
+          itemMarginTop: 8,
+          width: 160,
+          itemStyle: {
+            color: "#171E40",
+            fontWeight: "normal",
+          },
+          labelFormatter: function() {
+            return this.y + '%' + ' ' + '-' + ' ' + this.name;
+          }
         },
-        xAxis: {
-            // minRange: 5,
-            title: {
-                text: null
-            },
+        credits: {
+          enabled: false,
         },
-    
-        yAxis: {
-            startOnTick: true,
-            endOnTick: false,
-            title: {
-                text: null
-            },
+
+        tooltip: {
+        //   valueDecimals: 2,
+          valueSuffix: "%",
         },
-    
-        series: [{
-            lineColor: '#1070B7',
-            lineWidth: 1,
-            color:'#DDEFFE',
-            fillOpacity: 0.5,
-            // name: 'Elevation',
-            marker: {
-                enabled: true,
-                fillColor: '#1070B7',
+
+        plotOptions: {
+          series: {
+            borderWidth: 0,
+            colorByPoint: true,
+            type: "pie",
+            size: "100%",
+            innerSize: "80%",
+            showInLegend: true,
+            center: [70, 50],
+            dataLabels: {
+              enabled: false,
+              crop: false,
+              distance: "-10%",
+              connectorWidth: 0,
             },
-            threshold: null
-        }]
+          },
+        },
+        colors: ["#FBA725", "#CBC619", "#EA6F46", "#4AA7CA"],
+        series: [
+          {
+            type: "pie",
+            name: "Percentage",
+            data: [
+            ],
+          },
+        ],
 }

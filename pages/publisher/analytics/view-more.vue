@@ -1,13 +1,12 @@
 <template>
     <div>
-        <!-- @filter-date="handleDateFilter" @filter-items="handleFilter" -->
-      <Analytics>
+      <Analytics @filter-date="handleDateFilter" @filter-items="handleFilter">
         <template #title>
           <div>Top Earning Books</div>
         </template>
         <template #subtitle>
           <div>
-            Top 10 performing books
+            Top performing books
           </div>
         </template>
         <template #smallcard-title>
@@ -31,12 +30,12 @@
               </div>
             </div>
             <div v-else class="row">
-              <div class="col-md-3 mb-4 top-book" v-for="el in top_earning" :key="el.id">
+              <div class="col-lg-3 col-md-6 mb-4 top-book" v-for="el in top_earning" :key="el.id">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-6">
                   <img :src="`${$config.BASE_URL}${el.book_cover}`" />
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-6">
                   <div class="earn-details">
                     <div class="font-weight-bold">NGN {{ el.total_earnings.toLocaleString('en-US') }}</div>
                     <div class="text-grey fs-12">Estimated Earnings</div>
@@ -62,6 +61,9 @@
       return {
         start_date: "",
         end_date: "",
+        category: '',
+      format: '',
+      author: '',
         books: [],
         top_earning: [],
         loading: false,
@@ -72,19 +74,38 @@
       await this.getEarning();
     },
     methods: {
+        async handleDateFilter(start_date, end_date) {
+        this.start_date = start_date;
+        this.end_date = end_date;
+        await this.getEarning();
+      },
+      async handleFilter(data) {
+      this.start_date = data.start_date
+      this.end_date = data.end_date
+      this.category = data.categories
+      this.format = data.format
+      this.author = data.author
+      await this.getEarning()
+    },
         async getEarning() {
       try {
         this.loading = true;
         const currentDate = DateTime.now();
-        // this.start_date = currentDate.toISODate()
-        // // this.start_date = currentDate.startOf("month").toISODate();
-        // this.end_date = currentDate.endOf("month").toISODate();
         const { data } = await this.$axios.get(
           "/app/publisher/books/reads_earnings",
           {
             params: {
               start_date: this.start_date,
               end_date: this.end_date,
+              ...(this.category
+              ? { categories: this.category }
+              : {}),
+              ...(this.author
+              ? { author: this.author }
+              : {}),
+              ...(this.format
+              ? { book_format: this.format }
+              : {}),
             },
           }
         );

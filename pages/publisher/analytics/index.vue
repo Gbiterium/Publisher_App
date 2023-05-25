@@ -9,7 +9,7 @@
                 <div class="fs-14 mb-3">Today’s Estimated Earnings</div>
                 <div>
                   <div class="fs-36 font-weight-bold">
-                    {{ earnings ? earnings.toLocaleString('en-US') : 0 }}
+                    {{ earnings ? earnings.toLocaleString("en-US") : 0 }}
                   </div>
                   <span class="fs-14 text-grey">Nigeria Naira (NGN)</span>
                 </div>
@@ -32,7 +32,7 @@
                 <div class="fs-14 mb-3">Today’s Book Read</div>
                 <div>
                   <div class="fs-36 font-weight-bold">
-                    {{ reads ? reads.toLocaleString('en-US') : 0 }}
+                    {{ reads ? reads.toLocaleString("en-US") : 0 }}
                   </div>
                   <span class="fs-14 text-grey">Pages Read</span>
                 </div>
@@ -96,7 +96,7 @@
       <div class="card-body">
         <div v-if="loading">
           <div class="row">
-            <div v-for="n in 4" :key="n" class="col-md-3">
+            <div v-for="n in 4" :key="n" class="col-lg-3 col-md-6">
               <div>
                 <b-skeleton width="100%" height="160px" />
               </div>
@@ -104,42 +104,47 @@
           </div>
         </div>
         <div v-else class="row">
-          <div class="col-md-3 top-book" v-for="el in top_earning" :key="el.id">
+          <div class="col-lg-3 col-md-6 top-book mb-3" v-for="el in top_earning" :key="el.id">
             <div class="row">
-              <div class="col-md-6">
-              <img :src="`${$config.BASE_URL}${el.book_cover}`" />
+              <div class="col-6">
+                <img :src="`${$config.BASE_URL}${el.book_cover}`" />
               </div>
-              <div class="col-md-6">
-              <div class="earn-details">
-                <div class="font-weight-bold">NGN {{ el.total_earnings.toLocaleString('en-US') }}</div>
-                <div class="text-grey fs-12">Estimated Earnings</div>
-                <div class="font-weight-bold mt-4">{{ el.total_reads.toLocaleString('en-US') }}</div>
-                <div class="text-grey fs-12">Pages Read</div>
-              </div>
+              <div class="col-6">
+                <div class="earn-details">
+                  <div class="font-weight-bold">
+                    NGN {{ el.total_earnings.toLocaleString("en-US") }}
+                  </div>
+                  <div class="text-grey fs-12">Estimated Earnings</div>
+                  <div class="font-weight-bold mt-4">
+                    {{ el.total_reads.toLocaleString("en-US") }}
+                  </div>
+                  <div class="text-grey fs-12">Pages Read</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="d-flex justify-content-end mt-4">
           <nuxt-link to="./analytics/view-more">
-          <a
-            href="#"
-            class="text-uppercase text-decoration-underline text-blue fs-12"
-            >View More</a
-          ></nuxt-link>
+            <a
+              href="#"
+              class="text-uppercase text-decoration-underline text-blue fs-12"
+              >View More</a
+            ></nuxt-link
+          >
         </div>
       </div>
     </div>
     <div class="pie-chart mt-5">
       <div class="row">
-        <div class="col-md-4">
-          <highcharts :options="chartOptions"></highcharts>
+        <div class="col-lg-4">
+          <highcharts :options="categoryOptions"></highcharts>
         </div>
-        <div class="col-md-4">
-          <highcharts :options="chartOptions"></highcharts>
+        <div class="col-lg-4">
+          <highcharts :options="formatOptions"></highcharts>
         </div>
-        <div class="col-md-4">
-          <highcharts :options="chartOptions"></highcharts>
+        <div class="col-lg-4">
+          <highcharts :options="subjectOptions"></highcharts>
         </div>
       </div>
     </div>
@@ -149,89 +154,13 @@
 <script>
 import { mapActions } from "vuex";
 import { DateTime } from "luxon";
+import chartOptions from "~/components/Base/BarChart/defaultOption";
+import formatOption from "~/components/Base/BarChart/formatOption";
+import subjectOption from "~/components/Base/BarChart/subjectOption";
 export default {
   layout: "authWithoutTopbar",
   data() {
     return {
-      chartOptions: {
-        chart: {
-          type: "pie",
-          width: 350,
-          height: 215,
-          shadow: {
-            color: "rgba(0, 0, 0, 0.1)",
-            offsetX: 1,
-            offsetY: 1,
-            opacity: "0.1",
-            width: 5,
-          },
-          borderColor: "#EAEAF1",
-          borderRadius: 4,
-          borderWidth: 0.4,
-        },
-        title: {
-          text: "Top Categories",
-          align: "left",
-          y: 20,
-          x: 10,
-          style: {
-            fontWeight: "bold",
-            fontSize: "14px",
-            marginTop: "50px",
-          },
-        },
-        legend: {
-          layout: "vertical",
-          align: "right",
-          verticalAlign: "middle",
-          floating: true,
-          itemMarginTop: 8,
-          width: 160,
-          itemStyle: {
-            color: "#171E40",
-            fontWeight: "normal",
-          },
-        },
-        credits: {
-          enabled: false,
-        },
-
-        tooltip: {
-          valueDecimals: 2,
-          valueSuffix: "%",
-        },
-
-        plotOptions: {
-          series: {
-            borderWidth: 0,
-            colorByPoint: true,
-            type: "pie",
-            size: "100%",
-            innerSize: "80%",
-            showInLegend: true,
-            center: [70, 50],
-            dataLabels: {
-              enabled: false,
-              crop: false,
-              distance: "-10%",
-              connectorWidth: 0,
-            },
-          },
-        },
-        colors: ["#FBA725", "#CBC619", "#EA6F46", "#4AA7CA"],
-        series: [
-          {
-            type: "pie",
-            name: "1999",
-            data: [
-              ["Firefox", 45.0],
-              ["IE", 26.8],
-              ["Safari", 8.5],
-              ["Opera", 6.2],
-            ],
-          },
-        ],
-      },
       showDaily: true,
       showWeekly: false,
       addedToShelf: "",
@@ -241,6 +170,9 @@ export default {
       end_date: "",
       top_earning: "",
       loading: false,
+      categoryOptions: chartOptions,
+      formatOptions: formatOption,
+      subjectOptions: subjectOption,
     };
   },
   async created() {
@@ -249,7 +181,10 @@ export default {
     }
     await this.getBookShelf();
     await this.filterByDay();
-    await this.getData()
+    await this.getData();
+    this.categoryOptions.title.text = "Top Categories";
+    this.formatOptions.title.text = "Top Format";
+    this.subjectOptions.title.text = "Top Subject";
   },
   methods: {
     ...mapActions("publisher", ["GET_TOKEN"]),
@@ -258,15 +193,55 @@ export default {
       this.showWeekly = false;
       this.start_date = DateTime.now().toISODate();
       this.end_date = DateTime.now().toISODate();
-      console.log(this.start_date, this.end_date)
-      await this.getEarning()
+      await this.getEarning();
     },
     async getData() {
       try {
-        const response = await this.$axios.get('/app/publisher/category_reads/')
-        console.log(response)
+        const { data } = await this.$axios.get(
+          "/app/publisher/category_reads/"
+        );
+        const format = [].concat(...data.data.formats);
+        const categories = [].concat(...data.data.categories);
+        const subjects = [].concat(...data.data.subjects);
+        const sortedFormat = format.sort(
+          (a, b) => b.books_with_format - a.books_with_format
+        );
+        const sortedCategories = categories.sort(
+          (a, b) => b.books_with_category - a.books_with_category
+        );
+        const sortedSubjects = subjects.sort(
+          (a, b) => b.books_with_subject - a.books_with_subject
+        );
+        const totalWithFormat = format.reduce(
+          (total, el) => total + el.books_with_format,
+          0
+        );
+        const totalWithCategories = categories.reduce(
+          (total, el) => total + el.books_with_category,
+          0
+        );
+        const totalWithSubjects = subjects.reduce(
+          (total, el) => total + el.books_with_subject,
+          0
+        );
+        const formatData = sortedFormat.map((el) => {
+          const percentage = (el.books_with_format / totalWithFormat) * 100;
+          return [el.format, percentage];
+        });
+        const categoryData = sortedCategories.map((el) => {
+          const percentage =
+            (el.books_with_category / totalWithCategories) * 100;
+          return [el.category, percentage];
+        });
+        const subjectData = sortedSubjects.map((el) => {
+          const percentage = (el.books_with_subject / totalWithSubjects) * 100;
+          return [el.subject, parseFloat(percentage.toFixed(1))];
+        });
+        this.formatOptions.series[0].data = formatData;
+        this.categoryOptions.series[0].data = categoryData;
+        this.subjectOptions.series[0].data = subjectData;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     async filterByWeek() {
@@ -275,8 +250,8 @@ export default {
       const currentDate = DateTime.now();
       this.start_date = currentDate.startOf("week").toISODate();
       this.end_date = currentDate.endOf("week").toISODate();
-      console.log(this.start_date, this.end_date)
-      await this.getEarning()
+      console.log(this.start_date, this.end_date);
+      await this.getEarning();
     },
     async getBookShelf() {
       try {

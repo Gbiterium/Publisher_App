@@ -65,6 +65,9 @@ export default {
       added: "",
       start_date: "",
       end_date: "",
+      category: '',
+      format: '',
+      author: '',
       chartOptions: chartOptions,
       noData: false,
       books: [],
@@ -74,7 +77,8 @@ export default {
         { key: "purchase", label: "Books Purchased", sortable: false },
         { key: "estimated", label: "Estimated Earnings", sortable: false },
       ],
-      loading: false
+      loading: false,
+      total_earnings: 0
     };
   },
   async mounted() {
@@ -115,6 +119,9 @@ export default {
     async handleFilter(data) {
       this.start_date = data.start_date
       this.end_date = data.end_date
+      this.category = data.categories
+      this.format = data.format
+      this.author = data.author
       await this.getBookShelf()
     },
     async getBookShelf() {
@@ -126,6 +133,15 @@ export default {
             params: {
               start_date: this.start_date,
               end_date: this.end_date,
+              ...(this.category
+              ? { categories: this.category }
+              : {}),
+              ...(this.author
+              ? { author: this.author }
+              : {}),
+              ...(this.format
+              ? { book_format: this.format }
+              : {}),
             },
           }
         );

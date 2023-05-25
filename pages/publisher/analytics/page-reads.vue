@@ -65,6 +65,9 @@
         added: "",
         start_date: "",
         end_date: "",
+        category: '',
+      format: '',
+      author: '',
         chartOptions: chartOptions,
         noData: false,
         books: [],
@@ -81,23 +84,7 @@
         loading: false
       };
     },
-    async mounted() {
-      await this.getBookshelfStat();
-    },
     methods: {
-      async getBookshelfStat() {
-        try {
-          const { data } = await this.$axios.get(
-            "/app/publisher/bookshelf_stats"
-          );
-          this.added = data.data.reduce(
-            (a, el) => a + el.number_of_book_shelf_adds,
-            0
-          );
-        } catch (error) {
-          console.log(error);
-        }
-      },
       formatDate(date) {
         const parsedDate = DateTime.fromISO(date);
         const formattedDate = parsedDate.toFormat("LLL dd");
@@ -119,6 +106,9 @@
       async handleFilter(data) {
       this.start_date = data.start_date
       this.end_date = data.end_date
+      this.category = data.categories
+      this.format = data.format
+      this.author = data.author
       await this.getEarning()
     },
       async getEarning() {
@@ -130,6 +120,15 @@
               params: {
                 start_date: this.start_date,
                 end_date: this.end_date,
+                ...(this.category
+              ? { categories: this.category }
+              : {}),
+              ...(this.author
+              ? { author: this.author }
+              : {}),
+              ...(this.format
+              ? { book_format: this.format }
+              : {}),
               },
             }
           );

@@ -27,34 +27,37 @@
           class="style-chooser"
           placeholder="Author"
           label="name"
-          :options="author"
+          :options="authors"
         >
         </v-select>
       </div>
       <div class="custom-select1">
         <v-select
+        v-model="book"
           class="style-chooser"
           placeholder="Books"
           label="name"
-          :options="author"
+          :options="books"
         >
         </v-select>
       </div>
       <div class="custom-select1">
         <v-select
+        v-model="category"
           class="style-chooser"
           placeholder="Categories"
           label="name"
-          :options="author"
+          :options="categories"
         >
         </v-select>
       </div>
       <div class="custom-select1">
         <v-select
+        v-model="format"
           class="style-chooser"
           placeholder="Format"
           label="name"
-          :options="author"
+          :options="formats"
         >
         </v-select>
       </div>
@@ -127,6 +130,14 @@ export default {
       showCurrent: true,
       start_date: "",
       end_date: "",
+      authors: ['Ryan Frase', 'Flynn', 'Akin Agbaje', 'Hector Herrera', 'Walter Tevis', 'Robert Greene', ''],
+      formats: ['PDF', 'Textbook'],
+      categories: ['fiction', 'historical'],
+      category: '',
+      author: '',
+      book: '',
+      format: '',
+      filterData: {}
     };
   },
   mounted() {
@@ -156,15 +167,27 @@ export default {
       this.$emit("filter-date", this.start_date, this.end_date);
     },
     applyFilter() {
-      const data = {
+      this.filterData = {
         start_date: this.formatDate(this.start_date),
-        end_date: this.formatDate(this.end_date)
+        end_date: this.formatDate(this.end_date),
+        format: this.format,
+        categories: this.category,
+        author: this.author
       }
-      this.$emit('filter-items', data)
+      this.$emit('filter-items', this.filterData)
     },
     resetFilter() {
-      this.start_date = ''
-      this.end_date = ''
+      this.format = ''
+      this.category = ''
+      this.author = ''
+      this.filterData = {
+        start_date: this.formatDate(this.start_date),
+        end_date: this.formatDate(this.end_date),
+        format: this.format,
+        categories: this.category,
+        author: this.author
+      }
+      this.$emit('filter-items', this.filterData)
     },
     formatDate(date) {
       const oldDate = date.toISOString()

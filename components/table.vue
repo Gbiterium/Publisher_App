@@ -132,6 +132,11 @@
                 <div v-if="data.value === 'AWAITING_APPROVAL'" style="color: #FFAB07">Under Review</div>
               </div>
             </template>
+            <template #cell(total_earnings)="data">
+              <div>
+                <div>NGN {{ data.value }}</div>
+              </div>
+            </template>
             <template #cell(average_rating)="data">
                 <star-rating :rating="data.value" :show-rating="false" :max-rating="5" :read-only="true" :star-size="18"></star-rating>
               <!-- </div> -->
