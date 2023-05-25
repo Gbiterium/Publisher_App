@@ -27,10 +27,9 @@
       </b-overlay>
         </template>
         <template #table>
-          <Table :fields="fields" :items="uniqueBooks">
+          <Table :fields="fields" :items="uniqueBooks" :is-busy="loading">
             <!-- :filter="filter"
           :record-count="recordCount"
-          :is-busy="isBusy"
           :pages="pages"
           :per-page="perPage"
           @sort="onSortChanged"
@@ -74,8 +73,8 @@
         fields: [
           { key: "book_cover", label: "Book Title", sortable: false },
           { key: "total_reads", label: "Pages Read", sortable: false },
-          { key: "purchase", label: "Books Purchased", sortable: false },
-          { key: "estimated", label: "Added to Shelf", sortable: false },
+          // { key: "purchase", label: "Books Purchased", sortable: false },
+          { key: "shelf", label: "Added to Shelf", sortable: false },
           { key: "total_earnings", label: "Estimated Earnings", sortable: false },
         ],
         page_reads: '',

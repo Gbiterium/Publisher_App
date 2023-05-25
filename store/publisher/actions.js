@@ -27,7 +27,6 @@ const actions = {
       const { data } = await this.$axios.get('/app/publisher/books', {
         params: { name },
       })
-      console.log(data)
       commit('setBooks', data.data)
     } catch (error) {
       return error

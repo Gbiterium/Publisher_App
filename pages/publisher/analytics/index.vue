@@ -104,7 +104,7 @@
           </div>
         </div>
         <div v-else class="row">
-          <div class="col-lg-3 col-md-6 top-book mb-3" v-for="el in top_earning" :key="el.id">
+          <div class="col-lg-3 col-md-6 top-book mb-3" v-for="el in top_earning.slice(0,4)" :key="el.id">
             <div class="row">
               <div class="col-6">
                 <img :src="`${$config.BASE_URL}${el.book_cover}`" />

@@ -28,10 +28,9 @@
     </b-overlay>
       </template>
       <template #table>
-        <Table :fields="fields" :items="books">
+        <Table :fields="fields" :items="books" :is-busy="loading">
           <!-- :filter="filter"
         :record-count="recordCount"
-        :is-busy="isBusy"
         :pages="pages"
         :per-page="perPage"
         @sort="onSortChanged"

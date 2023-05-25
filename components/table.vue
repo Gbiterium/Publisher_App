@@ -105,12 +105,18 @@
               </div>
               </div>
             </template>
+            <template #cell(categories)="data">
+              <div class="text-capitalize">{{ data.value ? data.value.join(", ") : "" }}</div>
+            </template>
+            <template #cell(shelf)="data">
+              <div>{{ data.value ? data.value : 0 }}</div>
+            </template>
             <template #cell(book_cover)="data">
               <div class="d-flex align-items-center book">
                 <img :src="`${$config.BASE_URL}${data.item.book_cover}`">
                 <div class="ml-2">
                 <!-- <div>{{ data.item.name }}</div> -->
-                <div class="text-grey mt-1">Author: {{ data.item.author }}</div>
+                <div class="mt-1 text-capitalize"> {{ data.item.book_name }}</div>
                 <!-- <div class="text-grey mt-1 text-capitalize">Categories: {{ data.item.categories.join(", ") }}</div> -->
               </div>
               </div>
@@ -138,7 +144,7 @@
               </div>
             </template>
             <template #cell(average_rating)="data">
-                <star-rating :rating="data.value" :show-rating="false" :max-rating="5" :read-only="true" :star-size="18"></star-rating>
+                <star-rating :rating="data.value ? data.value : 0" :show-rating="false" :max-rating="5" :read-only="true" :star-size="18"></star-rating>
               <!-- </div> -->
             </template>
             <template #table-busy>

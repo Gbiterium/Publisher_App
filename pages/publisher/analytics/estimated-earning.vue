@@ -27,10 +27,9 @@
       </b-overlay>
         </template>
         <template #table>
-          <Table :fields="fields" :items="books">
+          <Table :fields="fields" :items="uniqueBooks" :is-busy="loading">
             <!-- :filter="filter"
           :record-count="recordCount"
-          :is-busy="isBusy"
           :pages="pages"
           :per-page="perPage"
           @sort="onSortChanged"
@@ -70,11 +69,12 @@
         chartOptions: chartOptions,
         noData: false,
         books: [],
+        uniqueBooks: [],
         fields: [
-          { key: "book_name", label: "Book Title", sortable: false },
-          { key: "page_read", label: "Category", sortable: false },
-          { key: "purchase", label: "Books Purchased", sortable: false },
-          { key: "estimated", label: "Estimated Earnings", sortable: false },
+          { key: "book_cover", label: "Book Title", sortable: false },
+          { key: "categories", label: "Category", sortable: false },
+          // { key: "purchase", label: "Books Purchased", sortable: false },
+          { key: "total_earnings", label: "Estimated Earnings", sortable: false },
         ],
         page_reads: '',
         total_earnings: '',
@@ -136,6 +136,14 @@
           const date = data.data.map((el) => this.formatDate(el.date));
           const books = data.data.map((el) => el.books);
           this.books = [].concat(...books)
+          this.uniqueBooks = [];
+  const ids = new Set();
+          for (const book of this.books) {
+    if (!ids.has(book.book_cover)) {
+      ids.add(book.book_cover);
+      this.uniqueBooks.push(book);
+    }
+  }
           this.page_reads = this.books.reduce(
             (a, el) => a + el.total_reads,
             0

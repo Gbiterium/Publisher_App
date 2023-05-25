@@ -38,15 +38,15 @@
             <Table
               :fields="fields"
               :items="books"
-              :filter="filter"
-              :record-count="recordCount"
               :is-busy="isBusy"
+              >
+              <!-- :record-count="recordCount"
+                :filter="filter"
               :pages="pages"
               :per-page="perPage"
               @sort="onSortChanged"
               @page-changed="getResources"
-              @row-clicked="onRowSelected($event)"
-            >
+              @row-clicked="onRowSelected($event)" -->
               <template #book="{ data: { item } }">
                 <div class="d-flex align-items-center">
                   <img :src="item.book_cover">
@@ -104,7 +104,6 @@
           { key: 'average_rating', label: 'Rating', sortable: false },
           { key: 'publication_date', label: 'Date Submitted', sortable: false, formatter: (value) => {
             const isoDateStr = value.replace(' ', 'T')
-            console.log(isoDateStr)
             const dt = DateTime.fromISO(isoDateStr)
             return dt.toISODate()
           }, },
