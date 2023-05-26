@@ -32,12 +32,12 @@
             <div class>
               <img
                 class="account-image"
-                :src="avatar"
+                :src="user.avatar"
               />
             </div>
             <div class="ml-2">
               <div class="account-name text-left slate-blue">
-                Nuella Udefi
+                {{ user.first_name }} {{ user.last_name }}
               </div>
               <div class="d-none d-md-block dropdown account-dropdown">
                 <a
@@ -75,7 +75,8 @@ export default {
     return {
       isMobile: false,
       avatar: "https://slate-assets.s3.amazonaws.com/media/slate/profiles/Logo.png",
-      publisher_name: ''
+      publisher_name: '',
+      user: {}
     }
   },
   computed: {
@@ -84,6 +85,9 @@ export default {
    mounted() {
     if (this.getPublisher.length > 0) {
     this.publisher_name = this.getPublisher[0].name
+    }
+    if(this.$cookies.get('user-details')) {
+      this.user = this.$cookies.get('user-details') 
     }
   },
 

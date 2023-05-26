@@ -4,6 +4,7 @@ export default function ({ $cookies, redirect, route, app, $toast }) {
     $cookies.set('slate-token', route.query.token, {
       expires: new Date(Date.now() + 86400000), // 24 hours
     })
+    $cookies.set('user-details', route.query.user)
   } else if (!$cookies.get('slate-token')) {
   // $toast({
   //   type: 'error',
