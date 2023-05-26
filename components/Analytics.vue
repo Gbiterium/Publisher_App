@@ -20,6 +20,13 @@
         >
           This Month
         </button>
+        <button
+          class="btn today"
+          :class="[showToday ? 'btn-primary' : 'btn-outline-primary']"
+          @click.prevent="filterByToday"
+        >
+          Today
+        </button>
       </div>
       <div class="custom-select1">
         <v-select
@@ -31,7 +38,7 @@
         >
         </v-select>
       </div>
-      <div class="custom-select1">
+      <!-- <div class="custom-select1">
         <v-select
         v-model="book"
           class="style-chooser"
@@ -40,7 +47,7 @@
           :options="books"
         >
         </v-select>
-      </div>
+      </div> -->
       <div class="custom-select1">
         <v-select
         v-model="category"
@@ -127,7 +134,8 @@ export default {
       filter_date: "",
       date: new Date(),
       showLast: false,
-      showCurrent: true,
+      showCurrent: false,
+      showToday: true,
       start_date: "",
       end_date: "",
       authors: ['Ryan Frase', 'Flynn', 'Akin Agbaje', 'Hector Herrera', 'Walter Tevis', 'Robert Greene', ''],
@@ -141,12 +149,13 @@ export default {
     };
   },
   mounted() {
-    this.filterByCurrentMonth();
+    this.filterByToday();
   },
   methods: {
     filterByLastMonth() {
       this.showCurrent = false;
       this.showLast = true;
+      this.showToday = false
       const currentDate = DateTime.now();
       this.start_date = currentDate
         .minus({ months: 1 })
@@ -161,15 +170,25 @@ export default {
     filterByCurrentMonth() {
       this.showCurrent = true;
       this.showLast = false;
+      this.showToday = false
       const currentDate = DateTime.now();
       this.start_date = currentDate.startOf("month").toISODate();
       this.end_date = currentDate.endOf("month").toISODate();
       this.$emit("filter-date", this.start_date, this.end_date);
     },
+    filterByToday() {
+      this.showCurrent = false;
+      this.showLast = false;
+      this.showToday = true
+      const currentDate = DateTime.now();
+      this.start_date = currentDate.toISODate();
+      this.end_date = currentDate.toISODate();
+      this.$emit("filter-date", this.start_date, this.end_date);
+    },
     applyFilter() {
       this.filterData = {
-        start_date: this.formatDate(this.start_date),
-        end_date: this.formatDate(this.end_date),
+        start_date: this.start_date ? this.formatDate(this.start_date) : '',
+        end_date: this.end_date ? this.formatDate(this.end_date) : '',
         format: this.format,
         categories: this.category,
         author: this.author
@@ -180,9 +199,10 @@ export default {
       this.format = ''
       this.category = ''
       this.author = ''
+      this.filterByCurrentMonth()
       this.filterData = {
-        start_date: this.formatDate(this.start_date),
-        end_date: this.formatDate(this.end_date),
+        start_date: this.start_date,
+        end_date: this.end_date,
         format: this.format,
         categories: this.category,
         author: this.author
@@ -212,10 +232,18 @@ button {
 .last-month {
   border-top-right-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
+  border-right: none;
 }
 .current-month {
   border-top-left-radius: 0px !important;
   border-bottom-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+.today {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-left: none;
 }
 /* .filter-input {
     width: 203px;
@@ -226,7 +254,7 @@ button {
   box-shadow: 0px 1px 5px 1px rgba(0, 0, 0, 0.05);
 }
 .custom-select1 {
-  width: 140px;
+  width: 170px;
 }
 input::placeholder {
   font-size: 11px;
