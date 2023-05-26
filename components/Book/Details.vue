@@ -56,11 +56,11 @@
                 </ValidationProviderWrapper>
               </div>
               </div>
-              <div class="row mt-3">
+              <div class="row mt-3 contributor" v-for="(el, index) in contributorsData" :key="index">
               <div class="col-md-4">
                 <ValidationProviderWrapper name="Contributors" :rules="['required']">
                   <v-select
-                    v-model="contributor"
+                    v-model="el.contributor"
                     class="style-chooser"
                     placeholder="Contributor"
                     :options="contributors"
@@ -71,16 +71,19 @@
               <div class="col-md-6">
                 <ValidationProviderWrapper name="Full Name" :rules="['required']">
                   <input
-                    v-model="full_name"
+                    v-model="el.full_name"
                     class="form-control"
                     placeholder="Full Name"
                   >
                 </ValidationProviderWrapper>
               </div>
-              </div>
+              <b-icon-x-lg class="fs-12 pointer text-grey cancel-icon" @click="removeContributor(index)" />
+            <!-- </div>   -->
+            </div>
               <div class="row mt-3">
                   <div class="col-md-3 add-more">
-                      <button class="btn btn-transparent px-3 py-2">Add Another</button>
+                    <button v-if="contributorsData.length > 0" class="btn btn-transparent px-3 py-2" @click.prevent="addContributor">Add Another</button>
+                    <button v-else class="btn btn-transparent px-3 py-2" @click.prevent="addContributor">Add Contributor</button>
                   </div>
               </div>
               <div class="row mt-3">
@@ -251,6 +254,9 @@
           sub_title: '',
           author_name: '',
           contributor: '',
+          contributorsData: [
+      { contributor: '', full_name: '' }
+    ],
           full_name: '',
           categories: '',
           keywords: '',
@@ -316,6 +322,12 @@
       },
       methods: {
         ...mapActions('publisher', ['GET_BOOK']),
+        addContributor() {
+    this.contributorsData.push({ contributor: '', full_name: '' });
+  },
+  removeContributor(index) {
+    this.contributorsData.splice(index, 1);
+  },
         async getCurriculum() {
           try {
             const { data } =  await this.$axios.get('/app/list_curriculum')
@@ -403,5 +415,13 @@
     right: 25px;
     top: 33px;
     color: #8F9AA3;
+  }
+  .contributor {
+    position: relative;
+  }
+  .cancel-icon {
+    position: absolute;
+    right: 10vw;
+    top: 35px;
   }
   </style>
