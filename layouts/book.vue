@@ -8,7 +8,7 @@
     <div class="site-container">
         <div class="row">
             <div class="col-md-2 side-bar">
-                <h4 class="fs-14 font-weight-bold">Create your book</h4>
+                <h4 class="fs-14 checkbox font-weight-bold">Create your book</h4>
                 <div class="pointer">
                     <b-form-checkbox
       id="checkbox-1"
@@ -19,7 +19,7 @@
       unchecked-value="not_accepted"
       :class="[showDetails ? 'selected-color' : '']"
     >
-    <span class="ml-2 fs-14" @click.prevent="showDetailsForm">Book Details</span>
+    <span class="ml-2 fs-14 checkbox" @click.prevent="showDetailsForm">Book Details</span>
     </b-form-checkbox>
                 </div>
                 <div>
@@ -31,7 +31,7 @@
       class="custom-checkbox"
       :class="[showContent ? 'selected-color' : '']"
     >
-    <span class="ml-2 fs-14" @click.prevent="showContentForm">Book Content</span>
+    <span class="ml-2 fs-14 checkbox" @click.prevent="showContentForm">Book Content</span>
     </b-form-checkbox>
                 </div>
             </div>
@@ -76,6 +76,7 @@ export default {
     handleNext() {
       this.showDetails = false
       this.showContent = true
+      this.status = 'accepted'
       window.scrollTo(0, 0)
     },
     goBack() {
@@ -127,5 +128,13 @@ export default {
 }
 .main-content {
   margin-left: 200px;
+}
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .checkbox {
+    font-size: 12px !important;
+  }
+  .main-content {
+  margin-left: 150px;
+}
 }
 </style>

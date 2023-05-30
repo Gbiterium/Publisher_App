@@ -137,13 +137,13 @@
     </div>
     <div class="pie-chart mt-5">
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-md-6">
           <highcharts :options="categoryOptions"></highcharts>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-md-6">
           <highcharts :options="formatOptions"></highcharts>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-md-6">
           <highcharts :options="subjectOptions"></highcharts>
         </div>
       </div>
@@ -342,7 +342,7 @@ export default {
 .earn-details {
   position: absolute;
   bottom: 0;
-  right: 30px;
+  /* right: 30px; */
 }
 .daily-btn {
   border-top-right-radius: 0px !important;

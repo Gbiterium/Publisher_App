@@ -424,4 +424,9 @@
     right: 10vw;
     top: 35px;
   }
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    label {
+      font-size: 12px !important;
+    }
+  }
   </style>

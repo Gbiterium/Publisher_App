@@ -7,7 +7,7 @@
       </div>
       <div class="card-body pt-md-3 pb-md-5 px-md-5">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-lg-4 col-md-8 mb-3">
             <div>Manuscript</div>
             <div v-if="!manuscript">
               <small class="mt-3 fs-12">Upload Manuscript </small>
@@ -81,7 +81,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-lg-4 col-md-8 mb-3">
             <div>Snippet</div>
             <div v-if="!file">
               <small class="mt-3 fs-12">Upload Snippet</small>
@@ -155,8 +155,8 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="pl-3">
+          <div class="col-lg-4 col-md-8 mb-3">
+            <div class="pl-lg-3">
               <div>Book Cover</div>
               <small class="mt-3 fs-12">Upload Book Cover </small>
               <div class="image-container">

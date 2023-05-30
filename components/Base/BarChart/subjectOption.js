@@ -31,7 +31,7 @@ export default {
       verticalAlign: "middle",
       floating: true,
       itemMarginTop: 8,
-      width: 160,
+      width: 150,
       itemStyle: {
         color: "#171E40",
         fontWeight: "normal",
