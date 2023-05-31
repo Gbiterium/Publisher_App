@@ -1,6 +1,12 @@
 <template>
   <div>
-    <button v-if="$cookies.get('publisher-token') !== undefined" class="btn btn-primary" @click="$router.push('./publisher/analytics')">continue</button>
+    <div v-if="$cookies.get('publisher-token') !== undefined" class="row text-center my-3">
+      <div class="col text-left">
+        <h2 class="text-left font-family_brown font-weight-bold">Continue as a Publisher</h2>
+        <!-- <span>Don't have account? <nuxt-link to="/auth/signup">Sign Up</nuxt-link></span> -->
+        <button class="btn btn-primary mt-3" @click="$router.push('./publisher/analytics')">continue</button>
+      </div>
+    </div>
     <button v-else class="btn btn-primary" @click="loginHandler">login</button>
   </div>
 </template>

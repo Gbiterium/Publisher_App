@@ -39,6 +39,7 @@
               :fields="fields"
               :items="books"
               :is-busy="isBusy"
+              @row-clicked="onRowSelected($event)"
               >
               <!-- :record-count="recordCount"
                 :filter="filter"
@@ -46,7 +47,7 @@
               :per-page="perPage"
               @sort="onSortChanged"
               @page-changed="getResources"
-              @row-clicked="onRowSelected($event)" -->
+               -->
               <template #book="{ data: { item } }">
                 <div class="d-flex align-items-center">
                   <img :src="item.book_cover">

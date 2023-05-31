@@ -28,14 +28,15 @@
           Today
         </button>
       </div>
-      <div class="custom-select1">
+      <div class="custom-select1" @click.prevent="getProperties('authors')">
         <v-select
           v-model="author"
           class="style-chooser"
           placeholder="Author"
           label="name"
           :options="authors"
-        >
+          >
+          <!-- :loading="loading" -->
         </v-select>
       </div>
       <!-- <div class="custom-select1">
@@ -48,7 +49,7 @@
         >
         </v-select>
       </div> -->
-      <div class="custom-select1">
+      <div class="custom-select1" @click.prevent="getProperties('categories')">
         <v-select
         v-model="category"
           class="style-chooser"
@@ -58,7 +59,7 @@
         >
         </v-select>
       </div>
-      <div class="custom-select1">
+      <div class="custom-select1" @click.prevent="getProperties('formats')">
         <v-select
         v-model="format"
           class="style-chooser"
@@ -138,14 +139,15 @@ export default {
       showToday: true,
       start_date: "",
       end_date: "",
-      authors: ['Ryan Frase', 'Flynn', 'Akin Agbaje', 'Hector Herrera', 'Walter Tevis', 'Robert Greene', ''],
-      formats: ['PDF', 'Textbook'],
-      categories: ['fiction', 'historical'],
+      authors: [],
+      formats: [],
+      categories: [],
       category: '',
       author: '',
       book: '',
       format: '',
-      filterData: {}
+      filterData: {},
+      loading: false
     };
   },
   mounted() {
@@ -166,6 +168,25 @@ export default {
         .endOf("month")
         .toISODate();
       this.$emit("filter-date", this.start_date, this.end_date);
+    },
+    async getProperties(property) {
+      try {
+        this.loading = true
+        const { data } = await this.$axios.get(`/app/publisher/books_properties?property=${property}`)
+        if (property === 'authors') {
+        this.authors = data.data
+        } else if(property === 'categories') {
+
+          this.categories = data.data
+        } else if(property === 'formats') {
+
+          this.formats = data.data
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loading = false
+      }
     },
     filterByCurrentMonth() {
       this.showCurrent = true;

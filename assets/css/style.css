@@ -259,7 +259,7 @@ hr {
 .text-black {
   color: #000000 !important;
 }
-.spinner-border {
+.chart-wrapper .spinner-border {
   width: 3rem !important;
   height: 3rem !important;
   color: #1070b7;

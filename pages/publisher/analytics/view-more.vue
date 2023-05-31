@@ -5,7 +5,7 @@
         <div>Top Earning Books</div>
       </template>
       <template #subtitle>
-        <div>Top performing books</div>
+        <div>Top 10 performing books</div>
       </template>
       <template #smallcard-title>
         <div>Top earning books</div>
@@ -74,7 +74,8 @@ export default {
       top_earning: [],
       loading: false,
       earnings: "",
-      uniqueBooks: []
+      uniqueBooks: [],
+      uniqueEarnings: []
     };
   },
   async mounted() {
@@ -115,6 +116,28 @@ export default {
         );
         const books = data.data.map((el) => el.books);
         this.books = [].concat(...books);
+        const earningsByUniqueId = {};
+
+  for (let i = 0; i < this.books.length; i++) {
+    const book = this.books[i];
+    const id = book.book_id;
+    const earnings = book.total_earnings;
+    const page_reads = book.total_reads
+
+    if (earningsByUniqueId[id]) {
+      earningsByUniqueId[id].total_earnings += earnings;
+      earningsByUniqueId[id].page_reads += page_reads
+    } else {
+      earningsByUniqueId[id] = {total_earnings: earnings, book_cover: book.book_cover, total_reads: page_reads};
+    }
+  }
+  const result = [];
+
+  for (const id in earningsByUniqueId) {
+    result.push({ book_id: id, ...earningsByUniqueId[id]});
+  }
+  console.log(earningsByUniqueId, 'results')
+  this.uniqueEarnings = result
         this.uniqueBooks = [];
   const ids = new Set();
           for (const book of this.books) {
@@ -126,7 +149,7 @@ export default {
         // if (todayData) {
         this.earnings = this.books.reduce((a, el) => a + el.total_earnings, 0);
         //   this.reads = todayData.books.reduce((a, el) => a + el.total_reads, 0);
-        this.top_earning = this.books.sort(
+        this.top_earning = this.uniqueEarnings.sort(
           (a, b) => b.total_earnings - a.total_earnings
         );
         // }

@@ -53,23 +53,6 @@
             {{ data.value ? data.value : "      " }}
           </slot>
         </template>
-        <template #cell(grade_levels)="data">
-          <slot name="grade_levels" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-
-        <template #cell(description)="data">
-          <slot name="description" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
-
-        <template #cell(last_name)="data">
-          <slot name="last_name" :data="data">
-            {{ data.value }}
-          </slot>
-        </template>
         <template #cell(bill_status)="data">
           <slot name="bill_status" :data="data">
             {{ data.value ? data.value : "      " }}
@@ -104,6 +87,32 @@
                 <div class="text-grey mt-1 text-capitalize">Categories: {{ data.item.categories.join(", ") }}</div>
               </div>
               </div>
+            </template>
+            <template #cell(title)="data">
+              <div :style="{ width: '550px' }">
+              <div class="d-flex align-items-center content">
+                <img :src="`${$config.BASE_URL}${data.item.thumbnails[0].image}`">
+                <div class="ml-2">
+                <div class="fs-14">{{ data.item.title }}</div>
+                <div class="text-grey mt-1 fs-12">{{ truncate(data.item.description, 150) }}</div>
+                <div class="text-grey mt-1 text-capitalize fs-12">{{ data.item.subject.map((el) => el.name).join(", ") }}</div>
+                <!-- <div class="text-grey mt-1 text-capitalize fs-12">{{ data.item.grade_levels.join(", ") }}</div> -->
+                <span v-if="data.item.content_type === 'video'" class="iconify mt-1" data-icon="bi:play-circle-fill"></span>
+                <span v-if="data.item.content_type === 'document'" class="iconify" data-icon="file-icons:microsoft-word"></span>
+              <span v-if="data.item.content_type === 'worksheet'" class="iconify" data-icon="vscode-icons:file-type-pdf2"></span>
+              <span v-if="data.item.content_type === 'game'" class="iconify" data-icon="vscode-icons:file-type-zip"></span>
+              </div>
+              </div>
+              </div>
+            </template>
+            <template #cell(content_type)="data">
+              <span v-if="data.item.content_type === 'video'" class="iconify" data-icon="bi:play-circle-fill"></span>
+              <span v-if="data.item.content_type === 'document'" class="iconify" data-icon="file-icons:microsoft-word"></span>
+              <span v-if="data.item.content_type === 'worksheet'" class="iconify" data-icon="vscode-icons:file-type-pdf2"></span>
+              <span v-if="data.item.content_type === 'game'" class="iconify" data-icon="vscode-icons:file-type-zip"></span>
+              </template>
+            <template #cell(grade_levels)="data">
+              <div class="text-capitalize">{{ data.value ? data.value.join(", ") : "" }}</div>
             </template>
             <template #cell(categories)="data">
               <div class="text-capitalize">{{ data.value ? data.value.join(", ") : "" }}</div>
@@ -363,6 +372,9 @@ export default {
         }, 100);
       }
     },
+    truncate(source, size) {
+      return source.length > size ? source.slice(0, size - 1) + "…" : source;
+    },
     toggleSingleRow(i) {
       this.$emit("single-row-selected", i);
       if (i.rowSelected === true) {
@@ -438,5 +450,11 @@ export default {
   width: 56px;
   object-fit: cover;
   object-position: center;
+}
+.content img {
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 </style>

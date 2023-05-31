@@ -199,34 +199,29 @@
         </div>
       </div>
     </div>
-    <ModalWrapper
-      id="publishModal"
-      title="Publish Book"
-      :no-footer="true"
-    >
-    <div class="my-4">
-      <div class="d-flex align-items-center justify-content-center">
-      <span>Are you sure you want to publish book?</span>
-      </div>
+    <ModalWrapper id="publishModal" title="Publish Book" :no-footer="true">
+      <div class="my-4">
+        <div class="d-flex align-items-center justify-content-center">
+          <span>Are you sure you want to publish book?</span>
+        </div>
 
-      <div class="d-flex w-100 justify-content-center align-items-center mt-5 mb-2">
-        <div>
-          <button
-            class="btn btn-primary py-2 px-3 mr-2"
-            @click="submit_review"
+        <div
+          class="d-flex w-100 justify-content-center align-items-center mt-5 mb-2"
+        >
+          <div>
+            <button
+              class="btn btn-primary py-2 px-3 mr-2"
+              @click="submit_review"
             >
-            Submit for review
-          </button>
+              Submit for review
+            </button>
+          </div>
+          <div>
+            <button class="btn btn-light px-5 py-2" @click="save_draft">
+              Save as Draft
+            </button>
+          </div>
         </div>
-        <div>
-          <button
-            class="btn btn-light px-5 py-2"
-            @click="save_draft"
-            >
-          Save as Draft
-          </button>
-        </div>
-      </div>
       </div>
     </ModalWrapper>
   </div>
@@ -241,7 +236,7 @@ export default {
       book_cover: "",
       bookCover: "",
       subjects: "",
-      submit_for_review: false
+      submit_for_review: false,
     };
   },
   methods: {
@@ -315,54 +310,56 @@ export default {
         formData.append("book_cover", this.bookCover),
         formData.append("manuscript", this.manuscript),
         formData.append("snippet", this.file);
-        formData.append('submit_for_review', this.submit_for_review)
-        return formData
+      formData.append("submit_for_review", this.submit_for_review);
+      return formData;
     },
     async save_draft() {
-      this.submit_for_review = false
-      const formData = await this.book_data()
+      this.submit_for_review = false;
+      const formData = await this.book_data();
       try {
         const response = await this.$axios.post(
-          "/app/publisher/add_book/", formData
+          "/app/publisher/add_book/",
+          formData
         );
         if (response.status === 200) {
-          this.$router.push('/publisher/bookshelf')
-          this.$bvModal.hide('publishModal')
+          this.$router.push("/publisher/bookshelf");
+          this.$bvModal.hide("publishModal");
         }
         console.log(response);
       } catch (error) {
         if (error.response.data && error.response) {
-          const keys = Object.keys(error.response.data)
+          const keys = Object.keys(error.response.data);
           keys.forEach((key) => {
             this.$toast({
-              type: 'error',
+              type: "error",
               text: `${key} - ${error.response.data[key][0]}`,
-            })
-          })
+            });
+          });
         }
       }
     },
     async submit_review() {
-      this.submit_for_review = true
-      const formData = await this.book_data()
+      this.submit_for_review = true;
+      const formData = await this.book_data();
       try {
         const response = await this.$axios.post(
-          "/app/publisher/add_book/", formData
+          "/app/publisher/add_book/",
+          formData
         );
         if (response.status === 200) {
-          this.$router.push('/publisher/bookshelf')
-          this.$bvModal.hide('publishModal')
+          this.$router.push("/publisher/bookshelf");
+          this.$bvModal.hide("publishModal");
         }
         console.log(response);
       } catch (error) {
         if (error.response.data && error.response) {
-          const keys = Object.keys(error.response.data)
+          const keys = Object.keys(error.response.data);
           keys.forEach((key) => {
             this.$toast({
-              type: 'error',
+              type: "error",
               text: `${key} - ${error.response.data[key][0]}`,
-            })
-          })
+            });
+          });
         }
       }
     },
@@ -403,7 +400,7 @@ export default {
       //   formData.append("book_cover", this.bookCover),
       //   formData.append("manuscript", this.manuscript),
       //   formData.append("snippet", this.file);
-        this.$bvModal.show('publishModal')
+      this.$bvModal.show("publishModal");
       // try {
       //   const response = await this.$axios.post(
       //     "/app/publisher/add_book/",
