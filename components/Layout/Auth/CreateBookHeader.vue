@@ -4,7 +4,7 @@
       >
         <div class="d-flex justify-content-center align-items-center">
           <!-- <nuxt-link to="/publisher/bookshelf"> -->
-            <div class="d-flex align-items-center justify-content-center fs-14 text-light-blue" @click="showModal">
+            <div class="d-flex align-items-center justify-content-center fs-14 text-light-blue pointer" @click="showModal">
             <span class="iconify mr-2" data-icon="bi:arrow-left"></span>
             <span>Back to Book Shelf</span>
             </div>
