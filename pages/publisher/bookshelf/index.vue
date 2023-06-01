@@ -176,6 +176,7 @@
       this.getBookList()
     }, 500),
       handleOnSelectTab(e) {
+        // this.name = ''
         if (e === `All (${this.getBooks.length})`) {
           // this.getBookList()
           this.books = this.getBooks

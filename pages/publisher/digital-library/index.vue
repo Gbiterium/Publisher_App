@@ -31,9 +31,9 @@
             type="search"
             class="form-control"
             placeholder="Search Content"
+            @input="slowContent()"
+          @keyup.enter="getContent()"
             />
-            <!-- @input="slowBook()"
-          @keyup.enter="getContent()" -->
           <b-icon-search class="search-icon fs-14"></b-icon-search>
           </div>
           <div class="filter-btn">
@@ -157,7 +157,7 @@ export default {
     async getContent(){
       try {
         this.isBusy = true
-        const { data } = await this.$axios.get(`/content/list_content?content_type=${this.type}`)
+        const { data } = await this.$axios.get(`/content/list_content?title=${this.title}&content_type=${this.type}`)
         this.contents = data.data
       } catch (error) {
         console.log(error)
@@ -176,10 +176,11 @@ export default {
         this.$router.push('./digital-library/content/add-game')
       } 
     },
-  //   slowBook: debounce(function () {
-  //   this.getBookList()
-  // }, 500),
+    slowContent: debounce(function () {
+    this.getContent()
+  }, 500),
     async handleOnSelectTab(e) {
+      this.title = ''
       this.selectedTab = e
       if (e === 'All') {
         this.type = ''
