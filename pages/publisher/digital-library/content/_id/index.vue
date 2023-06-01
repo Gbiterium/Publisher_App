@@ -1,5 +1,12 @@
 <template>
   <div class="container-fluid">
+    <div>
+        <div class="d-flex align-items-center text-blue fs-14" @click.prevent="$router.push('/publisher/digital-library')">
+        <span class="iconify mr-2 pointer" data-icon="akar-icons:arrow-left"></span>
+        <div class="pointer">Content</div>
+        </div>
+        <hr />
+    </div>
     <div class="d-flex justify-content-between align-items-center">
       <div class="fs-24 font-weight-bold mb-4 text-capitalize">
         {{ content.title }}
@@ -52,7 +59,7 @@
                     <div class="btn-abs">
                         <button v-if="content.content_type === 'document'" class=" btn btn-light border-none">Download Document</button>
                         <button v-if="content.content_type === 'worksheet'" class=" btn btn-light border-none">Download Worksheet</button>
-                        <button v-if="content.content_type === 'game'" class=" btn btn-light border-none">Download Game</button>
+                        <button v-if="content.content_type === 'game'" class=" btn btn-light border-none">Play Game</button>
                         </div>
                         <div class="icon-abs">
                         <span v-if="content.content_type === 'video'" class="iconify " data-icon="bi:play-circle-fill"></span>

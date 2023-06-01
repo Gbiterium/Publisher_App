@@ -123,12 +123,16 @@
       page: 1,
       totalPages: null,
       perPage: 100,
+      status: '',
+      // published: 0,
+      // draft: 0,
+      // under_review: 0
       }
     },
     async created () {
       this.isBusy = true
-      await this.getBookList()
-      this.books = this.getBooks
+      // await this.getBookList()
+      // this.books = this.getBooks
       // this.published = this.getBooks.filter((el) => el.status === 'Published')
       // this.draft = this.getBooks.filter((el) => el.status === 'DRAFT')
       // this.under_review = this.getBooks.filter((el) => el.status === 'AWAITING_APPROVAL')
@@ -165,30 +169,36 @@
       },
       async getBookList() {
         try {
+          this.isBusy = true
         // await this.GET_BOOKS({name: this.name, page: i, page_size: this.perPage})
-        await this.GET_BOOKS({name: this.name})
+        await this.GET_BOOKS({name: this.name, status: this.status})
         this.books = this.getBooks
         } catch (error) {
           console.log(error)
+        } finally {
+          this.isBusy = false
         }
       },
       slowBook: debounce(function () {
       this.getBookList()
     }, 500),
-      handleOnSelectTab(e) {
-        // this.name = ''
+      async handleOnSelectTab(e) {
+        this.name = ''
         if (e === `All (${this.getBooks.length})`) {
-          // this.getBookList()
-          this.books = this.getBooks
+          this.status = ''
+          await this.getBookList()
         }
         if (e === `Published (${this.published.length})`) {
-          this.books = this.published
+          this.status = 'Published'
+          await this.getBookList()
         }
         if (e === `Draft (${this.draft.length})`) {
-          this.books = this.draft
+          this.status = 'DRAFT'
+          await this.getBookList()
         }
         if (e === `Under Review (${this.under_review.length})`) {
-          this.books = this.under_review
+          this.status = 'AWAITING_APPROVAL'
+          await this.getBookList()
         }
       }
     }

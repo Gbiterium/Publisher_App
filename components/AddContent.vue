@@ -1,5 +1,12 @@
 <template>
   <div class="container-fluid">
+    <div>
+        <div class="d-flex align-items-center text-blue fs-14 pointer" @click.prevent="$router.push('/publisher/digital-library')">
+        <span class="iconify mr-2" data-icon="akar-icons:arrow-left"></span>
+        <div>Content</div>
+        </div>
+        <hr />
+    </div>
     <div class="d-flex justify-content-between align-items-center">
       <div class="fs-24 font-weight-bold mb-4">
         <slot name="title"></slot>

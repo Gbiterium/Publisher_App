@@ -22,10 +22,10 @@ const actions = {
       return error
     }
   },
-  async GET_BOOKS({ commit }, { name }) {
+  async GET_BOOKS({ commit }, { name, status }) {
     try {
       const { data } = await this.$axios.get('/app/publisher/books', {
-        params: { name },
+        params: { name, status },
       })
       commit('setBooks', data.data)
     } catch (error) {
