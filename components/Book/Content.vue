@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="card">
       <div class="card-head">
         <h3 class="px-md-5 pt-4 pb-2 fs-24">Book Content</h3>

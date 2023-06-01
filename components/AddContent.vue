@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center">
       <div class="fs-24 font-weight-bold mb-4">
         <slot name="title"></slot>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="fs-24 font-weight-bold mb-4">
         Payment Report 
     </div>

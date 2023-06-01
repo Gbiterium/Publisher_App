@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="mb-4">
       <div class="fs-24 font-weight-bold"><slot name="title"></slot></div>
       <span class="fs-14"><slot name="subtitle"></slot></span>

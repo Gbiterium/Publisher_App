@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div class="fs-24 font-weight-bold mb-3">Account</div>
     <!-- <BackwardNavigation /> -->
     <div class="card">

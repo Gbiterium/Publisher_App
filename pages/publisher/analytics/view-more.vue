@@ -17,7 +17,7 @@
         {{ earnings ? earnings.toLocaleString("en-US") : 0 }}
       </template>
       <template #chart>
-        <div class="container top-earning">
+        <div class="container-fluid top-earning">
           <div v-if="loading">
             <div class="row">
               <div v-for="n in 4" :key="n" class="col-md-3">
