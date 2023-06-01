@@ -22,7 +22,7 @@
         v-for="(tab, index) in ['All', 'Videos', 'Documents', 'Worksheets', 'Games']"
         >
         <UtilsCardTab :key="index" :title="tab">
-          <div v-if="contents.length > 0">
+          <div v-if="contents">
       <div class="card-body">
         <div class="d-flex align-items-center">
         <div class="search-input mr-3">
