@@ -1,6 +1,6 @@
 <template>
     <div>
-      <AddContent @file-upload="handleUpload" @content-data="handleSubmit" :loading="loading">
+      <AddContent @file-upload="handleUpload" @remove-file="removeFile" :valid-file="validFile" @content-data="handleSubmit" :loading="loading">
         <template #title> Add a Game </template>
         <template #upload-title>Upload Game</template>
       <template #upload-label>game</template>
@@ -14,20 +14,24 @@
     layout: "authWithoutTopbar",
     data () {
         return {
-            loading: false
+            loading: false,
+            validFile: ''
         }
     },
     methods: {
       handleUpload(file) {
-        if (file.type !== "video/mp4") {
+        if (!file.type.includes('zip')) {
           this.$toast({
             type: "error",
             text: "Invalid file format",
           });
         } else {
-          return file;
+          this.validFile = file;
         }
       },
+      removeFile() {
+      this.validFile = null
+    },
       async handleSubmit(data) {
           try {
             this.loading = true
@@ -42,7 +46,7 @@
               data.grade_levels.forEach((el) => {
               formData.append('grade_levels', el)
               })
-              formData.append('content_file', data.content_file)
+              formData.append('content_file', this.validFile)
               data.categories.forEach((el) => {
               formData.append('categories', el)
               })

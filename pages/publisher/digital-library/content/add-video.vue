@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddContent @file-upload="handleUpload" @content-data="handleSubmit" :loading="loading">
+    <AddContent @file-upload="handleUpload" @remove-file="removeFile" @content-data="handleSubmit" :valid-file="validFile" :loading="loading">
       <template #title> Add a Video </template>
       <template #upload-title>Upload Video</template>
       <template #upload-label>video</template>
@@ -14,7 +14,8 @@ export default {
   layout: "authWithoutTopbar",
   data () {
     return {
-      loading: false
+      loading: false,
+      validFile: '',
     }
   },
   methods: {
@@ -25,8 +26,11 @@ export default {
           text: "Invalid file format",
         });
       } else {
-        return file;
+        this.validFile = file
       }
+    },
+    removeFile() {
+      this.validFile = null
     },
     async handleSubmit(data) {
         try {
@@ -42,7 +46,7 @@ export default {
             data.grade_levels.forEach((el) => {
             formData.append('grade_levels', el)
             })
-            formData.append('content_file', data.content_file)
+            formData.append('content_file', this.validFile)
             data.categories.forEach((el) => {
             formData.append('categories', el)
             })

@@ -136,7 +136,7 @@
               <div class="col-lg-5 pl-lg-5 mt-3">
                 <small class="text-grey fs-12 font-weight-600"><slot name="upload-title"></slot></small>
                 <div
-                  v-if="!file"
+                  v-if="!validFile"
                   class="upload-area d-flex align-items-center justify-content-center"
                 >
                   <div class="">
@@ -176,7 +176,7 @@
                       <div
                         class="d-flex align-items-center justify-content-center fs-12 text-blue"
                       >
-                        {{ truncate(file.name, 35) }}
+                        {{ validFile ? truncate(validFile.name, 35) : '' }}
                       </div>
                     </div>
                     <div
@@ -254,11 +254,15 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    validFile: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
-      file: "",
+      file: '',
       images: [],
       title: '',
       description: '',
@@ -275,7 +279,8 @@ export default {
         categories: ['Textbook', 'Lesson Plan', 'Historical'],
         grade_levels: ["Primary 1", "Primary 2", 'JSS 1', 'JSS 2'],
         thumbnails: [],
-        content: {}
+        content: {},
+        uploadedFile: '',
     };
   },
   watch: {
@@ -291,6 +296,12 @@ export default {
       },
       immediate: true,
     },
+    validFile: {
+      handler(newVal) {
+        this.uploadFile = newVal;
+      },
+      immediate: true,
+    }
   },
   async created() {
       if(this.$route.query.id) {
@@ -321,7 +332,8 @@ export default {
       }
     },
     removeFile() {
-      this.file = null;
+      // this.validFile = null;
+      this.$emit('remove-file')
     },
     removeThumbnail(index) {
         this.images.splice(index, 1)

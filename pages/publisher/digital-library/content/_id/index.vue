@@ -50,6 +50,7 @@
                     <div class="btn-abs">
                         <button v-if="content.content_type === 'document'" class=" btn btn-light border-none">Download Document</button>
                         <button v-if="content.content_type === 'worksheet'" class=" btn btn-light border-none">Download Worksheet</button>
+                        <button v-if="content.content_type === 'game'" class=" btn btn-light border-none">Download Game</button>
                         </div>
                         <div class="icon-abs">
                         <span v-if="content.content_type === 'video'" class="iconify " data-icon="bi:play-circle-fill"></span>
