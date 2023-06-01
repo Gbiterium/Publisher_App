@@ -28,8 +28,10 @@
             </div>
             <div>
             <div class="text-grey fs-14 mt-3 font-weight-600">SUBJECT</div>
-            <div v-for="el in content.subject" :key="el.id" class="mt-2">
+            <div class="d-flex">
+            <div v-for="el in content.subject" :key="el.id" class="mt-2 mr-2">
             <span class="subject-container p-2 fs-14">{{ el.name }}</span>
+            </div>
             </div>
             </div>
             <hr class="my-4" />
@@ -98,7 +100,6 @@ export default {
                 const { data } = await this.$axios.get(`/content/list_content?content_id=${this.$route.params.id}`)
                 this.content = data.data[0]
                 this.thumbnail = this.content.thumbnails[0]
-                console.log(this.thumbnail)
             } catch (error) {
                 console.log(error)
             } finally {

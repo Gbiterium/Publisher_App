@@ -93,7 +93,7 @@
               <div class="d-flex align-items-center content">
                 <img :src="`${$config.BASE_URL}${data.item.thumbnails[0].image}`">
                 <div class="ml-2">
-                <div class="fs-14">{{ data.item.title }}</div>
+                <div class="fs-14 text-capitalize">{{ data.item.title }}</div>
                 <div class="text-grey mt-1 fs-12">{{ truncate(data.item.description, 150) }}</div>
                 <div class="text-grey mt-1 text-capitalize fs-12">{{ data.item.subject.map((el) => el.name).join(", ") }}</div>
                 <!-- <div class="text-grey mt-1 text-capitalize fs-12">{{ data.item.grade_levels.join(", ") }}</div> -->

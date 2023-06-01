@@ -51,6 +51,7 @@
                       label="name"
                       :options="subjects"
                       :reduce="(option) => option.id"
+                      multiple
                     >
                     </v-select>
                   </ValidationProviderWrapper>
@@ -105,14 +106,25 @@
                         name="Keywords"
                         :rules="['required']"
                       >
-                        <v-select
+                        <!-- <v-select
                           v-model="keyword"
                           class="style-chooser"
                           placeholder="Select Keywords"
                           :options="keywords"
                           multiple
-                        >
-                        </v-select>
+                        > -->
+                        <v-select
+                          ref="multiple"
+                          v-model="keyword"
+                          taggable
+                          multiple
+                          :options="keywords"
+                          class="style-chooser"
+                          push-tags
+                          placeholder="Type in Keyword"
+                          :select-on-key-codes="[188, 13]"
+                        />
+                        <!-- </v-select> -->
                       </ValidationProviderWrapper>
                     </div>
                     <div class="mt-3">
@@ -176,7 +188,7 @@
                       <div
                         class="d-flex align-items-center justify-content-center fs-12 text-blue"
                       >
-                        {{ validFile ? truncate(validFile.name, 35) : '' }}
+                        {{ validFile.name ? truncate(validFile.name, 35) : '' }}
                       </div>
                     </div>
                     <div
@@ -280,7 +292,7 @@ export default {
         grade_levels: ["Primary 1", "Primary 2", 'JSS 1', 'JSS 2'],
         thumbnails: [],
         content: {},
-        uploadedFile: '',
+        uploadedFile: ''
     };
   },
   watch: {
@@ -315,6 +327,9 @@ export default {
         this.category = this.content.categories
         this.grade_level = this.content.grade_levels
         this.images = this.content.thumbnails
+        this.content.thumbnails.forEach((el) => {
+          this.thumbnails.push(el.id)
+        })
       }
     },
   methods: {
@@ -337,6 +352,7 @@ export default {
     },
     removeThumbnail(index) {
         this.images.splice(index, 1)
+        this.thumbnails.splice(index, 1)
     },
     truncate(source, size) {
       return source.length > size ? source.slice(0, size - 1) + "…" : source;
