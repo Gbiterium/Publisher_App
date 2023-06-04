@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  layout(context) {
+  layout() {
     // const word = "publisher";
     // const word2 = ['student','lms'];
     // if (context.route.path.includes(word)) {
