@@ -139,14 +139,23 @@
           const books = data.data.map((el) => el.books);
           this.books = [].concat(...books)
           this.uniqueBooks = [];
-  const ids = new Set();
-
-  for (const book of this.books) {
-    if (!ids.has(book.book_cover)) {
-      ids.add(book.book_cover);
-      this.uniqueBooks.push(book);
-    }
+          this.uniqueBooks = Object.values(this.books.reduce((acc, book) => {
+  const { book_id, book_name, total_reads, total_earnings, book_cover, categories } = book;
+  if (!acc[book_id]) {
+    acc[book_id] = {
+      book_id,
+      book_name,
+      total_reads,
+      total_earnings,
+      book_cover,
+      categories
+    };
+  } else {
+    acc[book_id].total_reads += total_reads;
+    acc[book_id].total_earnings += total_earnings;
   }
+  return acc;
+}, {}));
           this.page_reads = this.books.reduce(
             (a, el) => a + el.total_reads,
             0
