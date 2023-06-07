@@ -296,7 +296,7 @@ export default {
         subjects: [],
         languages: ['English', 'Spanish', 'French', 'Yoruba'],
         categories: ['Textbook', 'Lesson Plan', 'Historical'],
-        grade_levels: ["Primary 1", "Primary 2", 'JSS 1', 'JSS 2'],
+        grade_levels: ["PreSchool", "Primary 1", "Primary 2", 'JSS 1', 'JSS 2'],
         thumbnails: [],
         content: {},
         uploadedFile: ''

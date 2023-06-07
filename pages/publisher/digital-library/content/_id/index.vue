@@ -1,49 +1,92 @@
 <template>
   <div class="container-fluid">
     <div>
-        <div class="d-flex align-items-center text-blue fs-14" @click.prevent="$router.push('/publisher/digital-library')">
+        <div class="d-flex align-items-center text-blue fs-14 mb-4" @click.prevent="$router.push('/publisher/digital-library')">
         <span class="iconify mr-2 pointer" data-icon="akar-icons:arrow-left"></span>
         <div class="pointer">Content</div>
         </div>
-        <hr />
+        <!-- <hr /> -->
     </div>
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="fs-24 font-weight-bold mb-4 text-capitalize">
-        {{ content.title }}
-      </div>
-      <div>
-      <button class="btn btn-light py-2 px-3 mb-3 mr-1" :disabled="isLoading" @click.prevent="handleDelete"><div class="d-flex align-items-center text-grey"><span class="iconify mr-1 text-grey" data-icon="ic:baseline-delete"></span>Delete <b-spinner
-                class="ml-1"
-                v-if="isLoading"
-                label="Spinning"
-                style="width: 1rem; height: 1rem"
-              ></b-spinner></div></button>
-      <button class="btn btn-light py-2 px-3 mb-3" @click.prevent="handleEdit"><div class="d-flex align-items-center text-grey"><span class="iconify mr-1 text-grey" data-icon="ic:round-mode-edit-outline"></span>edit</div></button>
-      </div>
-    </div>
-        <div class="card">
-          <div class="card-body py-xl-5 px-xl-5">
+    <div class="card">
+        <div class="card-body pt-xl-4 pb-xl-5 px-xl-5">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="fs-24 font-weight-bold mb-4 text-capitalize">
+                  {{ content.title }}
+                </div>
+                <div>
+                <button class="btn btn-outline-danger bg-white text-danger py-2 px-3 mb-3 mr-1" :disabled="isLoading" @click.prevent="handleDelete"><div class="d-flex align-items-center"><span class="iconify mr-1" data-icon="ic:baseline-delete"></span>Delete <b-spinner
+                          class="ml-1"
+                          v-if="isLoading"
+                          label="Spinning"
+                          style="width: 1rem; height: 1rem"
+                        ></b-spinner></div></button>
+                <button class="btn btn-light py-2 px-3 mb-3" @click.prevent="handleEdit"><div class="d-flex align-items-center text-grey"><span class="iconify mr-1 text-grey" data-icon="ic:round-mode-edit-outline"></span>edit</div></button>
+                <button class="btn btn-primary py-2 px-3 mb-3">view</button>
+                </div>
+              </div>
             <div class="row">
                 <div class="col-lg-10 pr-5">
             <div class="fs-14 text-grey font-weight-600">DESCRIPTION</div>
-            <p class="mt-1">{{ content.description }}</p>
+            <p class="mt-2">{{ content.description }}</p>
             </div>
             <div class="col-lg-2">
-                <div class="fs-14 text-grey font-weight-600">DATE UPLOADED</div>
-                <p class="mt-1">{{ content.date_created }}</p>
+                <div class="fs-14 text-grey font-weight-600">TOTAL VIEWS</div>
+                <p class="mt-2 text-blue fs-28">0</p>
             </div>
             </div>
-            <div>
-            <div class="text-grey fs-14 mt-3 font-weight-600">SUBJECT</div>
+            <div class="row">
+                <div class="col-lg-5">
+            <div class="text-grey fs-14 mt-3 font-weight-600 text-uppercase">Category</div>
+            <div class="d-flex">
+            <div v-for="el in content.categories" :key="el.id" class="mt-2 mr-2">
+            <span class="subject-container p-2 fs-14">{{ el }}</span>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="text-grey fs-14 mt-3 font-weight-600">GRADE LEVEL</div>
+            <div class="d-flex">
+            <div v-for="el, index in content.grade_levels" :key="index" class="mt-2 mr-2">
+            <span class="subject-container p-2 fs-14">{{ el }}</span>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-2">
+                <div class="fs-14 text-grey mt-3 font-weight-600">DATE UPLOADED</div>
+                <p class="mt-2">{{ content.date_created }}</p>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+            <div class="text-grey fs-14 mt-3 font-weight-600 text-uppercase">subject</div>
             <div class="d-flex">
             <div v-for="el in content.subject" :key="el.id" class="mt-2 mr-2">
             <span class="subject-container p-2 fs-14">{{ el.name }}</span>
             </div>
             </div>
             </div>
+            </div>
             <hr class="my-4" />
-            <div class="row">
-                <div class="col-lg-10 d-flex justify-content-end pr-5 file-container">
+            <div class="thumbnails-container">
+                <div class="text-grey fs-14">Thumbnails</div>
+                <div v-if="loading" class="d-flex align-items-center">
+                <div class="mt-3 mr-2">
+                  <b-skeleton width="90px" height="56px" />
+                </div>
+                <div class="mt-3">
+                  <b-skeleton width="90px" height="56px" />
+                </div>
+            </div>
+            <div v-else class="d-flex align-items-center">
+                <div v-for="el in content.thumbnails" :key="el.id" class="mb-4 mt-2 pointer mr-2">
+                    <div @click.prevent="switchThumbnail(el)">
+                    <img :src="`${$config.BASE_URL}${el.image}`">
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="">
+                <div class="d-flex justify-content-center pr-5 file-container">
                     <div v-if="loading">
               <!-- <div class=" mt-3">
                 <div class="mt-3"> -->
@@ -64,24 +107,6 @@
                         <div class="icon-abs">
                         <span v-if="content.content_type === 'video'" class="iconify " data-icon="bi:play-circle-fill"></span>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-2 thumbnails-container">
-                <div class="text-grey fs-14">Thumbnails</div>
-                <div v-if="loading">
-                <div class="mt-3">
-                  <b-skeleton width="90px" height="56px" />
-                </div>
-                <div class="mt-3">
-                  <b-skeleton width="90px" height="56px" />
-                </div>
-            </div>
-            <div v-else>
-                <div v-for="el in content.thumbnails" :key="el.id" class="mb-3 mt-2 pointer">
-                    <div @click.prevent="switchThumbnail(el)">
-                    <img :src="`${$config.BASE_URL}${el.image}`">
-                    </div>
-                </div>
                 </div>
             </div>
             </div>
@@ -171,18 +196,18 @@ export default {
 .btn-abs {
     position: absolute;
     top: 50%;
-    left: 55%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .icon-abs {
     position: absolute;
     top: 50%;
-    left: 60%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .thumbnails-container img {
     width: 90px;
-height: 53px;
+height: 60px;
 border-radius: 4px;
 object-fit: cover;
 }

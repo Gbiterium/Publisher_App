@@ -4,7 +4,7 @@
       <div class="fs-24 font-weight-bold"><slot name="title"></slot></div>
       <span class="fs-14"><slot name="subtitle"></slot></span>
     </div>
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="filters d-flex justify-content-between align-items-center">
       <div class="d-flex">
         <button
           class="btn last-month"
@@ -89,8 +89,8 @@
         </v-date-picker>
         <b-icon-calendar4 class="fs-10 text-grey calender" />
       </div>
-      <div>
-        <button class="btn btn-light" @click="applyFilter">apply</button>
+      <div class="d-flex align-items-center">
+        <button class="btn btn-light mr-2 mr-md-1" @click="applyFilter">apply</button>
         <button class="btn btn-light" @click="resetFilter">Reset</button>
       </div>
     </div>
@@ -305,5 +305,8 @@ hr {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+.filters {
+  overflow: auto;
 }
 </style>

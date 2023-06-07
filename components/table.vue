@@ -94,13 +94,19 @@
                 <img :src="`${$config.BASE_URL}${data.item.thumbnails[0].image}`">
                 <div class="ml-2">
                 <div class="fs-14 text-capitalize">{{ data.item.title }}</div>
-                <div class="text-grey mt-1 fs-12">{{ truncate(data.item.description, 150) }}</div>
+                <div class="text-grey mt-1 fs-12">{{ truncate(data.item.description, 140) }}</div>
                 <div class="text-grey mt-1 text-capitalize fs-12">{{ data.item.subject.map((el) => el.name).join(", ") }}</div>
-                <!-- <div class="text-grey mt-1 text-capitalize fs-12">{{ data.item.grade_levels.join(", ") }}</div> -->
-                <span v-if="data.item.content_type === 'video'" class="iconify mt-1" data-icon="bi:play-circle-fill"></span>
-                <span v-if="data.item.content_type === 'document'" class="iconify" data-icon="file-icons:microsoft-word"></span>
+                <div class="text-grey mt-1 text-capitalize fs-12">{{ data.item.grade_levels.join(", ") }}</div>
+                <div v-if="data.item.content_type === 'video'" class="icon mt-1">
+                  <img src="@/assets/img/video2.png" />
+                </div>
+                <div v-if="data.item.content_type === 'document'" class="icon mt-1">
+                  <img src="@/assets/img/document.png" />
+                </div>
+                <div v-if="data.item.content_type === 'game'" class="icon mt-1">
+                  <img src="@/assets/img/game.png" />
+                </div>
               <span v-if="data.item.content_type === 'worksheet'" class="iconify" data-icon="vscode-icons:file-type-pdf2"></span>
-              <span v-if="data.item.content_type === 'game'" class="iconify" data-icon="vscode-icons:file-type-zip"></span>
               </div>
               </div>
               </div>
@@ -143,7 +149,7 @@
             <template #cell(status)="data">
               <div>
                 <div v-if="data.value === 'Published'" class="text-blue">{{ data.value }}</div>
-                <div v-if="data.value === 'DRAFT'" class="text-grey">Draft</div>
+                <div v-if="data.value === 'DRAFT' || !data.value" class="text-grey">Draft</div>
                 <div v-if="data.value === 'AWAITING_APPROVAL'" style="color: #FFAB07">Under Review</div>
               </div>
             </template>
@@ -402,6 +408,11 @@ export default {
 .iconify:hover {
   cursor: pointer;
 }
+.icon img {
+  width: 15px !important;
+  height: auto !important;
+  border-radius: 0px !important;
+}
 .table_container {
   border-radius: 10px;
   background-color: white;
@@ -452,8 +463,8 @@ export default {
   object-position: center;
 }
 .content img {
-  height: 80px;
-  width: 80px;
+  height: 110px;
+  width: 110px;
   object-fit: cover;
   border-radius: 5px;
 }

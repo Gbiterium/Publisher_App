@@ -1,5 +1,8 @@
 <template>
   <div class="container-fluid">
+    <div class="mb-4">
+      <div class="fs-24 font-weight-bold">Analytics</div>
+    </div>
     <div class="row report-card">
       <div class="col-md-4 mb-3">
         <div class="card">
