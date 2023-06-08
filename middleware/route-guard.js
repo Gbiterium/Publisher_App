@@ -1,11 +1,9 @@
 
 export default function ({ $cookies, redirect, route, app, $toast }) {
   if (route.query.token) {
-    $cookies.set('slate-token', route.query.token, {
-      expires: new Date(Date.now() + 86400000), // 24 hours
-    })
+    $cookies.set('slate-token', route.query.token)
     $cookies.set('user-details', route.query.user)
-  } else if (!$cookies.get('slate-token')) {
+  } else if (!$cookies.get('publisher-token')) {
   // $toast({
   //   type: 'error',
   //   text: 'You must be logged in to access this page',

@@ -35,18 +35,10 @@
             </div>
             </div>
             <div class="row">
-                <div class="col-lg-5">
-            <div class="text-grey fs-14 mt-3 font-weight-600 text-uppercase">Category</div>
+                <div class="col-lg-10">
+            <div class="text-grey fs-14 mt-3 font-weight-600 text-uppercase">Categories</div>
             <div class="d-flex">
             <div v-for="el in content.categories" :key="el.id" class="mt-2 mr-2">
-            <span class="subject-container p-2 fs-14">{{ el }}</span>
-            </div>
-            </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="text-grey fs-14 mt-3 font-weight-600">GRADE LEVEL</div>
-            <div class="d-flex">
-            <div v-for="el, index in content.grade_levels" :key="index" class="mt-2 mr-2">
             <span class="subject-container p-2 fs-14">{{ el }}</span>
             </div>
             </div>
@@ -54,6 +46,16 @@
             <div class="col-lg-2">
                 <div class="fs-14 text-grey mt-3 font-weight-600">DATE UPLOADED</div>
                 <p class="mt-2">{{ content.date_created }}</p>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                <div class="text-grey fs-14 mt-3 font-weight-600">GRADE LEVEL</div>
+            <div class="d-flex">
+            <div v-for="el, index in content.grade_levels" :key="index" class="mt-2 mr-2">
+            <span class="subject-container p-2 fs-14">{{ el }}</span>
+            </div>
+        </div>
             </div>
             </div>
             <div class="row">
@@ -86,7 +88,7 @@
                 </div>
             </div>
             <div class="">
-                <div class="d-flex justify-content-center pr-5 file-container">
+                <div class="file-container">
                     <div v-if="loading">
               <!-- <div class=" mt-3">
                 <div class="mt-3"> -->
@@ -185,6 +187,7 @@ export default {
 }
 .file-container{
     position: relative;
+    width: 550px;
 }
  .file-container img {
     width: 550px;
@@ -193,13 +196,7 @@ export default {
     border-radius: 1px;
     filter: brightness(70%);
 }
-.btn-abs {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-.icon-abs {
+.btn-abs, .icon-abs {
     position: absolute;
     top: 50%;
     left: 50%;
