@@ -90,11 +90,11 @@
             <div class="">
                 <div class="file-container">
                     <div v-if="loading">
-              <!-- <div class=" mt-3">
-                <div class="mt-3"> -->
+              <!-- <div class=" mt-3"> -->
+                <div class="mt-3">
                   <b-skeleton width="550px" height="323px" />
-                <!-- </div>
-              </div> -->
+                </div>
+              <!-- </div> -->
             </div>
             <!-- <div v-if="content.content_type === 'video'">
                 <video :src="`${$config.BASE_URL}${content.content_file}`" controls></video>
