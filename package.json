@@ -7,13 +7,15 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "node tools/copy-webviewer-files.js"
   },
   "dependencies": {
     "@blowstack/ckeditor-nuxt": "^0.6.0",
     "@ckeditor/ckeditor5-vue2": "^3.0.1",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/pwa": "^3.3.5",
+    "@pdftron/webviewer": "^8.2.0",
     "@types/lodash": "^4.14.177",
     "bootstrap": "^4.6.2",
     "bootstrap-vue": "^2.22.0",
@@ -28,6 +30,7 @@
     "luxon": "^3.3.0",
     "nuxt": "^2.15.8",
     "sweetalert2": "^11.4.16",
+    "video.js": "^7.17.0",
     "v-calendar": "^2.3.4",
     "vee-validate": "^3.4.13",
     "vue": "^2.7.10",

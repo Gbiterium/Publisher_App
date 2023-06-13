@@ -21,7 +21,7 @@
                           style="width: 1rem; height: 1rem"
                         ></b-spinner></div></button>
                 <button class="btn btn-light py-2 px-3 mb-3" @click.prevent="handleEdit"><div class="d-flex align-items-center text-grey"><span class="iconify mr-1 text-grey" data-icon="ic:round-mode-edit-outline"></span>edit</div></button>
-                <button class="btn btn-primary py-2 px-3 mb-3">view</button>
+                <button class="btn btn-primary py-2 px-3 mb-3" @click.prevent="preview">view</button>
                 </div>
               </div>
             <div class="row">
@@ -102,11 +102,11 @@
                 <div v-else>
                     <img :src="`${$config.BASE_URL}${thumbnail.image}`">
                     <div class="btn-abs">
-                        <button v-if="content.content_type === 'document'" class=" btn btn-light border-none">Download Document</button>
-                        <button v-if="content.content_type === 'worksheet'" class=" btn btn-light border-none">Download Worksheet</button>
+                        <button v-if="content.content_type === 'document'" class=" btn btn-light border-none" @click.prevent="preview">Download Document</button>
+                        <button v-if="content.content_type === 'worksheet'" class=" btn btn-light border-none" @click.prevent="preview">Download Worksheet</button>
                         <button v-if="content.content_type === 'game'" class=" btn btn-light border-none">Play Game</button>
                         </div>
-                        <div class="icon-abs">
+                        <div class="icon-abs pointer" @click.prevent="preview">
                         <span v-if="content.content_type === 'video'" class="iconify " data-icon="bi:play-circle-fill"></span>
                     </div>
                 </div>
@@ -114,6 +114,43 @@
             </div>
             </div>
             </div>
+            <b-modal
+        id="showViewer"
+        centered
+        hide-header-close
+        header-class="mt-n3 pt-5"
+        hide-footer
+        size="lg"
+      >
+        <template #modal-header="{ close }">
+          <img
+            src="@/assets/lessons/svg/closeIcon.svg"
+            alt="close icon"
+            class="pointer mr-4"
+            @click="close()"
+          />
+        </template>
+        <div class="text-center">
+
+      <client-only>
+
+      
+          <WebViewer
+            v-if=" fileToView.content_type === 'document' || fileToView.content_type === 'worksheet' || fileToView.content_type === 'game'
+            "
+            ref="webViewer"
+            :style="{ height: onFullScreen ? '85vh' : '500px' }"
+            :url="fileToView.url"
+          />
+
+          <video-player
+            v-if="fileToView.content_type === 'video'"
+            :src="fileToView.url"
+          />
+
+          </client-only>
+        </div>
+      </b-modal>
             </div>
 </template>
 
@@ -125,7 +162,8 @@ export default {
             content: {},
             thumbnail: {},
             loading: false,
-            isLoading: false
+            isLoading: false,
+            fileToView: ''
         }
     },
         async fetch() {
@@ -171,7 +209,12 @@ export default {
       } else if (this.content.content_type === 'game') {
         this.$router.push({path: './add-game', query: {id: this.content.id}})
       } 
-        }
+        },
+        preview() {
+      const file = Object.assign(this.content, {url: `${process.env.BASE_URL}${this.content.content_file}`});
+      this.fileToView = file
+        this.$bvModal.show('showViewer')
+    },
     }
 }
 </script>
