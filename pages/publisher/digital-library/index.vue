@@ -12,14 +12,14 @@
     <a class="dropdown-item border-bottom" href="#" @click.prevent="$router.push('./digital-library/content/add-video')">Video</a>
     <a class="dropdown-item border-bottom" href="#" @click.prevent="$router.push('./digital-library/content/add-document')">Document</a>
     <a class="dropdown-item border-bottom" href="#" @click.prevent="$router.push('./digital-library/content/add-worksheet')">Worksheets</a>
-    <a class="dropdown-item border-bottom" href="#">Exercise</a>
+    <a class="dropdown-item border-bottom" href="#" @click.prevent="$router.push('./digital-library/content/add-exercise')">Exercise</a>
     <a class="dropdown-item" href="#" @click.prevent="$router.push('./digital-library/content/add-game')">Games</a>
   </div>
     </div>
     <div class="card">
       <UtilsBaseCardTab @tab-selected="handleOnSelectTab($event)">
         <template
-        v-for="(tab, index) in ['All', 'Videos', 'Documents', 'Worksheets', 'Games']"
+        v-for="(tab, index) in ['All', 'Videos', 'Documents', 'Worksheets', 'Games', 'Exercise']"
         >
         <UtilsCardTab :key="index" :title="tab">
           <div v-if="contents">
@@ -146,10 +146,12 @@ export default {
   },
   methods: {
     onRowSelected(e) {
+      if (e.content_type !== 'quiz') {
       this.$router.push({
         path: `/publisher/digital-library/content/${e.id}`,
         // query: { image: `${e.book.image}`, author: `${e.book.author}`, name: `${e.book.name}` },
       })
+    }
     },
     // editBook(item) {
     //   this.$router.push({
@@ -202,6 +204,10 @@ export default {
         await this.getContent()
       }if (e === 'Games') {
         this.type = 'game'
+        await this.getContent()
+      }
+      if (e === 'Exercise') {
+        this.type = 'quiz'
         await this.getContent()
       }
     }

@@ -19,6 +19,13 @@ html {
   border: 3px solid #8ebfe4;
   background: center no-repeat #6b9abf;
 }
+.upload-area {
+  height: 140px;
+  width: 250px;
+  background: #ffffff;
+  border: 1px dashed #d4d7e4;
+  border-radius: 5px;
+}
 .dangerText {
   color: red;
 }

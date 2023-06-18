@@ -155,7 +155,7 @@
               <div class="col-lg-5 pl-lg-5 mt-3">
                 <small class="text-grey fs-12 font-weight-600"><slot name="upload-title"></slot></small>
                 <div
-                  v-if="!validFile"
+                  v-if="!validFile && !fileName"
                   class="upload-area d-flex align-items-center justify-content-center"
                 >
                   <div class="">
@@ -195,13 +195,69 @@
                       <div
                         class="d-flex align-items-center justify-content-center fs-12 text-blue"
                       >
-                        {{ validFile.name ? truncate(validFile.name, 35) : '' }}
+                        {{ validFile.name ? truncate(validFile.name, 35) : truncate(fileName, 35) }}
                       </div>
                     </div>
                     <div
                       class="d-flex align-items-center justify-content-center mt-2 fs-12 text-decoration-underline pointer"
                       style="color: #e16c7a"
                       @click.prevent="removeFile"
+                    >
+                      Delete
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-4">
+                </div>
+                <small class="text-grey fs-12 font-weight-600">Upload Snippet</small>
+                <div
+                  v-if="!snippet"
+                  class="upload-area d-flex align-items-center justify-content-center"
+                >
+                  <div class="">
+                    <div
+                      class="d-flex align-items-center justify-content-center"
+                    >
+                      <span
+                        class="iconify text-grey upload-icon"
+                        data-icon="ic:sharp-upload"
+                      ></span>
+                    </div>
+                    <div
+                      class="d-flex align-items-center justify-content-center fs-12 mt-1"
+                    >
+                      <span
+                        ><span
+                          class="text-blue pointer text-decoration-underline"
+                          @click="$refs.snippetInput.click()"
+                          >Browse</span
+                        >
+                        <span class="text-grey">to choose a snippet</span>
+                      </span>
+                      <input
+                        ref="snippetInput"
+                        type="file"
+                        class="d-none"
+                        @change.prevent="uploadSnippet()"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
+                  <div class="uploaded-area">
+                    <div
+                      class="file-area d-flex align-items-center justify-content-center"
+                    >
+                      <div
+                        class="d-flex align-items-center justify-content-center fs-12 text-blue"
+                      >
+                        {{ snippet.name ? truncate(snippet.name, 35) : '' }}
+                      </div>
+                    </div>
+                    <div
+                      class="d-flex align-items-center justify-content-center mt-2 fs-12 text-decoration-underline pointer"
+                      style="color: #e16c7a"
+                      @click.prevent="removeSnippet"
                     >
                       Delete
                     </div>
@@ -260,6 +316,9 @@
                   </div>
               </div>
             </div>
+            <div class="col-12 mt-3">
+              <slot name="exercise"></slot>
+            </div>
           </form>
         </ValidationObserver>
       </div>
@@ -299,7 +358,9 @@ export default {
         grade_levels: ["PreSchool", "Primary 1", "Primary 2", 'JSS 1', 'JSS 2'],
         thumbnails: [],
         content: {},
-        uploadedFile: ''
+        uploadedFile: '',
+        fileName: '',
+        snippet: ''
     };
   },
   watch: {
@@ -334,6 +395,8 @@ export default {
         this.category = this.content.categories
         this.grade_level = this.content.grade_levels
         this.images = this.content.thumbnails
+        const fileUrl = this.content.content_file
+this.fileName = fileUrl.split('/').pop();
         this.content.thumbnails.forEach((el) => {
           this.thumbnails.push(el.id)
         })
@@ -345,6 +408,10 @@ export default {
       this.file = input.files[0];
       this.$emit("file-upload", this.file);
     },
+    uploadSnippet() {
+      const input = this.$refs.snippetInput
+      this.snippet = input.files[0]
+    },
     async getContent() {
       try {
         const { data } = await this.$axios.get(`/content/list_content?content_id=${this.$route.query.id}`)
@@ -354,8 +421,11 @@ export default {
       }
     },
     removeFile() {
-      // this.validFile = null;
+      this.fileName = '';
       this.$emit('remove-file')
+    },
+    removeSnippet() {
+      this.snippet = ''
     },
     removeThumbnail(index) {
         this.images.splice(index, 1)
@@ -425,6 +495,7 @@ export default {
             languages: this.language,
             grade_levels: this.grade_level,
             content_file: this.file,
+            snippet: this.snippet,
             categories: this.category,
             keywords: this.keyword,
             curriculum: this.curriculum,
@@ -437,13 +508,6 @@ export default {
 </script>
 
 <style scoped>
-.upload-area {
-  height: 140px;
-  width: 250px;
-  background: #ffffff;
-  border: 1px dashed #d4d7e4;
-  border-radius: 5px;
-}
 .thumbnail-area {
   height: 100px;
   width: 170px;

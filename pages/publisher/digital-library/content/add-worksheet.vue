@@ -48,7 +48,8 @@
               data.grade_levels.forEach((el) => {
               formData.append('grade_levels', el)
               })
-              formData.append('content_file', this.validFile)
+              this.validFile ? formData.append('content_file', this.validFile) : {}
+              formData.append('content_snippet_file', data.snippet)
               data.categories.forEach((el) => {
               formData.append('categories', el)
               })

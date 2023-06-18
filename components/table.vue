@@ -91,7 +91,8 @@
             <template #cell(title)="data">
               <div :style="{ width: '550px' }">
               <div class="d-flex align-items-center content">
-                <img :src="`${$config.BASE_URL}${data.item.thumbnails[0].image}`">
+                <img v-if="data.item.content_type !== 'quiz'" :src="`${$config.BASE_URL}${data.item.thumbnails[0].image}`">
+                <div v-else class="no-thumbnail"></div>
                 <div class="ml-2">
                 <div class="fs-14 text-capitalize">{{ data.item.title }}</div>
                 <div class="text-grey mt-1 fs-12">{{ truncate(data.item.description, 140) }}</div>
@@ -100,13 +101,13 @@
                 <div v-if="data.item.content_type === 'video'" class="icon mt-1">
                   <img src="@/assets/img/video2.png" />
                 </div>
-                <div v-if="data.item.content_type === 'document'" class="icon mt-1">
+                <div v-if="data.item.content_type === 'document' || data.item.content_type === 'worksheet'" class="icon mt-1">
                   <img src="@/assets/img/document.png" />
                 </div>
                 <div v-if="data.item.content_type === 'game'" class="icon mt-1">
                   <img src="@/assets/img/game.png" />
                 </div>
-              <span v-if="data.item.content_type === 'worksheet'" class="iconify" data-icon="vscode-icons:file-type-pdf2"></span>
+              <span v-if="data.item.content_type === 'quiz'" class="iconify fs-21 text-grey" data-icon="material-symbols:assignment-outline"></span>
               </div>
               </div>
               </div>
@@ -116,6 +117,7 @@
               <span v-if="data.item.content_type === 'document'" class="iconify" data-icon="file-icons:microsoft-word"></span>
               <span v-if="data.item.content_type === 'worksheet'" class="iconify" data-icon="vscode-icons:file-type-pdf2"></span>
               <span v-if="data.item.content_type === 'game'" class="iconify" data-icon="vscode-icons:file-type-zip"></span>
+              <span v-if="data.item.content_type === 'quiz'" class="iconify" data-icon="material-symbols:assignment"></span>
               </template>
             <template #cell(grade_levels)="data">
               <div class="text-capitalize">{{ data.value ? data.value.join(", ") : "" }}</div>
@@ -467,5 +469,11 @@ export default {
   width: 110px;
   object-fit: cover;
   border-radius: 5px;
+}
+.no-thumbnail {
+  height: 110px;
+  width: 110px;
+  border-radius: 5px;
+  background: center no-repeat #6b9abf;
 }
 </style>
