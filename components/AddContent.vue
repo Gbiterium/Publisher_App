@@ -11,12 +11,15 @@
       <div class="fs-24 font-weight-bold mb-4">
         <slot name="title"></slot>
       </div>
+      <div>
+      <button v-if="$route.query.id" class="btn btn-danger py-2 px-3 mb-3 mr-1" @click.prevent="$router.go(-1)">Discard</button>
       <button class="btn btn-primary py-2 px-3 mb-3" :disabled="loading" @click.prevent="handleSubmit">Save <b-spinner
                 class="ml-1"
                 v-if="loading"
                 label="Spinning"
                 style="width: 1rem; height: 1rem"
               ></b-spinner></button>
+              </div>
     </div>
     <div class="card">
       <div class="card-body py-xl-4 px-xl-5">
