@@ -70,7 +70,7 @@ export default {
       file: '',
       description: '',
       title: '',
-      quiz: {}
+      quiz: []
     }
   },
   // async fetch() {
@@ -123,24 +123,24 @@ export default {
     },
   },
 
-  // mounted() {
-  //   $(document).on(
-  //     'click',
-  //     '.accordion-header:not(.creation-accordion-header)',
-  //     (e) => {
-  //       $(e.currentTarget.nextElementSibling).toggleClass('show')
-  //       $(e.currentTarget).toggleClass('active')
-  //     }
-  //   )
+  mounted() {
+    $(document).on(
+      'click',
+      '.accordion-header:not(.creation-accordion-header)',
+      (e) => {
+        $(e.currentTarget.nextElementSibling).toggleClass('show')
+        $(e.currentTarget).toggleClass('active')
+      }
+    )
 
-  //   $(document).on('click', '.creation-accordion-header', (e) => {
-  //     $(
-  //       e.target.parentNode.parentNode.parentNode.parentNode.nextElementSibling
-  //     ).toggleClass('show')
-  //     $(e.target.parentNode.parentNode.parentNode.parentNode).toggleClass(
-  //       'active'
-  //     )
-  //   })
+    $(document).on('click', '.creation-accordion-header', (e) => {
+      $(
+        e.target.parentNode.parentNode.parentNode.parentNode.nextElementSibling
+      ).toggleClass('show')
+      $(e.target.parentNode.parentNode.parentNode.parentNode).toggleClass(
+        'active'
+      )
+    })
 
   //   // const school = this.$store.getters["school/getSchoolByCode"](this.$route.params.id);
 
@@ -170,7 +170,7 @@ export default {
   //     "Access-Control-Allow-Origin": "*",
   //   };
   //   this.editorConfigForOption.simpleUpload.withCredentials = false;
-  // },
+  },
   watch:{
     sections(){
       setTimeout(()=>{
@@ -244,7 +244,10 @@ export default {
       const { data } = await this.$axios.post('/content/upload_quezes_from_sheet/', formData)
       this.quiz = data.data
       if(this.quiz.length > 0) {
+        const sectionIndex = this.sections.length
         await this.addSection()
+        // console.log(this.sections)
+        // this.sections.forEach((elem, index) => {
         this.quiz.forEach((el) => {
         if (el.question_type === 'options') {
           let questionObj = this.questionObject('options')
@@ -258,7 +261,7 @@ export default {
             })
           })
           // this.sections[0].questions.push(this.questionObject('options'))
-          this.sections[0].questions.push(questionObj)
+          this.sections[sectionIndex].questions.push(questionObj)
         } else if (el.question_type === 'trueFalse') {
           let questionObj1 = this.questionObject('trueFalse')
           questionObj1.text = el.question
@@ -270,11 +273,12 @@ export default {
                 textOnly: false,
             })
           })
-          this.sections[0].questions.push(questionObj1)
+          this.sections[sectionIndex].questions.push(questionObj1)
         } else if (el.question_type === 'freeText') {
-          this.sections[0].questions.push(this.questionObject('freeText', []))
+          this.sections[sectionIndex].questions.push(this.questionObject('freeText', []))
         }
       })
+    // })
       }
     },
     removeFile() {
@@ -284,29 +288,20 @@ export default {
     truncate(source, size) {
       return source.length > size ? source.slice(0, size - 1) + "…" : source;
     },
-    async checkFormValidity() {
-      const result = await this.$refs.form.validate();
-      return result;
-    },
-    async handleSubmit() {
-      const result = await this.checkFormValidity();
-      if (!result) {
-        // eslint-disable-next-line no-useless-return
-        return;
-      }
+    async handleSubmit(item) {
         this.submitForm = true
         await this.changeObtainableScore()
         const data = {
         content_type: 'quiz',
-        title: this.title,
-        description: this.description,
-        subject: this.subject,
-        languages: ['Hausa'],
-        grade_levels: this.grade_level,
+        title: item.title,
+        description: item.description,
+        subject: item.subjects,
+        languages: item.languages,
+        grade_levels: item.grade_levels,
         // content_file: this.file,
-        // categories: ['hey'],
-        // keywords: ['hello'],
-        // curriculum: ['748d7b66-fc21-4020-a65c-1a60b83a286b'],
+        categories: item.categories,
+        keywords: item.keywords,
+        curriculum: item.curriculum,
         quiz_config: {
           // available_date: "",
 

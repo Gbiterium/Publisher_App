@@ -156,6 +156,8 @@
                     </div>
               </div>
               <div class="col-lg-5 pl-lg-5 mt-3">
+                <slot name="exercise-upload"></slot>
+                <div v-if="!upload">
                 <small class="text-grey fs-12 font-weight-600"><slot name="upload-title"></slot></small>
                 <div
                   v-if="!validFile && !fileName"
@@ -210,9 +212,11 @@
                     </div>
                   </div>
                 </div>
+                </div>
                 <div class="mt-4">
                 </div>
-                <small class="text-grey fs-12 font-weight-600">Upload Snippet</small>
+                <div v-if="!disableSnippet">
+                  <small class="text-grey fs-12 font-weight-600">Upload Snippet</small>
                 <div
                   v-if="!snippet"
                   class="upload-area d-flex align-items-center justify-content-center"
@@ -265,6 +269,7 @@
                       Delete
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
               <div class="mt-4 mb-5 ml-3">
@@ -339,6 +344,14 @@ export default {
     validFile: {
       type: Object,
       required: true
+    },
+    upload: {
+      type: Boolean,
+      default: false
+    },
+    disableSnippet: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -498,7 +511,6 @@ this.fileName = fileUrl.split('/').pop();
             languages: this.language,
             grade_levels: this.grade_level,
             content_file: this.file,
-            snippet: this.snippet,
             categories: this.category,
             keywords: this.keyword,
             curriculum: this.curriculum,

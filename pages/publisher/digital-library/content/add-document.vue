@@ -17,6 +17,7 @@
         loading: false,
         content: {},
         validFile: '',
+        snippet: ''
         }
     },
     methods: {
@@ -32,6 +33,16 @@
       },
       removeFile() {
       this.validFile = null
+    },
+    uploadSnippet() {
+      const input = this.$refs.snippetInput
+      this.snippet = input.files[0]
+    },
+    removeSnippet() {
+      this.snippet = ''
+    },
+    truncate(source, size) {
+      return source.length > size ? source.slice(0, size - 1) + "…" : source;
     },
       async handleSubmit(data) {
           try {
@@ -50,7 +61,7 @@
               formData.append('grade_levels', el)
               })
               this.validFile ? formData.append('content_file', this.validFile) : {}
-              formData.append('content_snippet_file', data.snippet)
+              formData.append('content_snippet_file', this.snippet)
               data.categories.forEach((el) => {
               formData.append('categories', el)
               })
@@ -100,5 +111,20 @@
   };
   </script>
   
-  <style></style>
+  <style scoped>
+.upload-icon {
+  font-size: 70px;
+}
+.file-area {
+  height: 140px;
+  width: 250px;
+  background: #f7fafa;
+  border: 1px dashed #d4d7e4;
+  border-radius: 5px;
+  position: relative;
+}
+.uploaded-area {
+  width: 250px;
+}
+</style>
   
