@@ -6,13 +6,9 @@
       <template #upload-label>exercise</template>
       <template #thumbnail-label>exercise</template>
       <template #exercise-upload>
-        <small class="text-grey fs-12 font-weight-600">Upload Exercise</small>
-                <div
-                  v-if="!file"
-                  class="upload-area d-flex align-items-center justify-content-center"
-                >
-                  <div class="">
-                    <div
+        <!-- <small class="text-grey fs-12 font-weight-600">Upload Exercise</small> -->
+                  <!-- <div class=""> -->
+                    <!-- <div
                       class="d-flex align-items-center justify-content-center"
                     >
                       <span
@@ -22,44 +18,29 @@
                     </div>
                     <div
                       class="d-flex align-items-center justify-content-center fs-12 mt-1"
-                    >
-                      <span
-                        ><span
+                    > -->
+                    <!-- <span
                           class="text-blue pointer text-decoration-underline"
                           @click="$refs.fileInput.click()"
-                          >Browse</span
-                        >
-                        <span class="text-grey">to choose a exercise</span>
-                      </span>
+                          > -->
+                          <div class="mt-3 line-height-0 text-blue fs-14 pointer" @click="$refs.fileInput.click()">
+                          <!-- <span
+                            class="iconify fs-18"
+                            data-icon="fluent:add-24-filled"
+                            style="font-size: 18px; color: #1070b7"
+                          ></span> -->
+                          <strong>
+                          Upload Exercise Sheet</strong>
+                        </div>
                       <input
                         ref="fileInput"
                         type="file"
                         class="d-none"
                         @change.prevent="handleUpload()"
+                        multiple
                       />
-                    </div>
-                  </div>
-                </div>
-                <div v-else>
-                  <div class="uploaded-area">
-                    <div
-                      class="file-area d-flex align-items-center justify-content-center"
-                    >
-                      <div
-                        class="d-flex align-items-center justify-content-center fs-12 text-blue"
-                      >
-                        {{ file.name ? truncate(file.name, 35) : '' }}
-                      </div>
-                    </div>
-                    <div
-                      class="d-flex align-items-center justify-content-center mt-2 fs-12 text-decoration-underline pointer"
-                      style="color: #e16c7a"
-                      @click.prevent="removeFile"
-                    >
-                      Delete
-                    </div>
-                  </div>
-                </div>
+                    <!-- </div>
+                  </div> -->
       </template>
       <template #exercise>
         <div v-if="sections.length === 0" class="text-primary pointer d-flex align-content-center">

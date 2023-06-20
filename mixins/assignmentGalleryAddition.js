@@ -70,7 +70,7 @@ export default {
       file: '',
       description: '',
       title: '',
-      quiz: []
+      // quiz: []
     }
   },
   // async fetch() {
@@ -231,54 +231,67 @@ export default {
     },
     async handleUpload() {
       const input = this.$refs.fileInput;
-      this.file = input.files[0];
-      if (!this.file.type.includes('spreadsheetml')) {
-        this.file = null
-        this.$toast({
-          type: "error",
-          text: "Invalid file format",
-        });
-      }
-      const formData = new FormData()
-      formData.append('spread_sheet', this.file)
-      const { data } = await this.$axios.post('/content/upload_quezes_from_sheet/', formData)
-      this.quiz = data.data
-      if(this.quiz.length > 0) {
-        const sectionIndex = this.sections.length
-        await this.addSection()
-        // console.log(this.sections)
-        // this.sections.forEach((elem, index) => {
-        this.quiz.forEach((el) => {
-        if (el.question_type === 'options') {
-          let questionObj = this.questionObject('options')
-          questionObj.text = el.question
-          questionObj.question_option = []
-          el.answer_options.forEach((item) => {
-            questionObj.question_option.push({
-                option: item.answer_option,
-                correct_flag: item.correct_flag,
-                textOnly: false,
-            })
-          })
-          // this.sections[0].questions.push(this.questionObject('options'))
-          this.sections[sectionIndex].questions.push(questionObj)
-        } else if (el.question_type === 'trueFalse') {
-          let questionObj1 = this.questionObject('trueFalse')
-          questionObj1.text = el.question
-          questionObj1.question_option = []
-          el.answer_options.forEach((item) => {
-            questionObj1.question_option.push({
-                option: item.answer_option,
-                correct_flag: item.correct_flag,
-                textOnly: false,
-            })
-          })
-          this.sections[sectionIndex].questions.push(questionObj1)
-        } else if (el.question_type === 'freeText') {
-          this.sections[sectionIndex].questions.push(this.questionObject('freeText', []))
+      const files = input.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+    
+        // Check file type
+        if (!file.type.includes('spreadsheetml')) {
+          this.$toast({
+            type: "error",
+            text: `Invalid file format: ${file.name}`,
+          });
+          continue; // Skip this file and move to the next one
         }
-      })
-    // })
+    
+        const formData = new FormData();
+        formData.append('spread_sheet', file);
+    
+        try {
+          const {data} = await this.$axios.post('/content/upload_quezes_from_sheet/', formData);
+          const quiz = data.data;
+    
+          if (quiz.length > 0) {
+            let sectionIndex = this.sections.length;
+            await this.addSection();
+    
+            quiz.forEach((el) => {
+              if (el.question_type === 'options') {
+                let questionObj = this.questionObject('options');
+                questionObj.text = el.question;
+                questionObj.question_option = [];
+    
+                el.answer_options.forEach((item) => {
+                  questionObj.question_option.push({
+                    option: item.answer_option,
+                    correct_flag: item.correct_flag,
+                    textOnly: false,
+                  });
+                });
+    
+                this.sections[sectionIndex].questions.push(questionObj);
+              } else if (el.question_type === 'trueFalse') {
+                let questionObj1 = this.questionObject('trueFalse');
+                questionObj1.text = el.question;
+                questionObj1.question_option = [];
+    
+                el.answer_options.forEach((item) => {
+                  questionObj1.question_option.push({
+                    option: item.answer_option,
+                    correct_flag: item.correct_flag,
+                    textOnly: false,
+                  });
+                });
+    
+                this.sections[sectionIndex].questions.push(questionObj1);
+              } else if (el.question_type === 'freeText') {
+                this.sections[sectionIndex].questions.push(this.questionObject('freeText', []));
+              }
+            });
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
     removeFile() {
@@ -295,13 +308,14 @@ export default {
         content_type: 'quiz',
         title: item.title,
         description: item.description,
-        subject: item.subjects,
+        subject: item.subject,
         languages: item.languages,
         grade_levels: item.grade_levels,
         // content_file: this.file,
         categories: item.categories,
         keywords: item.keywords,
         curriculum: item.curriculum,
+        thumbnails: item.thumbnails,
         quiz_config: {
           // available_date: "",
 

@@ -91,7 +91,7 @@
             <template #cell(title)="data">
               <div :style="{ width: '550px' }">
               <div class="d-flex align-items-center content">
-                <img v-if="data.item.content_type !== 'quiz'" :src="`${$config.BASE_URL}${data.item.thumbnails[0].image}`">
+                <img v-if="data.item.thumbnails.length > 0" :src="`${$config.BASE_URL}${data.item.thumbnails[0].image}`">
                 <div v-else class="no-thumbnail"></div>
                 <div class="ml-2">
                 <div class="fs-14 text-capitalize">{{ data.item.title }}</div>

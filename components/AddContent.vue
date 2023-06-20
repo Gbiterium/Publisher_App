@@ -272,7 +272,7 @@
                 </div>
                 </div>
               </div>
-              <div class="mt-4 mb-5 ml-3">
+              <div class="mt-4 ml-3">
                 <small class="text-grey fs-12 font-weight-600">Thumbnail</small>
                 <div>
                   <label class="text-grey fs-14"
@@ -324,7 +324,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-12 mt-3">
+            <div class="col-12 mt-4 mb-5">
               <slot name="exercise"></slot>
             </div>
           </form>
@@ -412,7 +412,7 @@ export default {
         this.grade_level = this.content.grade_levels
         this.images = this.content.thumbnails
         const fileUrl = this.content.content_file
-this.fileName = fileUrl.split('/').pop();
+this.fileName = fileUrl ? fileUrl.split('/').pop() : '';
         this.content.thumbnails.forEach((el) => {
           this.thumbnails.push(el.id)
         })

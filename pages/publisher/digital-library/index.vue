@@ -131,8 +131,22 @@ export default {
     totalPages: null,
     perPage: 100,
     selectedTab: '',
-    type: ''
+    type: '',
+    perPage: 50,
+    currentPage: 1,
+    pages: 1,
     }
+  },
+  watch: {
+    async currentPage() {
+      if (this.currentPage === 0) return
+      await this.getResources(this.currentPage)
+    },
+  },
+  computed: {
+    totalRows() {
+      return this.pages * this.perPage
+    },
   },
   async created () {
     this.isBusy = true
@@ -146,12 +160,12 @@ export default {
   },
   methods: {
     onRowSelected(e) {
-      if (e.content_type !== 'quiz') {
+      // if (e.content_type !== 'quiz') {
       this.$router.push({
         path: `/publisher/digital-library/content/${e.id}`,
         // query: { image: `${e.book.image}`, author: `${e.book.author}`, name: `${e.book.name}` },
       })
-    }
+    // }
     },
     // editBook(item) {
     //   this.$router.push({
@@ -159,11 +173,12 @@ export default {
     //     query: { book_id: `${item.id}` },
     //   })
     // },
-    async getContent(){
+    async getContent(i=1){
       try {
         this.isBusy = true
-        const { data } = await this.$axios.get(`/content/list_content?title=${this.title}&content_type=${this.type}`)
+        const { data } = await this.$axios.get(`/content/list_content?title=${this.title}&content_type=${this.type}&page=${i}&page_size=${this.perPage}`)
         this.contents = data.data
+        this.pages =  data.total_pages
       } catch (error) {
         console.log(error)
       } finally {

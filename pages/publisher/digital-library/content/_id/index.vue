@@ -69,7 +69,7 @@
             </div>
             </div>
             <hr class="my-4" />
-            <div class="thumbnails-container">
+            <div v-if="content.thumbnails" class="thumbnails-container">
                 <div class="text-grey fs-14">Thumbnails</div>
                 <div v-if="loading" class="d-flex align-items-center">
                 <div class="mt-3 mr-2">
@@ -100,7 +100,7 @@
                 <video :src="`${$config.BASE_URL}${content.content_file}`" controls></video>
                 </div> -->
                 <div v-else>
-                    <img :src="`${$config.BASE_URL}${thumbnail.image}`">
+                    <img v-if="thumbnail" :src="`${$config.BASE_URL}${thumbnail.image}`">
                     <div class="btn-abs">
                         <button v-if="content.content_type === 'document'" class=" btn btn-light border-none" @click.prevent="preview">Download Document</button>
                         <button v-if="content.content_type === 'worksheet'" class=" btn btn-light border-none" @click.prevent="preview">Download Worksheet</button>
@@ -117,19 +117,9 @@
             <b-modal
         id="showViewer"
         centered
-        hide-header-close
-        header-class="mt-n3 pt-5"
         hide-footer
         size="lg"
       >
-        <template #modal-header="{ close }">
-          <img
-            src="@/assets/lessons/svg/closeIcon.svg"
-            alt="close icon"
-            class="pointer mr-4"
-            @click="close()"
-          />
-        </template>
         <div class="text-center">
 
       <client-only>
@@ -208,6 +198,8 @@ export default {
         this.$router.push({path: './add-worksheet', query: {id: this.content.id}})
       } else if (this.content.content_type === 'game') {
         this.$router.push({path: './add-game', query: {id: this.content.id}})
+      } else if (this.content.content_type === 'quiz') {
+        this.$router.push({path: './add-exercise', query: {id: this.content.id}})
       } 
         },
         preview() {
