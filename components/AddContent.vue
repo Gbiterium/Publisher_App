@@ -515,6 +515,7 @@ this.fileName = fileUrl ? fileUrl.split('/').pop() : '';
             keywords: this.keyword,
             curriculum: this.curriculum,
             thumbnails: this.thumbnails,
+            snippet: this.snippet
         }
         this.$emit('content-data', data)
 }
