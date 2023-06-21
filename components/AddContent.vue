@@ -323,9 +323,9 @@
                   </div>
                   </div>
               </div>
-            </div>
-            <div class="col-12 mt-4 mb-5">
-              <slot name="exercise"></slot>
+              <div class="col-12 mt-4 mb-5">
+                <slot name="exercise"></slot>
+              </div>
             </div>
           </form>
         </ValidationObserver>

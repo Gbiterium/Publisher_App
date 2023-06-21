@@ -23,15 +23,16 @@
                           class="text-blue pointer text-decoration-underline"
                           @click="$refs.fileInput.click()"
                           > -->
-                          <div class="mt-3 line-height-0 text-blue fs-14 pointer" @click="$refs.fileInput.click()">
+                          <!-- <div class="mt-3 line-height-0 text-blue fs-14 pointer"> -->
                           <!-- <span
                             class="iconify fs-18"
                             data-icon="fluent:add-24-filled"
                             style="font-size: 18px; color: #1070b7"
                           ></span> -->
-                          <strong>
-                          Upload Exercise Sheet</strong>
-                        </div>
+                          <!-- <strong>
+                          Upload Exercise Sheet</strong> -->
+                          <!-- <button class="btn btn-primary py-2 px-3" @click.prevent="$refs.fileInput.click()">Upload Exercise Sheet</button>
+                        </div> -->
                       <input
                         ref="fileInput"
                         type="file"
@@ -43,6 +44,18 @@
                   </div> -->
       </template>
       <template #exercise>
+        <div class="d-flex align-items-center">
+        <div class="line-height-0 text-blue fs-14 pointer">
+                          <!-- <span
+                            class="iconify fs-18"
+                            data-icon="fluent:add-24-filled"
+                            style="font-size: 18px; color: #1070b7"
+                          ></span> -->
+                          <!-- <strong>
+                          Upload Exercise Sheet</strong> -->
+                          <button class="btn btn-primary py-2 px-3" @click.prevent="$refs.fileInput.click()">Upload Exercise Sheet</button>
+                        </div>
+                        <div v-if="sections.length === 0" class="text-grey mx-2 fs-14">or</div>
         <div v-if="sections.length === 0" class="text-primary pointer d-flex align-content-center">
                         <div class="mr-1 line-height-0">
                           <span
@@ -52,6 +65,7 @@
                           ></span>
                         </div>
                         <strong class="fs-14" @click="addSection">Add Section</strong>
+                      </div>
                       </div>
                 <div v-if="sections.length > 0" class="col-12">
                   <hr />
