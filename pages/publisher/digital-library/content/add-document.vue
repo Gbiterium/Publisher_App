@@ -22,14 +22,14 @@
     },
     methods: {
       handleUpload(file) {
-        if (!file.type.includes('officedocument')) {
-          this.$toast({
-            type: "error",
-            text: "Invalid file format",
-          });
-        } else {
+        // if (!file.type.includes('officedocument')) {
+        //   this.$toast({
+        //     type: "error",
+        //     text: "Invalid file format",
+        //   });
+        // } else {
           this.validFile = file
-        }
+        // }
       },
       removeFile() {
       this.validFile = null
