@@ -271,7 +271,7 @@ export default {
                 });
     
                 this.sections[sectionIndex].questions.push(questionObj);
-              } else if (el.question_type === 'trueFalse') {
+              } else if (el.question_type === 'true/false') {
                 let questionObj1 = this.questionObject('trueFalse');
                 questionObj1.text = el.question;
                 questionObj.hint = el.marking_guide;
@@ -286,7 +286,7 @@ export default {
                 });
     
                 this.sections[sectionIndex].questions.push(questionObj1);
-              } else if (el.question_type === 'freeText') {
+              } else if (el.question_type === 'free_text') {
                 this.sections[sectionIndex].questions.push(this.questionObject('freeText', []));
               }
             });
