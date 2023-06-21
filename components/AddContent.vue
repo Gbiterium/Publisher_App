@@ -370,7 +370,7 @@ export default {
         curriculums: [],
         subjects: [],
         languages: ['English', 'Spanish', 'French', 'Yoruba'],
-        categories: ['Textbook', 'Lesson Plan', 'Historical'],
+        categories: ['Textbook', 'Lesson Plan', 'Historical', 'Exercise'],
         grade_levels: ["PreSchool", "Primary 1", "Primary 2", 'JSS 1', 'JSS 2'],
         thumbnails: [],
         content: {},

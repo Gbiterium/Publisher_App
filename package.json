@@ -19,7 +19,7 @@
     "@types/lodash": "^4.14.177",
     "bootstrap": "^4.6.2",
     "bootstrap-vue": "^2.22.0",
-    "ckeditor5-custom-build": "^0.0.6",
+    "ckeditor5-custom-build": "file:./ckeditor",
     "cookie": "^0.5.0",
     "cookie-universal-nuxt": "^2.2.2",
     "core-js": "^3.25.3",

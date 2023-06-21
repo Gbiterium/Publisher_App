@@ -142,34 +142,34 @@ export default {
       )
     })
 
-  //   // const school = this.$store.getters["school/getSchoolByCode"](this.$route.params.id);
+    // const school = this.$store.getters["school/getSchoolByCode"](this.$route.params.id);
 
-  //   // this.editorConfig.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
-  //   this.editorConfig.simpleUpload.headers = {
-  //     Authorization: `Bearer ${this.$store.state.auth.token}`,
-  //     "Access-Control-Allow-Origin": "*",
-  //   };
-  //   this.editorConfig.simpleUpload.withCredentials = false;
+    // this.editorConfig.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
+    // this.editorConfig.simpleUpload.headers = {
+    //   Authorization: `Bearer ${this.$cookies.get('publisher-token')}`,
+    //   "Access-Control-Allow-Origin": "*",
+    // };
+    // this.editorConfig.simpleUpload.withCredentials = false;
 
-  //   this.editorConfigForQuestion.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
-  //   this.editorConfigForQuestion.simpleUpload.headers = {
-  //     Authorization: `Bearer ${this.$store.state.auth.token}`,
-  //     "Access-Control-Allow-Origin": "*",
-  //   };
-  //   this.editorConfigForQuestion.simpleUpload.withCredentials = false;
+    // // this.editorConfigForQuestion.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
+    // this.editorConfigForQuestion.simpleUpload.headers = {
+    //   Authorization: `Bearer ${this.$cookies.get('publisher-token')}`,
+    //   "Access-Control-Allow-Origin": "*",
+    // };
+    // this.editorConfigForQuestion.simpleUpload.withCredentials = false;
 
-  //   this.editorConfigForSection.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
-  //   this.editorConfigForSection.simpleUpload.headers = {
-  //     Authorization: `Bearer ${this.$store.state.auth.token}`,
-  //   };
-  //   this.editorConfigForSection.simpleUpload.withCredentials = false;
+    // // this.editorConfigForSection.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
+    // this.editorConfigForSection.simpleUpload.headers = {
+    //   Authorization: `Bearer ${this.$cookies.get('publisher-token')}`,
+    // };
+    // this.editorConfigForSection.simpleUpload.withCredentials = false;
 
-  //   this.editorConfigForOption.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
-  //   this.editorConfigForOption.simpleUpload.headers = {
-  //     Authorization: `Bearer ${this.$store.state.auth.token}`,
-  //     "Access-Control-Allow-Origin": "*",
-  //   };
-  //   this.editorConfigForOption.simpleUpload.withCredentials = false;
+    // // this.editorConfigForOption.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`;
+    // this.editorConfigForOption.simpleUpload.headers = {
+    //   Authorization: `Bearer ${this.$cookies.get('publisher-token')}`,
+    //   "Access-Control-Allow-Origin": "*",
+    // };
+    // this.editorConfigForOption.simpleUpload.withCredentials = false;
   },
   watch:{
     sections(){
@@ -259,6 +259,7 @@ export default {
               if (el.question_type === 'options') {
                 let questionObj = this.questionObject('options');
                 questionObj.text = el.question;
+                questionObj.hint = el.marking_guide;
                 questionObj.question_option = [];
     
                 el.answer_options.forEach((item) => {
@@ -273,6 +274,7 @@ export default {
               } else if (el.question_type === 'trueFalse') {
                 let questionObj1 = this.questionObject('trueFalse');
                 questionObj1.text = el.question;
+                questionObj.hint = el.marking_guide;
                 questionObj1.question_option = [];
     
                 el.answer_options.forEach((item) => {
@@ -292,6 +294,7 @@ export default {
         } catch (error) {
           console.error(error);
         }
+        input.value = ''
       }
     },
     removeFile() {

@@ -145,18 +145,18 @@
                                 <label class="form-control-label"
                                   >Header/Section Instruction</label
                                 >
-                                <!-- <client-only>
+                                <client-only>
                                   <ckeditor-comp
                                     v-model="section.header"
                                     :config="editorConfigForSection"
                                     placeholder="Add Header / Description / Instruction"
                                   />
-                                </client-only> -->
-                                <textarea
+                                </client-only>
+                                <!-- <textarea
                                     v-model="section.header"
                                     class="form-control form-control-sm"
                                     placeholder="Add Header / Description / Instruction"
-                                  ></textarea>
+                                  ></textarea> -->
                                 <!-- <VueEditor
                               v-model="section.header"
                               placeholder="Add Header / Description / Instruction"
@@ -237,18 +237,18 @@
                                     <label class="form-control-label"
                                     >Question</label
                                   >
-                                    <!-- <client-only>
+                                    <client-only>
                                       <ckeditor-comp
                                         v-model="question.text"
                                         :config="editorConfigForQuestion"
                                         placeholder="Enter Question"
                                       />
-                                    </client-only> -->
-                                    <textarea
+                                    </client-only>
+                                    <!-- <textarea
                                     v-model="question.text"
                                     class="form-control form-control-sm"
                                     placeholder="Enter Question"
-                                  ></textarea>
+                                  ></textarea> -->
                                   </div>
                                   <div class="mb-3">
                                     <label class="form-control-label"
@@ -448,17 +448,17 @@
                                       <label class="form-control-label"
                                         >Marking Guide</label
                                       >
-                                      <!-- <client-only>
+                                      <client-only>
                                         <ckeditor-comp
                                           v-model="question.hint"
                                           :config="editorConfigForMarking"
                                         />
-                                      </client-only> -->
-                                      <textarea
+                                      </client-only>
+                                      <!-- <textarea
                                       v-model="question.hint"
                                       class="form-control"
                                       placeholder="Add marking guide"
-                                    ></textarea>
+                                    ></textarea> -->
                                     </div>
                                   </div>
                                 </div>
@@ -472,18 +472,18 @@
                                 <div class="col-lg-12 order-last order-xl-first">
                                   <div class="mb-3">
                                     <label class="form-control-label">Question</label>
-                                    <!-- <client-only>
+                                    <client-only>
                                       <ckeditor-comp
                                         v-model="question.text"
                                         :config="editorConfigForQuestion"
                                         placeholder="Enter Question"
                                       />
-                                    </client-only> -->
-                                    <textarea
+                                    </client-only>
+                                    <!-- <textarea
                                     v-model="question.text"
                                     class="form-control form-control-sm"
                                     placeholder="Enter Question"
-                                  ></textarea>
+                                  ></textarea> -->
                                   </div>
                                   <div class="mb-3">
                                     <label class="form-control-label"
@@ -581,17 +581,17 @@
                                       <label class="form-control-label"
                                         >Marking Guide</label
                                       >
-                                      <textarea
+                                      <!-- <textarea
                                       v-model="question.hint"
                                       class="form-control"
                                       placeholder="Add marking guide"
-                                    ></textarea>
-                                      <!-- <client-only>
+                                    ></textarea> -->
+                                      <client-only>
                                         <ckeditor-comp
                                           v-model="question.hint"
                                           :config="editorConfigForMarking"
                                         />
-                                      </client-only> -->
+                                      </client-only>
                                     </div>
                                   </div>
                                 </div>
@@ -607,18 +607,18 @@
                                     <label class="form-control-label"
                                     >Question</label
                                   >
-                                    <!-- <client-only>
+                                    <client-only>
                                       <ckeditor-comp
                                         v-model="question.text"
                                         :config="editorConfigForQuestion"
                                         placeholder="Enter Question"
                                       />
-                                    </client-only> -->
-                                    <textarea
+                                    </client-only>
+                                    <!-- <textarea
                                     v-model="question.text"
                                     class="form-control form-control-sm"
                                     placeholder="Enter Question"
-                                  ></textarea>
+                                  ></textarea> -->
                                   </div>
                                   <div class="mb-3">
                                     <label class="form-control-label"
@@ -673,17 +673,17 @@
                                     <label class="form-control-label"
                                       >Marking Guide
                                     </label>
-                                    <!-- <client-only>
+                                    <client-only>
                                       <ckeditor-comp
                                         v-model="question.hint"
                                         :config="editorConfigForMarking"
                                       />
-                                    </client-only> -->
-                                    <textarea
+                                    </client-only>
+                                    <!-- <textarea
                                     v-model="question.hint"
                                     class="form-control"
                                     placeholder="Add marking guide"
-                                  ></textarea>
+                                  ></textarea> -->
                                   </div>
                                 </div>
                               </div>

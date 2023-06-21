@@ -1,15 +1,29 @@
 <template>
-  <client-only>
-    <ckeditor
-      v-if="editorLoaded"
-      v-model="editorData"
-      :editor="editor"
-      :config="editorConfig"
-    ></ckeditor>
-  </client-only>
+  <div @mouseleave="close()">
+    <div
+      v-if="!editorLoaded"
+      v-b-tooltip.hover
+      title="click to edit content"
+      @click="show()"
+    >
+      <slot>
+        <span v-html="editorData"></span>
+      </slot>
+    </div>
+
+    <client-only>
+      <ckeditor
+        v-if="editorLoaded"
+        v-model="editorData"
+        :editor="editor"
+        :config="editorConfig"
+      ></ckeditor>
+    </client-only>
+  </div>
 </template>
 
 <script>
+// import { mixin as clickaway } from 'vue-clickaway'
 // import Editor from 'ckeditor5-custom-build/build/ckeditor'
 // import CKEditor from '@ckeditor/ckeditor5-vue2'
 
@@ -27,6 +41,7 @@ export default {
   components: {
     ckeditor: CKEditor.component,
   },
+  // mixins: [clickaway],
   props: {
     placeholder: {
       type: String,
@@ -45,6 +60,7 @@ export default {
     return {
       editor: Editor,
       editorLoaded: false,
+      timer: null,
       // editorData: '',
       editorConfig: {
         // The configuration of the editor.
@@ -77,10 +93,10 @@ export default {
     //   this.$route.params.id
     // )
     // this.editorConfig.simpleUpload.uploadUrl = `${process.env.BASE_URL}/schools/v2/school/${school.id}/wiziwick_resource/`
-    // this.editorConfig.simpleUpload.headers = {
-    //   Authorization: `Bearer ${this.$store.state.auth.token}`,
-    //   'Access-Control-Allow-Origin': '*',
-    // }
+    this.editorConfig.simpleUpload.headers = {
+      Authorization: `Bearer ${this.$cookies.get('publisher-token')}`,
+      'Access-Control-Allow-Origin': '*',
+    }
     this.editorConfig.simpleUpload.withCredentials = false
 
     this.editorConfig.removePlugins.push('Markdown')
@@ -88,8 +104,31 @@ export default {
 
   created() {
     setTimeout(() => {
-      this.editorLoaded = true
+      if (this.editorData.length <= 0) {
+        this.show()
+      }
     }, 1000)
+  },
+  methods: {
+    // away() {
+    //   console.log('Click Away')
+    //   this.timer = setTimeout(function () {
+    //     console.log('Click Awayddd')
+    //     this.editorLoaded = false
+    //   }, 500)
+    // },
+    show() {
+      this.editorLoaded = true
+      // clearTimeout(this.timer)
+    },
+
+    close() {
+      if (this.editorData.length > 0) {
+        setTimeout(() => {
+          this.editorLoaded = false
+        }, 1000)
+      }
+    },
   },
 }
 </script>
