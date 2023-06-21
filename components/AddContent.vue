@@ -413,6 +413,8 @@ export default {
         this.images = this.content.thumbnails
         const fileUrl = this.content.content_file
 this.fileName = fileUrl ? fileUrl.split('/').pop() : '';
+const snippetUrl = this.content.content_snippet_file
+this.snippetName = snippetUrl ? snippetUrl.split('/').pop() : '';
         this.content.thumbnails.forEach((el) => {
           this.thumbnails.push(el.id)
         })

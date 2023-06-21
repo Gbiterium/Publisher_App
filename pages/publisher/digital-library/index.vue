@@ -140,7 +140,7 @@ export default {
   watch: {
     async currentPage() {
       if (this.currentPage === 0) return
-      await this.getResources(this.currentPage)
+      await this.getContent(this.currentPage)
     },
   },
   computed: {
