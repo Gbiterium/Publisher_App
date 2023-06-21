@@ -274,7 +274,7 @@ export default {
               } else if (el.question_type === 'true/false') {
                 let questionObj1 = this.questionObject('trueFalse');
                 questionObj1.text = el.question;
-                questionObj.hint = el.marking_guide;
+                questionObj1.hint = el.marking_guide;
                 questionObj1.question_option = [];
     
                 el.answer_options.forEach((item) => {
@@ -284,6 +284,7 @@ export default {
                     textOnly: false,
                   });
                 });
+                console.log(questionObj1, 'hey')
     
                 this.sections[sectionIndex].questions.push(questionObj1);
               } else if (el.question_type === 'free_text') {
