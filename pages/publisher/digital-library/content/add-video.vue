@@ -78,7 +78,7 @@ export default {
                     type: 'success',
                     text : 'content uploaded successfully'
                 })
-                this.$router.push('/publisher/digital-library')
+                this.$router.push(`/publisher/digital-library/content/${response.data.id}`)
               }
             }
         } catch (error) {
