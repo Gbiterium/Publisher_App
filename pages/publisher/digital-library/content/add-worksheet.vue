@@ -1,6 +1,6 @@
 <template>
     <div>
-      <AddContent @file-upload="handleUpload" @remove-file="removeFile" :valid-file="validFile" @content-data="handleSubmit" :loading="loading">
+      <AddContent @content-data="handleSubmit" :loading="loading" :accepts="accepts">
         <template #title> Add a Worksheet </template>
         <template #upload-title>Upload Worksheet</template>
       <template #upload-label>worksheet</template>
@@ -15,23 +15,10 @@
     data () {
         return {
             loading: false,
-            validFile: ''
+            accepts: ['.doc', '.docx', '.pdf', '.xls', '.xlsx', '.ppt', '.pptx'],
         }
     },
     methods: {
-      handleUpload(file) {
-        if (file.type !== "application/pdf") {
-          this.$toast({
-            type: "error",
-            text: "Invalid file format",
-          });
-        } else {
-          this.validFile = file;
-        }
-      },
-      removeFile() {
-      this.validFile = null
-    },
       async handleSubmit(data) {
           try {
             this.loading = true
@@ -49,7 +36,7 @@
               data.grade_levels.forEach((el) => {
               formData.append('grade_levels', el)
               })
-              this.validFile ? formData.append('content_file', this.validFile) : {}
+              data.content_file ? formData.append('content_file', data.content_file) : {}
               data.snippet ? formData.append('content_snippet_file', data.snippet) : {}
               data.categories.forEach((el) => {
               formData.append('categories', el)

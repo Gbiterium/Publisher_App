@@ -21,7 +21,7 @@
                           style="width: 1rem; height: 1rem"
                         ></b-spinner></div></button>
                 <button class="btn btn-light py-2 px-3 mb-3" @click.prevent="handleEdit"><div class="d-flex align-items-center text-grey"><span class="iconify mr-1 text-grey" data-icon="ic:round-mode-edit-outline"></span>edit</div></button>
-                <button v-if="content.content_type !== 'quiz'" class="btn btn-primary py-2 px-3 mb-3" @click.prevent="preview">view</button>
+                <button class="btn btn-primary py-2 px-3 mb-3" @click.prevent="preview">view</button>
                 </div>
               </div>
             <div class="row">

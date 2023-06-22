@@ -6,42 +6,14 @@
       <template #upload-label>exercise</template>
       <template #thumbnail-label>exercise</template>
       <template #exercise-upload>
-        <!-- <small class="text-grey fs-12 font-weight-600">Upload Exercise</small> -->
-                  <!-- <div class=""> -->
-                    <!-- <div
-                      class="d-flex align-items-center justify-content-center"
-                    >
-                      <span
-                        class="iconify text-grey upload-icon"
-                        data-icon="ic:sharp-upload"
-                      ></span>
-                    </div>
-                    <div
-                      class="d-flex align-items-center justify-content-center fs-12 mt-1"
-                    > -->
-                    <!-- <span
-                          class="text-blue pointer text-decoration-underline"
-                          @click="$refs.fileInput.click()"
-                          > -->
-                          <!-- <div class="mt-3 line-height-0 text-blue fs-14 pointer"> -->
-                          <!-- <span
-                            class="iconify fs-18"
-                            data-icon="fluent:add-24-filled"
-                            style="font-size: 18px; color: #1070b7"
-                          ></span> -->
-                          <!-- <strong>
-                          Upload Exercise Sheet</strong> -->
-                          <!-- <button class="btn btn-primary py-2 px-3" @click.prevent="$refs.fileInput.click()">Upload Exercise Sheet</button>
-                        </div> -->
                       <input
                         ref="fileInput"
                         type="file"
                         class="d-none"
+                        :accept="type.join(',')"
                         @change.prevent="handleUpload()"
                         multiple
                       />
-                    <!-- </div>
-                  </div> -->
       </template>
       <template #exercise>
         <div class="">
@@ -773,7 +745,8 @@ export default {
   mixins: [assignmentGalleryAddition],
   data () {
     return {
-      exercise_sheet: exercise
+      exercise_sheet: exercise,
+      type: ['.xls', '.xlsx'],
     }
   },
   methods: {

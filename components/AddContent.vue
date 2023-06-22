@@ -192,7 +192,7 @@
                 <div v-if="!upload">
                 <small class="text-grey fs-12 font-weight-600"><slot name="upload-title"></slot></small>
                 <div
-                  v-if="!validFile && !fileName"
+                  v-if="!file && !fileName"
                   class="upload-area d-flex align-items-center justify-content-center"
                 >
                   <div class="">
@@ -219,6 +219,7 @@
                         ref="fileInput"
                         type="file"
                         class="d-none"
+                        :accept="accepts.join(',')"
                         @change.prevent="handleUpload()"
                       />
                     </div>
@@ -232,7 +233,7 @@
                       <div
                         class="d-flex align-items-center justify-content-center fs-12 text-blue"
                       >
-                        {{ validFile.name ? truncate(validFile.name, 35) : truncate(fileName, 35) }}
+                        {{ file.name ? truncate(file.name, 35) : truncate(fileName, 35) }}
                       </div>
                     </div>
                     <div
@@ -277,6 +278,7 @@
                         ref="snippetInput"
                         type="file"
                         class="d-none"
+                        :accept="accepts.join(',')"
                         @change.prevent="uploadSnippet()"
                       />
                     </div>
@@ -348,6 +350,7 @@
                         ref="imageInput"
                         type="file"
                         class="d-none"
+                        :accept="format.join(',')"
                         multiple
                         @change.prevent="uploadImage()"
                       />
@@ -373,10 +376,6 @@ export default {
       type: Boolean,
       default: false
     },
-    validFile: {
-      type: Object,
-      required: true
-    },
     upload: {
       type: Boolean,
       default: false
@@ -384,7 +383,11 @@ export default {
     disableSnippet: {
       type: Boolean,
       default: false
-    }
+    },
+    accepts: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -410,7 +413,8 @@ export default {
         fileName: '',
         snippet: '',
         data: {},
-        snippetName: ''
+        snippetName: '',
+        format: ['.jpg', '.jpeg', '.png'],
     };
   },
   watch: {
@@ -426,12 +430,6 @@ export default {
       },
       immediate: true,
     },
-    validFile: {
-      handler(newVal) {
-        this.uploadFile = newVal;
-      },
-      immediate: true,
-    }
   },
   async created() {
       if(this.$route.query.id) {
@@ -458,7 +456,6 @@ this.snippetName = snippetUrl ? snippetUrl.split('/').pop() : '';
     handleUpload() {
       const input = this.$refs.fileInput;
       this.file = input.files[0];
-      this.$emit("file-upload", this.file);
     },
     uploadSnippet() {
       const input = this.$refs.snippetInput
@@ -475,10 +472,11 @@ this.snippetName = snippetUrl ? snippetUrl.split('/').pop() : '';
     },
     removeFile() {
       this.fileName = '';
-      this.$emit('remove-file')
+      this.file = null
     },
     removeSnippet() {
       this.snippet = ''
+      this.snippetName = ''
     },
     removeThumbnail(index) {
         this.images.splice(index, 1)

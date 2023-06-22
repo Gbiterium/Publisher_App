@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AddContent @file-upload="handleUpload" @remove-file="removeFile" @content-data="handleSubmit" :valid-file="validFile" :loading="loading">
+    <AddContent @content-data="handleSubmit" :loading="loading" :accepts="accepts">
       <template #title> Add a Video </template>
       <template #upload-title>Upload Video</template>
       <template #upload-label>video</template>
@@ -15,23 +15,10 @@ export default {
   data () {
     return {
       loading: false,
-      validFile: '',
+      accepts: ['video/mp4', 'video/x-m4v', 'video/*'],
     }
   },
   methods: {
-    handleUpload(file) {
-      if (!file.type.includes('video')) {
-        this.$toast({
-          type: "error",
-          text: "Invalid file format",
-        });
-      } else {
-        this.validFile = file
-      }
-    },
-    removeFile() {
-      this.validFile = null
-    },
     async handleSubmit(data) {
         try {
           this.loading = true
@@ -49,7 +36,7 @@ export default {
             data.grade_levels.forEach((el) => {
             formData.append('grade_levels', el)
             })
-            this.validFile ? formData.append('content_file', this.validFile) : {}
+            data.content_file ? formData.append('content_file', data.content_file) : {}
             data.snippet ? formData.append('content_snippet_file', data.snippet) : {}
             data.categories.forEach((el) => {
             formData.append('categories', el)
