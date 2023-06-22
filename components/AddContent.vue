@@ -250,7 +250,7 @@
                 <div v-if="!disableSnippet">
                   <small class="text-grey fs-12 font-weight-600">Upload Snippet</small>
                 <div
-                  v-if="!snippet"
+                  v-if="!snippet && !snippetName"
                   class="upload-area d-flex align-items-center justify-content-center"
                 >
                   <div class="">
@@ -290,7 +290,7 @@
                       <div
                         class="d-flex align-items-center justify-content-center fs-12 text-blue"
                       >
-                        {{ snippet.name ? truncate(snippet.name, 35) : '' }}
+                        {{ snippet.name ? truncate(snippet.name, 35) : truncate(snippetName, 35) }}
                       </div>
                     </div>
                     <div
@@ -409,7 +409,8 @@ export default {
         uploadedFile: '',
         fileName: '',
         snippet: '',
-        data: {}
+        data: {},
+        snippetName: ''
     };
   },
   watch: {

@@ -229,12 +229,12 @@ export default {
         );
         const formatData = sortedFormat.map((el) => {
           const percentage = (el.books_with_format / totalWithFormat) * 100;
-          return [el.format, percentage];
+          return [el.format, parseFloat(percentage.toFixed(1))];
         });
         const categoryData = sortedCategories.map((el) => {
           const percentage =
             (el.books_with_category / totalWithCategories) * 100;
-          return [el.category, percentage];
+          return [el.category, parseFloat(percentage.toFixed(1))];
         });
         const subjectData = sortedSubjects.map((el) => {
           const percentage = (el.books_with_subject / totalWithSubjects) * 100;

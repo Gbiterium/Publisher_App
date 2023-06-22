@@ -51,7 +51,7 @@
               formData.append('content_type', 'document')
               formData.append('title', data.title)
               formData.append('description', data.description)
-              formData.append('status', data.status)
+              // formData.append('status', data.status)
               data.subject.forEach((el) => {
               formData.append('subject', el.id || el)
               })
@@ -62,7 +62,7 @@
               formData.append('grade_levels', el)
               })
               this.validFile ? formData.append('content_file', this.validFile) : {}
-              formData.append('content_snippet_file', data.snippet)
+              data.snippet ? formData.append('content_snippet_file', data.snippet) : {}
               data.categories.forEach((el) => {
               formData.append('categories', el)
               })

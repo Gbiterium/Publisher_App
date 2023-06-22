@@ -331,7 +331,7 @@ export default {
         keywords: item.keywords,
         curriculum: this.$route.query.id ? this.curriculumList : item.curriculum,
         thumbnails: item.thumbnails,
-        status: item.status,
+        // status: item.status,
         quiz_config: {
           // available_date: "",
 
@@ -350,6 +350,16 @@ export default {
 
         try {
           this.loading = true
+          if(this.$route.query.id) {
+            const response = await this.$axios.put(`/content/update_content/${this.$route.query.id}/`, data)
+            if(response.status === 200) {
+              this.$toast({
+                type: 'success',
+                text: 'content updated successfully'
+              })
+              this.$router.push(`/publisher/digital-library/content/${this.$route.query.id}`)
+            }
+          } else {
           const response = await this.$axios.post('/content/upload_content/', data)
           if(response.status === 200) {
             this.$toast({
@@ -357,6 +367,7 @@ export default {
                 text : 'content uploaded successfully'
             })
             this.$router.push(`/publisher/digital-library/content/${response.data.id}`)
+          }
           }
         } catch (error) {
 
