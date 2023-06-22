@@ -70,7 +70,8 @@ export default {
       file: '',
       description: '',
       title: '',
-      // quiz: []
+      subjectList: [],
+      curriculumList: []
     }
   },
   // async fetch() {
@@ -123,7 +124,7 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     $(document).on(
       'click',
       '.accordion-header:not(.creation-accordion-header)',
@@ -284,7 +285,6 @@ export default {
                     textOnly: false,
                   });
                 });
-                console.log(questionObj1, 'hey')
     
                 this.sections[sectionIndex].questions.push(questionObj1);
               } else if (el.question_type === 'free_text') {
@@ -305,21 +305,33 @@ export default {
     truncate(source, size) {
       return source.length > size ? source.slice(0, size - 1) + "…" : source;
     },
+    editContent(item) {
+      this.sections = item.quiz_config.sections
+    },
     async handleSubmit(item) {
         this.submitForm = true
         await this.changeObtainableScore()
+        if (this.$route.query.id) {
+          item.subject.forEach((el) => {
+            this.subjectList.push(el.id)
+          })
+          item.curriculum.forEach((item) => {
+            this.curriculumList.push(item.id)
+          })
+        }
         const data = {
         content_type: 'quiz',
         title: item.title,
         description: item.description,
-        subject: item.subject,
+        subject: this.$route.query.id ? this.subjectList : item.subject,
         languages: item.languages,
         grade_levels: item.grade_levels,
         // content_file: this.file,
         categories: item.categories,
         keywords: item.keywords,
-        curriculum: item.curriculum,
+        curriculum: this.$route.query.id ? this.curriculumList : item.curriculum,
         thumbnails: item.thumbnails,
+        status: item.status,
         quiz_config: {
           // available_date: "",
 

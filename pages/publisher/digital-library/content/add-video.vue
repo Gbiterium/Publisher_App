@@ -39,6 +39,7 @@ export default {
             formData.append('content_type', 'video')
             formData.append('title', data.title)
             formData.append('description', data.description)
+            formData.append('status', data.status)
             data.subject.forEach((el) => {
             formData.append('subject', el.id || el)
             })

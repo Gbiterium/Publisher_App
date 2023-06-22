@@ -1,6 +1,6 @@
 <template>
   <div>
-  <AddContent :upload="true" :disableSnippet="true" @file-upload="handleUpload" @remove-file="removeFile" :valid-file="validFile" @content-data="handleSubmit" :loading="loading">
+  <AddContent :upload="true" :disableSnippet="true" @file-upload="handleUpload" @remove-file="removeFile" :valid-file="validFile" @content-data="handleSubmit" :loading="loading" @content="editContent">
         <template #title> Add Exercise </template>
         <template #upload-title>Upload Exercise</template>
       <template #upload-label>exercise</template>
@@ -44,6 +44,14 @@
                   </div> -->
       </template>
       <template #exercise>
+        <div class="">
+          <p
+            class="font-weight-bold pointer fs-14"
+            @click.prevent="downloadSample"
+          >
+            <u> Download sample spreadsheet </u>
+          </p>
+        </div>
         <div class="d-flex align-items-center">
         <div class="line-height-0 text-blue fs-14 pointer">
                           <!-- <span
@@ -757,10 +765,25 @@
 </template>
 
 <script>
+import XLSX from "xlsx";
 import assignmentGalleryAddition from "~/mixins/assignmentGalleryAddition";
+import exercise from '@/assets/exercise-format.json'
 export default {
   layout: 'authWithoutTopbar',
   mixins: [assignmentGalleryAddition],
+  data () {
+    return {
+      exercise_sheet: exercise
+    }
+  },
+  methods: {
+    downloadSample() {
+      const data = XLSX.utils.json_to_sheet(this.exercise_sheet);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, data, "data");
+      XLSX.writeFile(wb, "Sample_Exercise.xlsx");
+    },
+  }
 }
 </script>
 

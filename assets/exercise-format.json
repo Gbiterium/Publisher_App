@@ -1,0 +1,44 @@
+[
+    {
+        "Question": "who is nigerias current president",
+        "Type": "options",
+        "option 1 (correct answer)": "tinubu",
+        "option 2": "jonathan",
+        "": "peter "
+    },
+    {
+        "Question": "what is the name of nigerias capital city",
+        "Type": "options",
+        "option 1 (correct answer)": "abuja",
+        "option 2": "lagos",
+        "": "ibadan"
+    },
+    {
+        "Question": "when is nigerian independence",
+        "Type": "options",
+        "option 1 (correct answer)": "1960",
+        "option 2": "1947",
+        "": "1958"
+    },
+    {
+        "Question": "you are human",
+        "Type": "true/false",
+        "option 1 (correct answer)": "TRUE",
+        "option 2": "false ",
+        "": ""
+    },
+    {
+        "Question": "what's ur name",
+        "Type": "free_text",
+        "option 1 (correct answer)": "say it",
+        "option 2": "",
+        "": ""
+    },
+    {
+        "Question": "1+1",
+        "Type": "options",
+        "option 1 (correct answer)": "2",
+        "option 2": "4",
+        "": ""
+    }
+]

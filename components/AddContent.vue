@@ -7,11 +7,11 @@
         </div>
         <hr />
     </div>
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex justify-content-between">
       <div class="fs-24 font-weight-bold mb-4">
         <slot name="title"></slot>
       </div>
-      <div>
+      <div class="d-flex justify-content-between align-items-center">
       <button v-if="$route.query.id" class="btn btn-danger py-2 px-3 mb-3 mr-1" @click.prevent="$router.go(-1)">Discard</button>
       <button class="btn btn-primary py-2 px-3 mb-3" :disabled="loading" @click.prevent="handleSubmit">Save <b-spinner
                 class="ml-1"
@@ -19,7 +19,39 @@
                 label="Spinning"
                 style="width: 1rem; height: 1rem"
               ></b-spinner></button>
-              </div>
+              <!-- <div>
+              <div class="dropdown">
+                        <button
+                          id="dropdownMenuButton"
+                          :disabled="loading"
+                          class="btn btn-primary py-2 px-3 mb-3 dropdown-toggle"
+                          type="button"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                        <b-spinner
+                class="ml-1"
+                v-if="loading"
+                label="Spinning"
+                style="width: 1rem; height: 1rem"
+              ></b-spinner>
+                          <span v-else> Save </span>
+                        </button>
+                        <div
+                          class="dropdown-menu dropdown-menu-right"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <div class="dropdown-item" style="cursor: pointer" @click.prevent="saveAsDraft">
+                            Save as draft
+                          </div>
+                          <div class="dropdown-item" style="cursor: pointer" @click.prevent="publish">
+                            Save and Publish
+                          </div>
+                        </div>
+                      </div>
+                      </div> -->
+    </div>
     </div>
     <div class="card">
       <div class="card-body py-xl-4 px-xl-5">
@@ -294,7 +326,8 @@
                     </div>
                 </div>
                 <div
-                  class="thumbnail-area d-flex align-items-center justify-content-center"
+                  class="thumbnail-area d-flex align-items-center justify-content-center pointer"
+                  @click="$refs.imageInput.click()"
                 >
                 <div>
                     <div
@@ -307,7 +340,6 @@
                       </div>
                       <div
                         class="fs-12 d-flex align-items-center justify-content-center text-grey mt-2 pointer"
-                        @click="$refs.imageInput.click()"
                       >
                       <span class="iconify mr-1" data-icon="fluent:add-16-filled"></span>
                         <span>Upload Thumbnail</span>
@@ -376,7 +408,8 @@ export default {
         content: {},
         uploadedFile: '',
         fileName: '',
-        snippet: ''
+        snippet: '',
+        data: {}
     };
   },
   watch: {
@@ -434,6 +467,7 @@ this.snippetName = snippetUrl ? snippetUrl.split('/').pop() : '';
       try {
         const { data } = await this.$axios.get(`/content/list_content?content_id=${this.$route.query.id}`)
         this.content = data.data[0]
+        this.$emit('content', this.content)
       } catch (error) {
         console.log(error)
       }
@@ -517,7 +551,30 @@ this.snippetName = snippetUrl ? snippetUrl.split('/').pop() : '';
             keywords: this.keyword,
             curriculum: this.curriculum,
             thumbnails: this.thumbnails,
-            snippet: this.snippet
+            snippet: this.snippet,
+            // status: 'DRAFT'
+        }
+        this.$emit('content-data', data)
+},
+async publish () {
+  const result = await this.checkFormValidity();
+      if (!result) {
+        // eslint-disable-next-line no-useless-return
+        return;
+      }
+        const data = {
+            title: this.title,
+            description: this.description,
+            subject: this.subject,
+            languages: this.language,
+            grade_levels: this.grade_level,
+            content_file: this.file,
+            categories: this.category,
+            keywords: this.keyword,
+            curriculum: this.curriculum,
+            thumbnails: this.thumbnails,
+            snippet: this.snippet,
+            status: 'PUBLISHED'
         }
         this.$emit('content-data', data)
 }

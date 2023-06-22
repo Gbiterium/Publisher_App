@@ -150,7 +150,7 @@
             </template>
             <template #cell(status)="data">
               <div>
-                <div v-if="data.value === 'Published'" class="text-blue">{{ data.value }}</div>
+                <div v-if="data.value === 'PUBLISHED'" class="text-blue text-capitalize">Published</div>
                 <div v-if="data.value === 'DRAFT' || !data.value" class="text-grey">Draft</div>
                 <div v-if="data.value === 'AWAITING_APPROVAL'" style="color: #FFAB07">Under Review</div>
               </div>

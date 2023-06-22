@@ -112,6 +112,252 @@
                 </div>
             </div>
             </div>
+            <div class="my-5"
+            v-if="content.content_type === 'quiz'"
+          >
+            <div
+              v-for="(section, sectionIndex) in content.quiz_config.sections"
+              :key="sectionIndex"
+            >
+              <div class="">
+                <div class="mb-3 mb-xl-0">
+                  <div class="text-primary fs-14 mb-4">
+                    <strong>Section {{ sectionIndex + 1 }} - {{ section.title }}</strong>
+                    <span class="text-dark">
+                      ( {{ sectionsScore(section) }} mark{{
+                        sectionsScore(section) > 1 ? "s" : ""
+                      }}
+                      )
+                    </span>
+                  </div>
+                  <div class="mb-2">
+                    <label class="form-control-label mb-2"
+                      >Header / Section Instruction</label
+                    >
+                    <div class="fs-14 text-dark">
+                      <span v-html="section.header"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4" />
+
+              <div class="">
+                <template v-for="(question, questionIndex) in section.questions">
+                  <div :key="questionIndex">
+                    <div v-if="question.question_type === 'trueFalse'">
+                      <div class="row">
+                        <div class="col-md-8 col-lg-12 col-xl-8">
+                          <div
+                            class="text-primary fs-14 mb-3 font-family_brown d-flex align-items-center justify-content-between"
+                          >
+                            <div>
+                              QUESTION {{ (questionIndex + 1) }} of
+                              {{ section.questions.length }}
+                            </div>
+                            <div>
+                              {{ question.marks }}
+                              <span class="text-light">marks</span>
+                            </div>
+                          </div>
+                          <div class="mb-3 font-family_brown fs-16 text-dark"
+                            style="overflow: auto"
+                          v-html="question.text"
+                          >
+                           
+                          </div>
+                          <div>
+                            <div
+                              v-for="(option, optionIndex) in question.question_option"
+                              :key="optionIndex"
+                              class="d-flex align-items-center mb-2"
+                            >
+                              <label class="exercise-option-check">
+                                <input
+                                  type="radio"
+                                  :name="'customRadio' + Math.random()"
+                                  disabled
+                                  :checked="
+                                    question.question_option[0].correct_flag ===
+                                    option.option
+                                  "
+                                />
+                                <span class="checkmark"></span>
+                                <span class="text text-capitalize">{{
+                                  option.option
+                                }}</span>
+                              </label>
+                            </div>
+                            <div v-if="question.hint">
+                              <small> Solution</small>
+                              <p class="text-capitalize"
+                               style="overflow:auto"
+                           v-html="question.hint"
+                              ></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div v-if="question.file_upload">
+                          <div
+                            v-if="question.file_upload.url"
+                            class="col-md-4 col-lg-12 col-xl-4 mb-3 mb-md-0 mb-lg-3 mb-xl-0 order-first order-md-last order-lg-first order-xl-last"
+                          >
+                            <div
+                              class="file-type-display text-center bg-white"
+                              style="width: 260px"
+                            >
+                              <img
+                                :src="
+                                  question.file_upload
+                                    ? question.file_upload.url
+                                    : require('~/assets/img/illustration-6.svg')
+                                "
+                                class="img-fluid w-100"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="my-4" />
+                    </div>
+                    <div v-else-if="question.question_type === 'options'">
+                      <div class="row">
+                        <div class="col-md-8 col-lg-12 col-xl-8">
+                          <div
+                            class="text-primary fs-14 mb-3 font-family_brown d-flex align-items-center justify-content-between"
+                          >
+                            <div>
+                              QUESTION {{ (questionIndex + 1) }} of
+                              {{  section.questions.length }}
+                            </div>
+                            <div>
+                              {{ question.marks }}
+                              <span class="text-light">marks</span>
+                            </div>
+                          </div>
+                          <div class="mb-3 font-family_brown fs-16 text-dark"
+                            style="overflow: auto"
+                          v-html="question.text"
+                          >
+                           
+                            <br />
+                            <small>Select all that apply</small>
+                          </div>
+                          <div>
+                            <div
+                              v-for="(option, optionIndex) in question.question_option"
+                              :key="optionIndex"
+                              class="d-flex align-items-center mb-2"
+                            >
+                              <label class="exercise-option-check">
+                                <input
+                                  type="checkbox"
+                                  name="customRadio"
+                                  :checked="option.correct_flag"
+                                  disabled
+                                />
+                                <span class="checkmark"></span>
+                                <span class="text"
+                                style="overflow: auto"
+                                v-html="option.option"
+                                
+                                ></span>
+                              </label>
+                            </div>
+                            <div v-if="question.hint">
+                              <small> Solution</small>
+                              <p
+                               style="overflow:auto"
+                           v-html="question.hint"
+                              ></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div v-if="question.file_upload">
+                          <div
+                            v-if="question.file_upload.url"
+                            class="col-md-4 col-lg-12 col-xl-4 mb-3 mb-md-0 mb-lg-3 mb-xl-0 order-first order-md-last order-lg-first order-xl-last"
+                          >
+                            <div
+                              class="file-type-display text-center bg-white"
+                              style="width: 260px"
+                            >
+                              <img
+                                :src="
+                                  question.file_upload
+                                    ? question.file_upload.url
+                                    : require('~/assets/img/illustration-6.svg')
+                                "
+                                class="img-fluid"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="my-4" />
+                    </div>
+                    <div v-else-if="question.question_type === 'freeText'">
+                      <div class="row">
+                        <div class="col-md-8 col-lg-12 col-xl-8">
+                          <div
+                            class="text-primary fs-14 mb-3 font-family_brown d-flex align-items-center justify-content-between"
+                          >
+                            <div>
+                              QUESTION {{ (questionIndex + 1)  }} of
+                              {{  section.questions.length }}
+                            </div>
+                            <div>
+                              {{ question.marks }}
+                              <span class="text-light">marks</span>
+                            </div>
+                          </div>
+                          <div class="mb-3 font-family_brown fs-16 text-dark"
+                            style="overflow: auto"
+                          v-html="question.text"
+                          > 
+                          </div>
+                          <div>
+                            <textarea id="" name="" cols="60" rows="4"></textarea>
+                          </div>
+                          <div v-if="question.hint">
+                            <small> Solution</small>
+                            <p
+                             style="overflow:auto"
+                           v-html="question.hint"
+                            ></p>
+                          </div>
+                        </div>
+                        <div v-if="question.file_upload">
+                          <div
+                            v-if="question.file_upload.url"
+                            class="col-md-4 col-lg-12 col-xl-4 mb-3 mb-md-0 mb-lg-3 mb-xl-0 order-first order-md-last order-lg-first order-xl-last"
+                          >
+                            <div
+                              class="file-type-display text-center bg-white"
+                              style="width: 260px"
+                            >
+                              <img
+                                :src="
+                                  question.file_upload
+                                    ? question.file_upload.url
+                                    : require('~/assets/img/illustration-6.svg')
+                                "
+                                class="img-fluid w-100 h-100"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="my-4" />
+                    </div>
+                  </div>
+                </template>
+              </div>
+              <div v-if="content.quiz_config.sections.length > 1">
+                <hr class="my-5" style="height: 1rem; background: black" />
+              </div>
+            </div>
+          </div>
             </div>
             </div>
             <b-modal
@@ -172,6 +418,13 @@ export default {
         switchThumbnail(item) {
             this.thumbnail = item
         },
+        sectionsScore(section) {
+      let total = 0;
+      section.questions.forEach((e) => {
+        total += parseInt(e.marks);
+      });
+      return total;
+    },
         async handleDelete() {
             try {
                 this.isLoading = true
