@@ -129,10 +129,9 @@ export default {
     pages: 1,
     page: 1,
     totalPages: null,
-    perPage: 100,
     selectedTab: '',
     type: '',
-    perPage: 50,
+    perPage: 10,
     currentPage: 1,
     pages: 1,
     }
