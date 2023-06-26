@@ -2,7 +2,7 @@
   <div>
     <Analytics @filter-date="handleDateFilter" @filter-items="handleFilter">
       <template #title>
-        <div>Esatimated Pages Read</div>
+        <div>Estimated Pages Read</div>
       </template>
       <template #subtitle>
         <div>
