@@ -8,6 +8,6 @@ export default function ({ $cookies, redirect, route, app, $toast }) {
   //   type: 'error',
   //   text: 'You must be logged in to access this page',
   // })
-      redirect('https://slate-staging-bnt8w.ondigitalocean.app/auth/login?publisher=true')
+      redirect('https://slate.ng/auth/login?publisher=true')
     }
   }
