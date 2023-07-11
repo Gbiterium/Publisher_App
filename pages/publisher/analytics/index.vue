@@ -181,6 +181,7 @@ export default {
   async created() {
     if (!this.$cookies.get("publisher-token")) {
       await this.GET_TOKEN();
+      this.$router.push('/publisher/profile')
     }
     await this.getBookShelf();
     await this.filterByDay();
