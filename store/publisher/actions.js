@@ -16,6 +16,10 @@ const actions = {
       const { data } = await this.$axios.post('/app/publisher/login/', {
         slate_token: token
       })
+      this.$toast({
+        type: 'info',
+        text: data.message
+      })
       this.$cookies.set('publisher-token', data.data.token)
       commit('setToken', data.data)
     } catch (error) {

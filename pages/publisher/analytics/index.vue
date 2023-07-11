@@ -182,10 +182,11 @@ export default {
     if (!this.$cookies.get("publisher-token")) {
       await this.GET_TOKEN();
       this.$router.push('/publisher/profile')
-    }
+    } else {
     await this.getBookShelf();
     await this.filterByDay();
     await this.getData();
+    }
     this.categoryOptions.title.text = "Top Categories";
     this.formatOptions.title.text = "Top Format";
     this.subjectOptions.title.text = "Top Subject";
