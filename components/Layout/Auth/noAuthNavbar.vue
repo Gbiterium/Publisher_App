@@ -96,7 +96,7 @@ export default {
       this.isMobile = !this.isMobile
     },
     logout() {
-      // this.$cookies.remove('slate-token')
+      this.$cookies.remove('slate-token')
       this.$cookies.remove('publisher-token')
       this.$router.push('/')
     }

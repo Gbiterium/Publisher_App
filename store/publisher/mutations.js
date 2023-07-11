@@ -10,7 +10,11 @@ const mutations = {
     },
     setToken(state, token) {
         state.token = token
-    }
+    },
+    logout (state) {
+        state.publisherDetails = {}
+        state.token = {}
+      },
 }
 
 export default mutations

@@ -44,6 +44,11 @@ const actions = {
     } catch (error) {
       console.log(error)
     }
+  },
+  logout({ commit }) {
+    commit('logout')
+    this.$cookies.remove('publisher-token')
+    this.$cookies.remove('slate-token')
   }
 };
 

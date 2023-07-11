@@ -27,7 +27,7 @@
                               class="object-fit-cover rounded-circle"
                               width="72"
                               height="72"
-                              :src="image"
+                              :src="image ? image : $cookies.get('user-details').avatar"
                             />
                             <button
                             v-if="toInput"
